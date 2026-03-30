@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="27b00a01-192f-47f2-9d69-2774c4fc57a5" name="Changes" comment="" />
+    <list default="true" id="27b00a01-192f-47f2-9d69-2774c4fc57a5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Land.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Resource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/ResourceGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Terrain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TerrainGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Unit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Water.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/realmain.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -10,21 +25,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "oscarlavesson0"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;oscarlavesson0&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/oscarlavesson0/Battle-of-Kingdoms.git",
-    "accountId": "95b9332b-f2f0-44e5-8abb-8545eb604c82"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/oscarlavesson0/Battle-of-Kingdoms.git&quot;,
+    &quot;accountId&quot;: &quot;95b9332b-f2f0-44e5-8abb-8545eb604c82&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 0
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
   <component name="ProjectId" id="3BfFjmwzXYEbxIck2xc7wS6ssug" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -35,11 +50,19 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "TileSaker",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/oscar/OneDrive/Dokument/GitHub/Battle-of-Kingdoms"
+    "last_opened_file_path": "C:/Users/joela/OneDrive/Dokument/GitHub/Battle-of-Kingdoms/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\joela\OneDrive\Dokument\GitHub\Battle-of-Kingdoms\Systemutveckling projekt 1\core\src\main\java\io\github\BattleOfKingdoms" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\joela\OneDrive\Dokument\GitHub\Battle-of-Kingdoms\Systemutveckling projekt 1\core\src\main\java\io\github\BattleOfKingdoms" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
