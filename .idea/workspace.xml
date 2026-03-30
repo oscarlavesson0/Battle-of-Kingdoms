@@ -4,7 +4,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="27b00a01-192f-47f2-9d69-2774c4fc57a5" name="Changes" comment="" />
+    <list default="true" id="27b00a01-192f-47f2-9d69-2774c4fc57a5" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Land.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Resource.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/ResourceGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Terrain.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TerrainGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Tile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileGenerator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Unit.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Water.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/realmain.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,6 +45,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
     &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
@@ -44,6 +57,26 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/oscar/OneDrive/Dokument/GitHub/Battle-of-Kingdoms&quot;
   }
 }</component>
+=======
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "TileSaker",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/joela/OneDrive/Dokument/GitHub/Battle-of-Kingdoms/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\joela\OneDrive\Dokument\GitHub\Battle-of-Kingdoms\Systemutveckling projekt 1\core\src\main\java\io\github\BattleOfKingdoms" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\joela\OneDrive\Dokument\GitHub\Battle-of-Kingdoms\Systemutveckling projekt 1\core\src\main\java\io\github\BattleOfKingdoms" />
+    </key>
+  </component>
+>>>>>>> TileSaker
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
