@@ -10,5 +10,6 @@ public class Lwjgl3Launcher {
         config.setTitle("LibGDX Test");
         config.setWindowedMode(800, 600);
         new Lwjgl3Application(new Test(), config);
+        System.out.println("hej");
     }
 }
