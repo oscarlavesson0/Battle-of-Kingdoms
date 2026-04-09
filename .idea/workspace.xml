@@ -4,93 +4,131 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="27b00a01-192f-47f2-9d69-2774c4fc57a5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Land.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Resource.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/ResourceGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Terrain.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TerrainGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Tile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileGenerator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Unit.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Water.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/realmain.java" afterDir="false" />
+    <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/Battle-of-Kingdoms.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/.gitattributes" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/libgdx.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/font-list.fnt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/font-subtitle.fnt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/font-window.fnt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/font.fnt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/uiskin.atlas" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/uiskin.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/assets/ui/uiskin.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Land.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Resource.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/ResourceGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Terrain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TerrainGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Tile.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/TileGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Unit.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/Tile/Water.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms/realmain.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/gradle/gradle-daemon-jvm.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/gradle/wrapper/gradle-wrapper.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/gradlew" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/gradlew.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/icons/logo.icns" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/icons/logo.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/icons/logo.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/nativeimage.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/src/main/java/io/github/BattleOfKingdoms/lwjgl3/Lwjgl3Launcher.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/src/main/java/io/github/BattleOfKingdoms/lwjgl3/StartupHelper.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/src/main/resources/libgdx128.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/src/main/resources/libgdx16.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/src/main/resources/libgdx32.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/lwjgl3/src/main/resources/libgdx64.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/teavm/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/teavm/src/main/java/io/github/BattleOfKingdoms/teavm/TeaVMBuilder.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Systemutveckling projekt 1/teavm/src/main/java/io/github/BattleOfKingdoms/teavm/TeaVMLauncher.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$">
+      <ProjectState />
+    </projectState>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;oscarlavesson0&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "oscarlavesson0"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/oscarlavesson0/Battle-of-Kingdoms.git&quot;,
-    &quot;accountId&quot;: &quot;95b9332b-f2f0-44e5-8abb-8545eb604c82&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/oscarlavesson0/Battle-of-Kingdoms.git",
+    "accountId": "95b9332b-f2f0-44e5-8abb-8545eb604c82"
   }
-}</component>
-  <component name="ProjectColorInfo">{
-  &quot;associatedIndex&quot;: 0
-}</component>
-  <component name="ProjectId" id="3BfFjmwzXYEbxIck2xc7wS6ssug" />
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 6
+}]]></component>
+  <component name="ProjectId" id="3C7G4bWfRd1ftGk4hZ0ZLBnl6a7" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-<<<<<<< HEAD
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/oscar/OneDrive/Dokument/GitHub/Battle-of-Kingdoms&quot;
-  }
-}</component>
-=======
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "TileSaker",
+    "external.system.has.shared.sources": "true",
+    "git-widget-placeholder": "Test-LibGDX",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/joela/OneDrive/Dokument/GitHub/Battle-of-Kingdoms/Systemutveckling projekt 1/core/src/main/java/io/github/BattleOfKingdoms"
+    "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
   }
 }]]></component>
-  <component name="RecentsManager">
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\joela\OneDrive\Dokument\GitHub\Battle-of-Kingdoms\Systemutveckling projekt 1\core\src\main\java\io\github\BattleOfKingdoms" />
-    </key>
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\joela\OneDrive\Dokument\GitHub\Battle-of-Kingdoms\Systemutveckling projekt 1\core\src\main\java\io\github\BattleOfKingdoms" />
-    </key>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <option name="filePath" />
+      <method v="2" />
+    </configuration>
   </component>
->>>>>>> TileSaker
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
       </set>
     </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="27b00a01-192f-47f2-9d69-2774c4fc57a5" name="Changes" comment="" />
-      <created>1774872354165</created>
+      <changelist id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="" />
+      <created>1775729005450</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1774872354165</updated>
+      <updated>1775729005450</updated>
     </task>
     <servers />
   </component>
