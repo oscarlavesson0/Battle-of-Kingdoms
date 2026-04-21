@@ -87,7 +87,10 @@
     "RunOnceActivity.git.unshallow": "true",
     "external.system.has.shared.sources": "true",
     "git-widget-placeholder": "main",
+<<<<<<< HEAD
     "ignore.virus.scanning.warn.message": "true",
+=======
+>>>>>>> 21a4fec3817e5be5bb8b3615d1d1800b7d2af41d
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
   }
