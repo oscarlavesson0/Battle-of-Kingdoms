@@ -1,12 +1,14 @@
 package terrain;
 
+import GuiMainGame.WorldMap;
+
 public class TileController {
 
     Tile[][] tileGrid;
     TileGenerator tileGenerator;
 
     TileController(int row, int col) {
-        tileGrid = new Tile[16][16];
+        tileGrid = new Tile[WorldMap.TILE_SIZE][WorldMap.TILE_SIZE];
         tileGenerator = new TileGenerator(tileGrid);
         tileGrid = tileGenerator.generateTiles();
     }

@@ -3,9 +3,9 @@ package terrain;
 public abstract class Terrain {
 
     String name;
-    String id;
+    int id;
 
-    public Terrain(String name, String id) {
+    public Terrain(String name, int id) {
         this.name = name;
         this.id = id;
     }
@@ -14,7 +14,7 @@ public abstract class Terrain {
         return name;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
