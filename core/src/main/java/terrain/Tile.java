@@ -11,6 +11,7 @@ public class Tile {
     //Resource resource;
 
     public Tile(int x, int y, Terrain terrain) {
+        this.terrain = terrain;
         this.x = x;
         this.y = y;
     }

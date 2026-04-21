@@ -1,6 +1,6 @@
 package terrain;
 
-public class Terrain {
+public abstract class Terrain {
 
     String name;
     String id;
