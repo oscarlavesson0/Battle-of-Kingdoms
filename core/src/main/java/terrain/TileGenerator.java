@@ -10,7 +10,10 @@ public class TileGenerator {
         terrainGenerator = new TerrainGenerator(this.tileGrid);
         this.tileGrid = tileGrid;
 
-
+        terrainGenerator.generateLand();
+        terrainGenerator.generateMountain();
+        terrainGenerator.generateWater();
+        terrainGrid = terrainGenerator.getTerrainGrid();
 
     }
 

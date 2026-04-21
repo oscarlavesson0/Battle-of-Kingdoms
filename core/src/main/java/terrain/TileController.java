@@ -9,7 +9,13 @@ public class TileController {
         tileGrid = new Tile[16][16];
         tileGenerator = new TileGenerator(tileGrid);
         tileGrid = tileGenerator.generateTiles();
+    }
 
-
+    /**
+     * Här hämtas Tile griden för alla spelets tiles.
+     * @return tileGrid
+     */
+    public Tile[][] getTileGrid() {
+        return tileGrid;
     }
 }

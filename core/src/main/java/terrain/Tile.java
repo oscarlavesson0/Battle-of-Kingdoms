@@ -1,12 +1,14 @@
 package terrain;
 
+import base.Base;
+
 public class Tile {
     int x;
     int y;
 
     Terrain terrain;
+    Base base;
     //List<Unit> units;
-    //Base base;
     //Building building;
     //Resource resource;
 
@@ -18,6 +20,10 @@ public class Tile {
 
     public Terrain getTerrain(){
         return terrain;
+    }
+
+    public void setBase(Base base){
+        this.base = base;
     }
 
     public int getX() {
