@@ -53,6 +53,12 @@ public class Unit {
         return speed;
     }
 
+    //Hämtar enhetens baförsvarsvärde.
+    public int getDefence() {
+        return defence;
+    }
+
+
     //Hämtar enhetens nuvarande X‑position på kartan.
     public int getX(){
         return x;
