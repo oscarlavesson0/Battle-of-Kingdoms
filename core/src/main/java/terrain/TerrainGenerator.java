@@ -26,23 +26,37 @@ public class TerrainGenerator {
         double startRange = 0.04;
         double endRange = 0.06;
         double percentage = random.nextDouble(startRange, endRange);
-        int num = (terrainGrid.length * terrainGrid[0].length) * (int)percentage;
+        int numberOfMountains = (terrainGrid.length * terrainGrid[0].length) * (int)percentage;
         int i = 0;
-        while(i < num){
+        while(i < numberOfMountains){
             int x = random.nextInt(0, tileGrid.length);
             int y = random.nextInt(0, tileGrid[0].length);
             if ((x == 0 && y == 0) || (x == terrainGrid.length - 1 && y == terrainGrid[0].length - 1)){
                 continue;
             }
             if (!(terrainGrid[x][y] instanceof Mountain)){
-                terrainGrid[x][y] = new Mountain("Mountain", 2);
+                terrainGrid[x][y] = new Mountain("Mountain", 3);
                 i++;
             }
         }
     }
 
     public void generateWater(){
-
+        double startRange = 0.1;
+        double endRange = 0.15;
+        double percentage = random.nextDouble(startRange, endRange);
+        int numberOfWaterTiles = (terrainGrid.length * terrainGrid[0].length) * (int)percentage;
+        int i = 0;
+        while(i < numberOfWaterTiles){
+            int x = random.nextInt(0, tileGrid.length);
+            int y = random.nextInt(0, tileGrid[0].length);
+            if ((x == 0 && y == 0) || (x == terrainGrid.length - 1 && y == terrainGrid[0].length - 1)){
+                continue;
+            }
+            if (!(terrainGrid[x][y] instanceof Water)){
+                terrainGrid[x][y] = new Water("Water", 2);
+            }
+        }
     }
 
     public Terrain[][] getTerrainGrid() {

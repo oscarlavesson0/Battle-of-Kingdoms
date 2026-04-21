@@ -17,6 +17,4 @@ public abstract class Terrain {
     public int getId() {
         return id;
     }
-
-
 }
