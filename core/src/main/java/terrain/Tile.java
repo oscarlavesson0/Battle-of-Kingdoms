@@ -8,7 +8,7 @@ public class Tile {
     //Resource resource;
 
     public Tile() {
-        
+
     }
 
     public Terrain getTerrain(){
