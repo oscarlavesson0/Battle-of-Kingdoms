@@ -20,11 +20,12 @@ public class Unit {
     private Weapon weapon;
 
     //Konstruktor för en Unit. Initierar enhetens statistik, vapen och startposition.
-    public Unit(int maxHp, int attack, int speed, Weapon weapon, int startX, int startY) {
+    public Unit(int maxHp, int attack, int speed, int defence, Weapon weapon, int startX, int startY) {
         this.maxHP = maxHp;
         this.currentHP = maxHp;
         this.attack = attack;
         this.speed = speed;
+        this.defence = defence;
         this.weapon = weapon;
         this.x = startX;
         this.y = startY;
@@ -62,9 +63,25 @@ public class Unit {
         return y;
     }
 
-    //Hämtar enhetens nuvarande Y‑position på kartan.
+    //Hämtar vapnet som enheten är utrustad med.
     public Weapon getWeapon(){
         return weapon;
+    }
+
+    //metoder för hur units rör på sig
+
+    //Uniten får flytta om avståndet är mindre än eller lika med speed.
+    public boolean canMoveTo(int newX, int newY) {
+        int distance = Math.abs(newX - x) + Math.abs(newY - y);
+        return distance <= speed;
+    }
+
+    //Flyttar enheten till den angivna positionen om avståndet är tillåtet enligt enhetens speed.
+    public void moveTo(int newX, int newY) {
+        if (canMoveTo(newX, newY)) {
+            x = newX;
+            y = newY;
+        }
     }
 
 }
