@@ -30,7 +30,7 @@ public class Main extends ApplicationAdapter {
         world = new WorldMap(tileController);
 
         grass = sheet.getTile(16, 0); // gräs
-        lakeRenderer = new LakeRenderer(sheet);
+        lakeRenderer = new LakeRenderer(sheet, tileController);
         baseRenderer = new BaseRenderer(sheet);
 
 

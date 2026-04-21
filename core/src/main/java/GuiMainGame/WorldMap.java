@@ -14,15 +14,24 @@ public class WorldMap {
 
     public WorldMap(TileController tileController) {
         tileGrid = tileController.getTileGrid();
-        // Fyll hela kartan med gräs (1)
+        // Fyll hela kartan med gräs (1) vatten (2) berg (3)
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[0].length; col++) {
-                map[row][col] = 1;
+                if (tileGrid[row][col].getTerrain().getId() == 1){
+                    map[row][col] = 1;
+                }
+                else if (tileGrid[row][col].getTerrain().getId() == 2){
+                    map[row][col] = 111;
+                }
+                else if (tileGrid[row][col].getTerrain().getId() == 3){
+                    map[row][col] = 50;
+                }
             }
         }
 
         //Lägger till vatten i mitten av kartan
-        int centerRow = map.length / 2;
+        /*
+             int centerRow = map.length / 2;
         int centerCol = map[0].length / 2;
 
         // Övre rad
@@ -39,6 +48,8 @@ public class WorldMap {
         map[centerRow + 1][centerCol - 1] = 100; // w20
         map[centerRow + 1][centerCol]     = 101; // w21
         map[centerRow + 1][centerCol + 1] = 102; // w22
+         */
+
     }
 
     public int getTile(int row, int col) {
