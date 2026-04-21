@@ -8,6 +8,7 @@ public class TileController {
     TileController(int row, int col) {
         tileGrid = new Tile[16][16];
         tileGenerator = new TileGenerator(tileGrid);
+        tileGrid = tileGenerator.generateTiles();
 
 
     }
