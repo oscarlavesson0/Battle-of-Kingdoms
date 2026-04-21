@@ -16,4 +16,8 @@ public class Player {
     public void setBase(Base base){
         this.base = base;
     }
+
+    public Base getBase() {
+        return base;
+    }
 }
