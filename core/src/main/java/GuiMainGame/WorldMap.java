@@ -1,6 +1,8 @@
 package GuiMainGame;
 
 
+import terrain.Tile;
+import terrain.TileController;
 
 public class WorldMap {
 
@@ -8,7 +10,10 @@ public class WorldMap {
 
     private int[][] map = new int[60][60];
 
-    public WorldMap() {
+    Tile[][] tileGrid;
+
+    public WorldMap(TileController tileController) {
+        tileGrid = tileController.getTileGrid();
         // Fyll hela kartan med gräs (1)
         for (int row = 0; row < map.length; row++) {
             for (int col = 0; col < map[0].length; col++) {

@@ -24,16 +24,15 @@ public class TileGenerator {
     public Tile[][] generateTiles() {
         Tile[][] newTileGrid = tileGrid;
 
-        //bas 1 uppe i vänstra hörnet
-        tileGrid[0][0].setBase(new Base(new Player("1"), tileGrid[0][0]));
-        //bas 2 nere i högre hörnet
-        tileGrid[WorldMap.TILE_SIZE - 1][WorldMap.TILE_SIZE - 1].setBase(new Base(new Player("2"), tileGrid[WorldMap.TILE_SIZE - 1][WorldMap.TILE_SIZE - 1]));
-
         for (int i = 0; i < tileGrid.length; i++) {
             for (int j = 0; j < tileGrid[i].length; j++) {
                 tileGrid[i][j] = new Tile(i, j, terrainGrid[i][j]);
             }
         }
+        //bas 1 nere i vänstra hörnet
+        tileGrid[59][0].setBase(new Base(new Player("1"), tileGrid[59][0]));
+        //bas 2 uppe i högre hörnet
+        tileGrid[0][59].setBase(new Base(new Player("2"), tileGrid[0][59]));
         return newTileGrid;
     }
 }

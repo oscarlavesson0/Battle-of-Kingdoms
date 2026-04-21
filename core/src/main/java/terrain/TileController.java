@@ -7,8 +7,8 @@ public class TileController {
     Tile[][] tileGrid;
     TileGenerator tileGenerator;
 
-    TileController(int row, int col) {
-        tileGrid = new Tile[WorldMap.TILE_SIZE][WorldMap.TILE_SIZE];
+    public TileController() {
+        tileGrid = new Tile[60][60];
         tileGenerator = new TileGenerator(tileGrid);
         tileGrid = tileGenerator.generateTiles();
     }
