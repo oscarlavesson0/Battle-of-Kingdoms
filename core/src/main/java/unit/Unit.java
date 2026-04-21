@@ -29,4 +29,42 @@ public class Unit {
         this.x = startX;
         this.y = startY;
     }
+
+    //getters för units
+
+    //Hämtar enhetens maximala hälsa.
+    public int getMaxHp(){
+        return maxHP;
+    }
+
+    //Hämtar enhetens nuvarande hälsa.
+    public int getCurrentHp(){
+        return currentHP;
+    }
+
+    //Hämtar enhetens basattackvärde.
+    public int getAttack(){
+        return attack;
+    }
+
+    //Hämtar hur långt enheten kan röra sig per tur.
+    public int getSpeed(){
+        return speed;
+    }
+
+    //Hämtar enhetens nuvarande X‑position på kartan.
+    public int getX(){
+        return x;
+    }
+
+    //Hämtar enhetens nuvarande Y‑position på kartan.
+    public int getY(){
+        return y;
+    }
+
+    //Hämtar enhetens nuvarande Y‑position på kartan.
+    public Weapon getWeapon(){
+        return weapon;
+    }
+
 }
