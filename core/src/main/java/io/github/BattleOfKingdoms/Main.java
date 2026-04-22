@@ -1,11 +1,17 @@
 package io.github.BattleOfKingdoms;
 
-import GuiMainGame.*;
+import GuiMainGame.BaseRenderer;
+import GuiMainGame.LakeRenderer;
+import GuiMainGame.SpriteSheetLoader;
+import GuiMainGame.WorldMap;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.*;
 import terrain.TileController;
+import GuiMainGame.GameInput;
+import popup.BasePopup;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -17,7 +23,8 @@ public class Main extends ApplicationAdapter {
     private LakeRenderer lakeRenderer;
     private BaseRenderer baseRenderer;
     private TileController tileController;
-    private CharacterRenderer characterRenderer;
+    private BasePopup basePopup;
+    private GameInput input;
 
 
 
@@ -31,8 +38,10 @@ public class Main extends ApplicationAdapter {
         grass = sheet.getTile(16, 0); // gräs
         lakeRenderer = new LakeRenderer(sheet, tileController);
         baseRenderer = new BaseRenderer(sheet);
-        characterRenderer = new CharacterRenderer();
 
+        basePopup = new BasePopup(null, 200, 150, 300, 200);
+        input = new GameInput(tileController, basePopup);
+        Gdx.input.setInputProcessor(input);
 
 
     }
@@ -59,16 +68,19 @@ public class Main extends ApplicationAdapter {
             for (int c = 0; c < world.getCols(); c++) {
                 if (tileController.getTileGrid()[r][c].getBase() != null){
                     baseRenderer.renderBase(batch, r, c);
-                    characterRenderer.render(batch, 100, 100);
-                    characterRenderer.render(batch, 650, 500);
-
                 }
             }
         }
 
 
         batch.end();
+
+        if (basePopup != null && basePopup.isVisible()) {
+            basePopup.render(batch);
+        }
     }
+
+
 
     @Override
    public void dispose() {
