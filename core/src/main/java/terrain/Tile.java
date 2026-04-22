@@ -22,6 +22,10 @@ public class Tile {
         return terrain;
     }
 
+    public Base getBase(){
+        return base;
+    }
+
     public void setBase(Base base){
         this.base = base;
     }
