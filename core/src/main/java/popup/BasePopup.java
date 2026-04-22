@@ -142,5 +142,10 @@ public class BasePopup {
             System.out.println("Train Units clicked (not implemented)");
         }
     }
+
+    public void show(Base base) {
+        this.base = base;
+        this.visible = true;
+    }
 }
 
