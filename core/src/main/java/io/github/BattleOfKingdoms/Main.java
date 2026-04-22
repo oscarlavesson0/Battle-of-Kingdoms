@@ -52,7 +52,9 @@ public class Main extends ApplicationAdapter {
 
         // Rita sjön
         lakeRenderer.renderLake(batch, world);
-        baseRenderer.renderBase(batch, 15, 15);
+        baseRenderer.renderBase(batch, 15, 0);
+        baseRenderer.renderBase(batch, 15, 45);
+
 
 
         batch.end();
