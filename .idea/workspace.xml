@@ -84,7 +84,7 @@
       <recent name="base" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.SwingGridTest">
+  <component name="RunManager">
     <configuration name="SwingGridTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.SwingGridTest" />
       <module name="Battle-of-Kingdoms.core.main" />
