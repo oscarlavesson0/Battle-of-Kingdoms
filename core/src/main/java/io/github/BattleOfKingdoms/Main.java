@@ -1,9 +1,6 @@
 package io.github.BattleOfKingdoms;
 
-import GuiMainGame.BaseRenderer;
-import GuiMainGame.LakeRenderer;
-import GuiMainGame.SpriteSheetLoader;
-import GuiMainGame.WorldMap;
+import GuiMainGame.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,6 +17,8 @@ public class Main extends ApplicationAdapter {
     private LakeRenderer lakeRenderer;
     private BaseRenderer baseRenderer;
     private TileController tileController;
+    private CharacterRenderer characterRenderer;
+
 
 
     @Override
@@ -32,6 +31,8 @@ public class Main extends ApplicationAdapter {
         grass = sheet.getTile(16, 0); // gräs
         lakeRenderer = new LakeRenderer(sheet, tileController);
         baseRenderer = new BaseRenderer(sheet);
+        characterRenderer = new CharacterRenderer();
+
 
 
     }
@@ -58,6 +59,9 @@ public class Main extends ApplicationAdapter {
             for (int c = 0; c < world.getCols(); c++) {
                 if (tileController.getTileGrid()[r][c].getBase() != null){
                     baseRenderer.renderBase(batch, r, c);
+                    characterRenderer.render(batch, 100, 100);
+                    characterRenderer.render(batch, 650, 500);
+
                 }
             }
         }
