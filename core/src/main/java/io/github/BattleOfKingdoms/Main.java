@@ -54,7 +54,13 @@ public class Main extends ApplicationAdapter {
 
         // Rita sjön
         lakeRenderer.renderLake(batch, world);
-        baseRenderer.renderBase(batch, 15, 15);
+        for (int r = 0; r < world.getRows(); r++) {
+            for (int c = 0; c < world.getCols(); c++) {
+                if (tileController.getTileGrid()[r][c].getBase() != null){
+                    baseRenderer.renderBase(batch, r, c);
+                }
+            }
+        }
 
 
         batch.end();

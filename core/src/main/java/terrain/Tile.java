@@ -2,6 +2,9 @@ package terrain;
 
 import base.Base;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tile {
     int x;
     int y;

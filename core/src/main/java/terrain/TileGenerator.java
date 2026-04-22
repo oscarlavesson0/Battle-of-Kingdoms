@@ -29,10 +29,13 @@ public class TileGenerator {
                 tileGrid[i][j] = new Tile(i, j, terrainGrid[i][j]);
             }
         }
+        Base base1 = new Base(new Player("1"), tileGrid[35][35]);
+        Base base2 = new Base(new Player("2"), tileGrid[15][15]);
+
         //bas 1 nere i vänstra hörnet
-        tileGrid[59][0].setBase(new Base(new Player("1"), tileGrid[59][0]));
+        tileGrid[30][40].setBase(base1);
         //bas 2 uppe i högre hörnet
-        tileGrid[0][59].setBase(new Base(new Player("2"), tileGrid[0][59]));
+        tileGrid[5][5].setBase(base2);
         return newTileGrid;
     }
 }
