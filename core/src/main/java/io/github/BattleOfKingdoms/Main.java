@@ -8,6 +8,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import terrain.TileController;
 
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class Main extends ApplicationAdapter {
@@ -18,17 +19,18 @@ public class Main extends ApplicationAdapter {
     private WorldMap world;
     private LakeRenderer lakeRenderer;
     private BaseRenderer baseRenderer;
-
+    private TileController tileController;
 
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         sheet = new SpriteSheetLoader();
-        world = new WorldMap();
+        tileController = new TileController();
+        world = new WorldMap(tileController);
 
         grass = sheet.getTile(16, 0); // gräs
-        lakeRenderer = new LakeRenderer(sheet);
+        lakeRenderer = new LakeRenderer(sheet, tileController);
         baseRenderer = new BaseRenderer(sheet);
 
 
@@ -52,9 +54,13 @@ public class Main extends ApplicationAdapter {
 
         // Rita sjön
         lakeRenderer.renderLake(batch, world);
-        baseRenderer.renderBase(batch, 15, 0);
-        baseRenderer.renderBase(batch, 15, 45);
-
+        for (int r = 0; r < world.getRows(); r++) {
+            for (int c = 0; c < world.getCols(); c++) {
+                if (tileController.getTileGrid()[r][c].getBase() != null){
+                    baseRenderer.renderBase(batch, r, c);
+                }
+            }
+        }
 
 
         batch.end();

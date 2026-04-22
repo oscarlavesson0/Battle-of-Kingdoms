@@ -1,22 +1,36 @@
 package terrain;
 
+import base.Base;
+
+import java.util.ArrayList;
+import java.util.List;
+
 public class Tile {
     int x;
     int y;
 
     Terrain terrain;
+    Base base;
     //List<Unit> units;
-    //Base base;
     //Building building;
     //Resource resource;
 
     public Tile(int x, int y, Terrain terrain) {
+        this.terrain = terrain;
         this.x = x;
         this.y = y;
     }
 
     public Terrain getTerrain(){
         return terrain;
+    }
+
+    public Base getBase(){
+        return base;
+    }
+
+    public void setBase(Base base){
+        this.base = base;
     }
 
     public int getX() {
