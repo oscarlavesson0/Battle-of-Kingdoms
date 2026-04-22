@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/terrain/TerrainGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/terrain/TerrainGenerator.java" afterDir="false" />
-    </list>
+    <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -65,29 +62,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Battle-of-Kingdoms:core [:core:test.SwingGridTest.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:core [:core:test.Test.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:lwjgl3 [:lwjgl3:io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMBuilder.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMLauncher.main()].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "Watergen",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Battle-of-Kingdoms:core [:core:test.SwingGridTest.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:core [:core:test.Test.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:lwjgl3 [:lwjgl3:io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMBuilder.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMLauncher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;external.system.has.shared.sources&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/oscar/Documents/Battle-of-Kingdoms&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="base" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.SwingGridTest">
     <configuration name="SwingGridTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="test.SwingGridTest" />
       <module name="Battle-of-Kingdoms.core.main" />
@@ -120,13 +117,6 @@
         <item itemvalue="Application.Test" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.27397.103" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
