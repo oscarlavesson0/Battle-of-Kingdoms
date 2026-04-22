@@ -20,7 +20,7 @@ public class MovementTest extends JPanel {
 
     public MovementTest() {
 
-        // --- Create a simple 10x10 grid ---
+        //Create a simple 10x10 grid
         grid = new Tile[10][10];
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
@@ -30,12 +30,12 @@ public class MovementTest extends JPanel {
 
         controller = new UnitController(grid);
 
-        // --- Units ---
+        //Units
         units[0] = new Swordman(0, 0);   // S
         units[1] = new Axeman(9, 9);     // A
         units[2] = new Spearman(5, 5);   // P
 
-        // --- Mouse interaction ---
+        // Mouse interaction
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -100,10 +100,10 @@ public class MovementTest extends JPanel {
                 color = Color.RED;
             } else if (u instanceof Axeman) {
                 label = "A";
-                color = Color.BLUE;
-            } else {
-                label = "P";
                 color = Color.GREEN;
+            } else {
+                label = "SP";
+                color = Color.BLUE;
             }
 
             g.setColor(color);
