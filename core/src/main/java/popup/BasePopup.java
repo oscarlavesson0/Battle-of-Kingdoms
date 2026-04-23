@@ -78,41 +78,59 @@ public class BasePopup {
     public void render(SpriteBatch batch) {
         if (!visible) return;
 
-        // Draw background rectangle
-        batch.end();
+        // Ensure batch is not running before using ShapeRenderer
+        if (batch.isDrawing()) {
+            batch.end();
+        }
+
+        // Draw background and HP bar with ShapeRenderer
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(0, 0, 0, 0.8f));
+
+        // White background
+        shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
         shapeRenderer.rect(x, y, width, height);
 
-        // Draw HP bar background
+        // HP bar background
         shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x + 20, y + height - 90, width - 40, 20);
+        shapeRenderer.rect(x + 20, y + height - 120, width - 40, 20);
 
-        // Draw HP bar fill
+        // HP bar fill
         float hpPercent = (float) base.getCurrentHp() / base.getMaxHp();
         shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(x + 20, y + height - 90, (width - 40) * hpPercent, 20);
+        shapeRenderer.rect(x + 20, y + height - 120, (width - 40) * hpPercent, 20);
 
         shapeRenderer.end();
+
+        // Draw text with SpriteBatch
         batch.begin();
 
-        // Draw owner name
-        font.setColor(Color.WHITE);
+        // Owner text
+        font.setColor(Color.BLACK);
         font.draw(batch, "Owner: " + base.getOwner().getId(), x + 20, y + height - 20);
 
-        // Draw HP text
+        // HP text
         font.setColor(Color.GREEN);
         font.draw(batch, "HP: " + base.getCurrentHp() + " / " + base.getMaxHp(),
-            x + 20, y + height - 60);
+            x + 20, y + height - 70);
 
-        // Draw defense text
-        font.setColor(Color.CYAN);
-        font.draw(batch, "Defense: " + base.getDefense(), x + 20, y + height - 120);
+        // Defense text
+        font.setColor(Color.BLUE);
+        font.draw(batch, "Defense: " + base.getDefense(), x + 20, y + height - 140);
 
-        // Draw button
-        font.setColor(Color.LIGHT_GRAY);
-        font.draw(batch, "[ Train Units ]", buttonX + 10, buttonY + 30);
+        // Close button
+        font.setColor(Color.RED);
+        font.draw(batch, "[ Close ]", x + width - 80, y + height - 20);
+
+        // Train Units button
+        font.setColor(Color.DARK_GRAY);
+        font.draw(batch, "[ Train Units ]", buttonX + 0, buttonY + 10);
+
+        batch.end();
     }
+
+
+
+
 
     /**
      * Handles click input for closing the popup or pressing the button.
@@ -122,7 +140,6 @@ public class BasePopup {
     public void handleClick(float screenX, float screenY) {
         if (!visible) return;
 
-        // Convert Y coordinate (LibGDX uses bottom-left origin)
         float realY = Gdx.graphics.getHeight() - screenY;
 
         // Check if click is inside popup
@@ -130,11 +147,23 @@ public class BasePopup {
             realY >= y && realY <= y + height;
 
         if (!insidePopup) {
+            hide(); // Close when clicking outside
+            return;
+        }
+
+        // Area to close popup
+        float closeX1 = x + width - 90;
+        float closeX2 = x + width - 20;
+        float closeY1 = y + height - 35;
+        float closeY2 = y + height - 5;
+
+        if (screenX >= closeX1 && screenX <= closeX2 &&
+            realY >= closeY1 && realY <= closeY2) {
             hide();
             return;
         }
 
-        // Check if button is clicked
+        // Train units button
         boolean buttonClicked = screenX >= buttonX && screenX <= buttonX + buttonWidth &&
             realY >= buttonY && realY <= buttonY + buttonHeight;
 
@@ -142,6 +171,8 @@ public class BasePopup {
             System.out.println("Train Units clicked (not implemented)");
         }
     }
+
+
 
     public void show(Base base) {
         this.base = base;

@@ -19,25 +19,25 @@ public class GameInput extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        // If popup is open → let popup handle click
+        // If popup is open then popup handle clicks
         if (basePopup != null && basePopup.isVisible()) {
             basePopup.handleClick(screenX, screenY);
             return true;
         }
 
-        // Convert screen → tile
+        // Convert screen coords to tile coords
         int tileX = screenX / WorldMap.TILE_SIZE;
         int tileY = (Gdx.graphics.getHeight() - screenY) / WorldMap.TILE_SIZE;
 
         Tile[][] grid = tileController.getTileGrid();
 
         // Bounds check
-        if (tileX < 0 || tileY < 0 || tileX >= grid.length || tileY >= grid[0].length)
+        if (tileX < 0 || tileY < 0 || tileY >= grid.length || tileX >= grid[0].length)
             return false;
 
-        Tile clickedTile = grid[tileX][tileY];
+        Tile clickedTile = grid[tileY][tileX];
 
-        // If tile has a base → show popup
+        // Open popup for base
         if (clickedTile.getBase() != null) {
             basePopup.show(clickedTile.getBase());
             return true;
