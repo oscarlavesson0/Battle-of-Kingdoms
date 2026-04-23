@@ -10,11 +10,11 @@ public class Base extends StructureRenderer {
     public Base(SpriteSheetLoader sheet) {
 
         layout = new int[][] {
-            {1,1,1,1,1},
-            {1,2,2,2,1},
-            {1,2,3,2,1},
-            {1,2,2,2,1},
-            {1,1,4,1,1}
+            {501,501,501,501,501},
+            {501,502,502,502,501},
+            {501,502,503,502,501},
+            {501,502,502,502,501},
+            {501,501,504,501,501}
         };
 
         cornerL = sheet.getTile(16, 14);
@@ -27,11 +27,11 @@ public class Base extends StructureRenderer {
     @Override
     public TextureRegion getTile(int id) {
         return switch (id) {
-            case 1 -> cornerL;
-            case 2 -> wall;
-            case 3 -> floor;
-            case 4 -> gate;
-            case 5 -> cornerR;
+            case 501 -> cornerL;
+            case 502 -> wall;
+            case 503 -> floor;
+            case 504 -> gate;
+            case 505 -> cornerR;
             default -> floor;
         };
     }

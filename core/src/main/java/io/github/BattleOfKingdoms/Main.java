@@ -52,10 +52,12 @@ public class Main extends ApplicationAdapter {
             // Placera baser i hörnen
             int baseSize = base1.getWidth();
 
-            world.placeStructure(base1, world.getRows() - baseSize, baseSize); // nedre vänster
-            world.placeStructure(base2, baseSize, world.getCols() - baseSize); // övre höger
+        world.placeStructure(base1, 2, 2);   // nedre vänster
+        world.placeStructure(base2, 35, 47);   // övre höger
 
-            // Placera två sjöar på slumpmässiga platser
+
+
+        // Placera två sjöar på slumpmässiga platser
             Random random = new Random();
 
             int lake1Row = random.nextInt(10, world.getRows() - 10);

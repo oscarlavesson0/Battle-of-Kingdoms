@@ -33,9 +33,9 @@ public class TileGenerator {
         Base base2 = new Base(new Player("2"), tileGrid[15][15]);
 
         //bas 1 nere i vänstra hörnet
-        tileGrid[30][40].setBase(base1);
+        //tileGrid[30][40].setBase(base1);
         //bas 2 uppe i högre hörnet
-        tileGrid[5][5].setBase(base2);
-        return newTileGrid;
+        //tileGrid[5][5].setBase(base2);
+       return newTileGrid;
     }
 }

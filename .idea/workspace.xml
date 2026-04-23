@@ -5,13 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/Lake.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/StructureRenderer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/BaseRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/Base.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/LakeRenderer.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/WorldMap.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/WorldMap.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/Base.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/terrain/TileGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/terrain/TileGenerator.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,24 +70,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Battle-of-Kingdoms:core [:core:test.SwingGridTest.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:core [:core:test.Test.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:core [:core:unit.MovementTest.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:lwjgl3 [:lwjgl3:io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMBuilder.main()].executor": "Run",
-    "Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMLauncher.main()].executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "GUI-ny-design-av-karta-med-detaljer",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Battle-of-Kingdoms:core [:core:test.SwingGridTest.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:core [:core:test.Test.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:core [:core:unit.MovementTest.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:lwjgl3 [:lwjgl3:io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMBuilder.main()].executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMLauncher.main()].executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;external.system.has.shared.sources&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;GUI-ny-design-av-karta-med-detaljer&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/oscar/Documents/Battle-of-Kingdoms&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
       <recent name="base" />
