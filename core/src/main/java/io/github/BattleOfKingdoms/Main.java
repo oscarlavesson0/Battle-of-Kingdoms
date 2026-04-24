@@ -8,7 +8,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
-import com.badlogic.gdx.*;
+import com.badlogic.gdx.Gdx;
 import terrain.TileController;
 import GuiMainGame.GameInput;
 import popup.BasePopup;
@@ -23,106 +23,99 @@ public class Main extends ApplicationAdapter {
     private TileController tileController;
     private WorldMap world;
 
-    private BasePopup basePopup;
-    private GameInput input;
-    private Lake lake1;
-    private Lake lake2;
-    private Base base1;
-    private Base base2;
+    private Base baseGraphic;
+    private Lake lakeGraphic;
 
+    private BasePopup basePopup;
 
     @Override
     public void create() {
 
-            batch = new SpriteBatch();
-            sheet = new SpriteSheetLoader();
+        batch = new SpriteBatch();
+        sheet = new SpriteSheetLoader();
 
-            tileController = new TileController();
-            world = new WorldMap(tileController);
+        tileController = new TileController();
+        world = new WorldMap(tileController);
 
-            grass = sheet.getTile(0, 5);
+        grass = sheet.getTile(0, 5);
 
-            // Skapa strukturer
-            lake1 = new Lake(sheet);
-            lake2 = new Lake(sheet);
+        baseGraphic = new Base(sheet);
+        lakeGraphic = new Lake(sheet);
 
-            base1 = new Base(sheet);
-            base2 = new Base(sheet);
+        // Place two random lakes
+        Random random = new Random();
 
-            // Placera baser i hörnen
-            int baseSize = base1.getWidth();
+        int lake1Row = random.nextInt(10, world.getRows() - 10);
+        int lake1Col = random.nextInt(10, world.getCols() - 10);
+        world.placeStructure(lakeGraphic, lake1Row, lake1Col);
 
-        world.placeStructure(base1, 2, 2);   // nedre vänster
-        world.placeStructure(base2, 35, 47);   // övre höger
+        int lake2Row = random.nextInt(10, world.getRows() - 10);
+        int lake2Col = random.nextInt(10, world.getCols() - 10);
+        world.placeStructure(lakeGraphic, lake2Row, lake2Col);
 
+        basePopup = new BasePopup(null, 200, 150, 300, 200);
 
-
-        // Placera två sjöar på slumpmässiga platser
-            Random random = new Random();
-
-            int lake1Row = random.nextInt(10, world.getRows() - 10);
-            int lake1Col = random.nextInt(10, world.getCols() - 10);
-            world.placeStructure(lake1, lake1Row, lake1Col);
-
-            int lake2Row = random.nextInt(10, world.getRows() - 10);
-            int lake2Col = random.nextInt(10, world.getCols() - 10);
-            world.placeStructure(lake2, lake2Row, lake2Col);
-
-            // Popup + input
-            basePopup = new BasePopup(null, 200, 150, 300, 200);
-            input = new GameInput(tileController, basePopup);
-            Gdx.input.setInputProcessor(input);
-
+        Gdx.input.setInputProcessor(new GameInput(tileController, basePopup));
     }
 
     @Override
     public void render() {
 
-            ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
-            batch.begin();
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+        batch.begin();
 
-            for (int r = 0; r < world.getRows(); r++) {
-                for (int c = 0; c < world.getCols(); c++) {
+        for (int row = 0; row < world.getRows(); row++) {
+            for (int col = 0; col < world.getCols(); col++) {
 
-                    int id = world.getTile(r, c);
-                    int x = c * WorldMap.TILE_SIZE;
-                    int y = r * WorldMap.TILE_SIZE;
+                int id = world.getTile(row, col);
+                int x = col * WorldMap.TILE_SIZE;
+                int y = row * WorldMap.TILE_SIZE;
 
-                    // 1. Rita gräs först (bakgrund)
-                    if (id == 1) {
-                        batch.draw(grass, x, y);
-                        continue;
-                    }
+                // Draw grass
+                batch.draw(grass, x, y);
 
-                    // 2. Försök rita sjö
-                    TextureRegion lakeTile = lake1.getTile(id);
-                    if (lakeTile != null) {
-                        batch.draw(lakeTile, x, y);
-                        continue;
-                    }
+                // Draw lake tile if exists
+                TextureRegion lakeTile = lakeGraphic.getTile(id);
+                if (lakeTile != null) {
+                    batch.draw(lakeTile, x, y);
+                    continue;
+                }
 
-                    // 3. Försök rita bas
-                    TextureRegion baseTile = base1.getTile(id);
-                    if (baseTile != null) {
-                        batch.draw(baseTile, x, y);
-                        continue;
-                    }
-
-                    // 4. Om inget matchar → fallback till gräs
-                    batch.draw(grass, x, y);
+                // Draw base graphics if tile belongs to a base
+                if (tileController.getTileGrid()[row][col].getBase() != null) {
+                    drawBaseGraphic(batch, row, col);
                 }
             }
+        }
 
-            batch.end();
+        batch.end();
 
-            if (basePopup != null && basePopup.isVisible()) {
-                basePopup.render(batch);
-            }
-    }
-
-        @Override
-        public void dispose () {
-            batch.dispose();
+        if (basePopup.isVisible()) {
+            basePopup.render(batch);
         }
     }
 
+    private void drawBaseGraphic(SpriteBatch batch, int row, int col) {
+
+        int[][] layout = baseGraphic.getLayout();
+
+        for (int r = 0; r < layout.length; r++) {
+            for (int c = 0; c < layout[0].length; c++) {
+
+                TextureRegion tile = baseGraphic.getTile(layout[r][c]);
+
+                int drawRow = row + r;
+                int drawCol = col + c;
+
+                batch.draw(tile,
+                    drawCol * WorldMap.TILE_SIZE,
+                    drawRow * WorldMap.TILE_SIZE);
+            }
+        }
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+    }
+}
