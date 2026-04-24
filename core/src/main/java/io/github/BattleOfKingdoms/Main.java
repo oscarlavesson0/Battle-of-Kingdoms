@@ -22,7 +22,7 @@ public class Main extends ApplicationAdapter {
     private TextureRegion grass;
     private TileController tileController;
     private WorldMap world;
-    private Base base;
+
     private BasePopup basePopup;
     private GameInput input;
     private Lake lake1;
