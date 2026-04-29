@@ -6,6 +6,8 @@ import terrain.TileController;
 public class WorldMap {
 
     public static final int TILE_SIZE = 16;
+    public static final int WORLD_SIZE = 60;
+
 
     private int[][] map = new int[60][60];
     Tile[][] tileGrid;
@@ -22,7 +24,7 @@ public class WorldMap {
         }
     }
 
-    public void placeStructure(StructureRenderer structure, int centerRow, int centerCol) {
+    public void placeLakeStructure(StructureRenderer structure, int centerRow, int centerCol) {
 
         int[][] layout = structure.getLayout();
 
@@ -40,6 +42,28 @@ public class WorldMap {
             }
         }
     }
+    public void placeBaseStructure(StructureRenderer structure, int centerRow, int centerCol) {
+
+        int[][] layout = structure.getLayout();
+
+        int offsetR = layout.length / 2 - 1;
+        int offsetC = layout[0].length / 2 - 1;
+
+        for (int r = 0; r < layout.length; r++) {
+            for (int c = 0; c < layout[0].length; c++) {
+
+                int mapRow = centerRow - offsetR + r;
+                int mapCol = centerCol - offsetC + c;
+
+                if (mapRow >= 0 && mapRow < map.length &&
+                    mapCol >= 0 && mapCol < map[0].length) {
+
+                    map[mapRow][mapCol] = layout[r][c];
+                }
+            }
+        }
+    }
+
 
 
     public int getTile(int row, int col) { return map[row][col]; }
