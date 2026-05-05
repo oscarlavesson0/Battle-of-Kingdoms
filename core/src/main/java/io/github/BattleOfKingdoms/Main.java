@@ -47,11 +47,14 @@ public class Main extends ApplicationAdapter {
 
         int lake1Row = random.nextInt(10, world.getRows() - 10);
         int lake1Col = random.nextInt(10, world.getCols() - 10);
-        world.placeStructure(lakeGraphic, lake1Row, lake1Col);
+        world.placeLakeStructure(lakeGraphic, lake1Row, lake1Col);
 
         int lake2Row = random.nextInt(10, world.getRows() - 10);
         int lake2Col = random.nextInt(10, world.getCols() - 10);
-        world.placeStructure(lakeGraphic, lake2Row, lake2Col);
+        world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
+
+        world.placeBaseStructure(baseGraphic, 2,2);
+        world.placeBaseStructure(baseGraphic, 34,46);
 
         basePopup = new BasePopup(null, 200, 150, 300, 200);
 
@@ -60,7 +63,6 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
 
@@ -71,31 +73,29 @@ public class Main extends ApplicationAdapter {
                 int x = col * WorldMap.TILE_SIZE;
                 int y = row * WorldMap.TILE_SIZE;
 
-                // Draw grass
+                // Rita gräs
                 batch.draw(grass, x, y);
 
-                // Draw lake tile if exists
+                // Rita sjö
                 TextureRegion lakeTile = lakeGraphic.getTile(id);
                 if (lakeTile != null) {
                     batch.draw(lakeTile, x, y);
                     continue;
                 }
 
-                // Draw base graphics if tile belongs to a base
-                if (tileController.getTileGrid()[row][col].getBase() != null) {
-                    drawBaseGraphic(batch, row, col);
+                // Rita bas
+                TextureRegion baseTile = baseGraphic.getTile(id);
+                if (baseTile != null) {
+                    batch.draw(baseTile, x, y, 16, 16);
+                    continue;
                 }
             }
         }
-
         batch.end();
 
-        if (basePopup.isVisible()) {
-            basePopup.render(batch);
-        }
     }
 
-    private void drawBaseGraphic(SpriteBatch batch, int row, int col) {
+   /* private void drawBaseGraphic(SpriteBatch batch, int row, int col) {
 
         int[][] layout = baseGraphic.getLayout();
 
@@ -112,7 +112,7 @@ public class Main extends ApplicationAdapter {
                     drawRow * WorldMap.TILE_SIZE);
             }
         }
-    }
+    }*/
 
     @Override
     public void dispose() {
