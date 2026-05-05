@@ -1,17 +1,15 @@
 package io.github.BattleOfKingdoms;
 
-import GuiMainGame.Base;
-import GuiMainGame.Lake;
-import GuiMainGame.SpriteSheetLoader;
-import GuiMainGame.WorldMap;
+import GuiMainGame.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.Gdx;
 import terrain.TileController;
-import GuiMainGame.GameInput;
 import popup.BasePopup;
+import unit.Unit;
+import unit.Weapon;
 
 import java.util.Random;
 
@@ -28,6 +26,13 @@ public class Main extends ApplicationAdapter {
 
     private BasePopup basePopup;
 
+    private CharacterRenderer character;
+    private int charX = 20, charY = 20;
+    private UnitView unitView;
+    private Unit unit;
+
+
+
     @Override
     public void create() {
 
@@ -41,6 +46,10 @@ public class Main extends ApplicationAdapter {
 
         baseGraphic = new Base(sheet);
         lakeGraphic = new Lake(sheet);
+
+        Unit unit = new Unit(20,5,4,2, Weapon.SWORD, 10,10);
+        character = new CharacterRenderer();
+        unitView = new UnitView(unit, character);
 
         // Place two random lakes
         Random random = new Random();
@@ -89,30 +98,16 @@ public class Main extends ApplicationAdapter {
                     batch.draw(baseTile, x, y, 16, 16);
                     continue;
                 }
+                character.update(Gdx.graphics.getDeltaTime());
+
+                float delta = Gdx.graphics.getDeltaTime();
+                unitView.update(delta);
+                unitView.render(batch);
             }
         }
         batch.end();
 
     }
-
-   /* private void drawBaseGraphic(SpriteBatch batch, int row, int col) {
-
-        int[][] layout = baseGraphic.getLayout();
-
-        for (int r = 0; r < layout.length; r++) {
-            for (int c = 0; c < layout[0].length; c++) {
-
-                TextureRegion tile = baseGraphic.getTile(layout[r][c]);
-
-                int drawRow = row + r;
-                int drawCol = col + c;
-
-                batch.draw(tile,
-                    drawCol * WorldMap.TILE_SIZE,
-                    drawRow * WorldMap.TILE_SIZE);
-            }
-        }
-    }*/
 
     @Override
     public void dispose() {

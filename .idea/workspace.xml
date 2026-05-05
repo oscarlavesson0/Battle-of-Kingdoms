@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/unit/MovementTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/State.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/UnitView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/Axeman.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/Spearman.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/Swordman.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/Weapon.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/unit/Weapon.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/CharacterRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/CharacterRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,19 +73,22 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Lwjgl3Launcher.executor": "Run",
     "Gradle.Battle-of-Kingdoms [:core:test.SwingGridTest.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms [:lwjgl3:io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher.main()].executor": "Run",
+    "Gradle.Battle-of-Kingdoms:core [:core:GuiMainGame.FrameExtractor.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms:core [:core:test.SwingGridTest.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms:core [:core:test.Test.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms:core [:core:unit.MovementTest.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms:lwjgl3 [:lwjgl3:io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMBuilder.main()].executor": "Run",
     "Gradle.Battle-of-Kingdoms:teavm [:teavm:io.github.BattleOfKingdoms.teavm.TeaVMLauncher.main()].executor": "Run",
+    "Gradle.Build Battle-of-Kingdoms.executor": "Run",
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "nya-testare-för-movment-och-bygga-egna-gubbar",
+    "git-widget-placeholder": "Unit-animering",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
@@ -100,10 +102,22 @@
       <recent name="C:\Users\oscar\Documents\Battle-of-Kingdoms\lwjgl3\assets\ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.MovementTest">
+  <component name="RunManager">
+    <configuration name="FrameExtractor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="GuiMainGame.FrameExtractor" />
+      <module name="Battle-of-Kingdoms.core.main~1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="GuiMainGame.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Lwjgl3Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher" />
-      <module name="Battle-of-Kingdoms.lwjgl3.main" />
       <option name="VM_PARAMETERS" value="-XstartOnFirstThread " />
       <extension name="coverage">
         <pattern>
@@ -155,6 +169,7 @@
       </method>
     </configuration>
     <list>
+      <item itemvalue="Application.FrameExtractor" />
       <item itemvalue="Application.MovementTest" />
       <item itemvalue="Application.Lwjgl3Launcher" />
       <item itemvalue="Application.SwingGridTest" />
@@ -162,8 +177,9 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.MovementTest" />
         <item itemvalue="Application.Lwjgl3Launcher" />
+        <item itemvalue="Application.FrameExtractor" />
+        <item itemvalue="Application.MovementTest" />
         <item itemvalue="Application.SwingGridTest" />
         <item itemvalue="Application.Test" />
       </list>
