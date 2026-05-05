@@ -1,8 +1,8 @@
 package terrain;
 
 import base.Base;
+import unit.Unit;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Tile {
@@ -11,7 +11,7 @@ public class Tile {
 
     Terrain terrain;
     Base base;
-    //List<Unit> units;
+    List<Unit> units;
     //Building building;
     //Resource resource;
 
@@ -23,6 +23,13 @@ public class Tile {
 
     public Terrain getTerrain(){
         return terrain;
+    }
+
+    public void setUnits(Unit unit){
+        units.add(unit);
+    }
+    public List<Unit> getUnits(){
+        return units;
     }
 
     public Base getBase(){
