@@ -166,8 +166,8 @@
     </configuration>
     <list>
       <item itemvalue="Application.FrameExtractor" />
-      <item itemvalue="Application.Lwjgl3Launcher" />
       <item itemvalue="Application.MovementTest" />
+      <item itemvalue="Application.Lwjgl3Launcher" />
       <item itemvalue="Application.SwingGridTest" />
       <item itemvalue="Application.Test" />
     </list>
@@ -180,13 +180,6 @@
         <item itemvalue="Application.Test" />
       </list>
     </recent_temporary>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
-      </set>
-    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
