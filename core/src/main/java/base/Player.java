@@ -3,7 +3,7 @@ package base;
 public class Player {
 
     private String id;
-    private Base base;
+    private BaseStats base;
 
     public Player(String id){
         this.id = id;
@@ -13,11 +13,11 @@ public class Player {
         return id;
     }
 
-    public void setBase(Base base){
+    public void setBase(BaseStats base){
         this.base = base;
     }
 
-    public Base getBase() {
+    public BaseStats getBase() {
         return base;
     }
 }
