@@ -2,7 +2,7 @@ package base;
 
 import terrain.Tile;
 
-public class Base {
+public class BaseStats {
     private Player owner;
     private Tile position;
 
@@ -10,7 +10,7 @@ public class Base {
     private int currentHp = 100;
     private int defense = 10;
 
-    public Base(Player owner, Tile position){
+    public BaseStats(Player owner, Tile position){
         this.owner = owner;
         this.position = position;
     }

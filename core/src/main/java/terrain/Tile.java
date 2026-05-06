@@ -1,6 +1,6 @@
 package terrain;
 
-import base.Base;
+import base.BaseStats;
 import unit.Unit;
 
 import java.util.List;
@@ -10,7 +10,7 @@ public class Tile {
     int y;
 
     Terrain terrain;
-    Base base;
+    BaseStats base;
     List<Unit> units;
     //Building building;
     //Resource resource;
@@ -32,11 +32,11 @@ public class Tile {
         return units;
     }
 
-    public Base getBase(){
+    public BaseStats getBase(){
         return base;
     }
 
-    public void setBase(Base base){
+    public void setBase(BaseStats base){
         this.base = base;
     }
 
