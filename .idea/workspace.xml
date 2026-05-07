@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/CharacterRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/CharacterRenderer.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,8 +84,9 @@
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "deletionFromPopupRequiresConfirmation": "false",
     "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "Unit-animering",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
@@ -98,88 +100,12 @@
       <recent name="C:\Users\oscar\Documents\Battle-of-Kingdoms\lwjgl3\assets\ui" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.FrameExtractor">
-    <configuration name="FrameExtractor" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="GuiMainGame.FrameExtractor" />
-      <module name="Battle-of-Kingdoms.core.main~1" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="GuiMainGame.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Lwjgl3Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher" />
-      <option name="VM_PARAMETERS" value="-XstartOnFirstThread " />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="io.github.BattleOfKingdoms.lwjgl3.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MovementTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="unit.MovementTest" />
-      <module name="Battle-of-Kingdoms.core.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="unit.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="SwingGridTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="test.SwingGridTest" />
-      <module name="Battle-of-Kingdoms.core.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="Test" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="test.Test" />
-      <module name="Battle-of-Kingdoms.core.main" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <list>
-      <item itemvalue="Application.FrameExtractor" />
-      <item itemvalue="Application.MovementTest" />
-      <item itemvalue="Application.Lwjgl3Launcher" />
-      <item itemvalue="Application.SwingGridTest" />
-      <item itemvalue="Application.Test" />
-    </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Application.Lwjgl3Launcher" />
-        <item itemvalue="Application.FrameExtractor" />
-        <item itemvalue="Application.MovementTest" />
-        <item itemvalue="Application.SwingGridTest" />
-        <item itemvalue="Application.Test" />
-      </list>
-    </recent_temporary>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9823dce3aa75-bf35d07a577b-intellij.indexing.shared.core-IU-252.26830.84" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
