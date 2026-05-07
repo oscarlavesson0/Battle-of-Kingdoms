@@ -1,0 +1,8 @@
+idleknight.png
+size: 400, 30
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+Attack 1
+  bounds: 0, 0, 400, 30

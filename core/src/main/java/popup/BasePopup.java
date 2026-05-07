@@ -1,6 +1,7 @@
 package popup;
 
-import base.Base;
+import base.BaseStats;
+import base.BaseStats;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
  */
 public class BasePopup {
 
-    private Base base;
+    private BaseStats base;
 
     // Popup position and size
     private float x, y, width, height;
@@ -34,7 +35,7 @@ public class BasePopup {
      * @param width Popup width
      * @param height Popup height
      */
-    public BasePopup(Base base, float x, float y, float width, float height) {
+    public BasePopup(BaseStats base, float x, float y, float width, float height) {
         this.base = base;
         this.x = x;
         this.y = y;
@@ -174,7 +175,7 @@ public class BasePopup {
 
 
 
-    public void show(Base base) {
+    public void show(BaseStats base) {
         this.base = base;
         this.visible = true;
     }

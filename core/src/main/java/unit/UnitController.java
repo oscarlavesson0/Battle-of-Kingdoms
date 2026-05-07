@@ -1,6 +1,6 @@
 package unit;
 
-import base.Base;
+import base.BaseStats;
 import base.Player;
 import terrain.Tile;
 
@@ -70,7 +70,7 @@ public class UnitController {
     // Spawnar units bredvid spelarens bas. Player1: bas i övre högra hörnet → spawn nedanför + vänster. Player2: bas i nedre vänstra hörnet → spawn ovanför + höger.
     public Unit spawnUnitNearBase(Player player, Unit unit) {
 
-        Base base = player.getBase();
+        BaseStats base = player.getBase();
         Tile baseTile = base.getPosition();
 
         int baseX = baseTile.getX();

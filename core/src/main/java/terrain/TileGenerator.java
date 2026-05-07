@@ -1,6 +1,6 @@
 package terrain;
 
-import base.Base;
+import base.BaseStats;
 import base.Player;
 
 public class TileGenerator {
@@ -33,7 +33,7 @@ public class TileGenerator {
         int base1Row = 2;
         int base1Col = 2;
 
-        Base base1 = new Base(new Player("1"), tileGrid[base1Row][base1Col]);
+        BaseStats base1 = new BaseStats(new Player("1"), tileGrid[base1Row][base1Col]);
 
         // Mark all 5×5 tiles as belonging to this base
         for (int r = 0; r < 5; r++) {
@@ -46,7 +46,7 @@ public class TileGenerator {
         int base2Row = 32;
         int base2Col = 44;
 
-        Base base2 = new Base(new Player("2"), tileGrid[base2Row][base2Col]);
+        BaseStats base2 = new BaseStats(new Player("2"), tileGrid[base2Row][base2Col]);
 
         for (int r = 0; r < 5; r++) {
             for (int c = 0; c < 5; c++) {
