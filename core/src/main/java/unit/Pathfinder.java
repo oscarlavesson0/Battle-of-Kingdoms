@@ -1,6 +1,8 @@
 package unit;
 
 import terrain.Tile;
+import terrain.Water;
+
 import java.util.*;
 
 public class Pathfinder {
@@ -53,6 +55,8 @@ public class Pathfinder {
 
                 if (!inBounds(nx, ny, cols, rows)) continue;
                 if (visited[ny][nx]) continue;
+
+                if (grid[ny][nx].getTerrain() instanceof Water) continue;
 
                 visited[ny][nx] = true;
                 parent[ny][nx] = new int[]{cx, cy};

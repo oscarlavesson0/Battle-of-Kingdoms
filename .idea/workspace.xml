@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/HighlightSystem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/CharacterRenderer.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/CharacterRenderer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/GameInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/GameInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/Pathfinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/unit/Pathfinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/unit/UnitController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +90,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "deletionFromPopupRequiresConfirmation": "false",
     "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "Unit-animering",
+    "git-widget-placeholder": "koppla-isaman-allt-(",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
@@ -99,6 +103,26 @@
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\oscar\Documents\Battle-of-Kingdoms\lwjgl3\assets\ui" />
     </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Lwjgl3Launcher" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="io.github.BattleOfKingdoms.lwjgl3.Lwjgl3Launcher" />
+      <module name="Battle-of-Kingdoms.lwjgl3.main" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="io.github.BattleOfKingdoms.lwjgl3.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Lwjgl3Launcher" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
