@@ -11,10 +11,14 @@ import popup.BasePopup;
 import unit.Unit;
 import unit.Weapon;
 import unit.UnitController;
+import com.badlogic.gdx.audio.Music;
+
 
 import java.util.Random;
 
 public class Main extends ApplicationAdapter {
+
+    private Music bgMusic;
 
     private SpriteBatch batch;
     private SpriteSheetLoader sheet;
@@ -36,6 +40,11 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void create() {
+
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("lwjgl3/assets/Audio/Medieval Fantasy Tavern D&D Fantasy Music and Ambience - Daydreaming of Persephone (128k).mp3"));
+        bgMusic.setLooping(true);   // spelar om och om igen
+        bgMusic.setVolume(0.05f);    // 0.0 – 1.0
+        bgMusic.play();
 
         batch = new SpriteBatch();
         sheet = new SpriteSheetLoader();
@@ -117,6 +126,7 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void dispose() {
+        bgMusic.dispose();
         batch.dispose();
     }
 }

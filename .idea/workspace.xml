@@ -5,12 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="8321cc12-a3c3-4ea6-bf9f-8cfe049c875d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/HighlightSystem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lwjgl3/assets/Audio/Medieval Fantasy Tavern D&amp;D Fantasy Music and Ambience - Daydreaming of Persephone (128k).mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lwjgl3/assets/Audio/Picking knight.mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lwjgl3/assets/Audio/Trumpet Sound Victory - Mike Hamblin (128k).mp3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lwjgl3/assets/ui/exp3_0.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/GameInput.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/GameInput.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/Base.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/GuiMainGame/Base.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/io/github/BattleOfKingdoms/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/Pathfinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/unit/Pathfinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/core/src/main/java/unit/UnitController.java" beforeDir="false" afterPath="$PROJECT_DIR$/core/src/main/java/unit/UnitController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +91,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "deletionFromPopupRequiresConfirmation": "false",
     "external.system.has.shared.sources": "true",
-    "git-widget-placeholder": "koppla-isaman-allt-(",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/oscar/Documents/Battle-of-Kingdoms"
@@ -101,6 +102,10 @@
       <recent name="base" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\oscar\Documents\Battle-of-Kingdoms\lwjgl3\assets\ui" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\oscar\Documents\Battle-of-Kingdoms\lwjgl3\assets\Audio" />
       <recent name="C:\Users\oscar\Documents\Battle-of-Kingdoms\lwjgl3\assets\ui" />
     </key>
   </component>
