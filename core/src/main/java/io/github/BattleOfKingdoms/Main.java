@@ -10,10 +10,15 @@ import terrain.TileController;
 import popup.BasePopup;
 import unit.Unit;
 import unit.Weapon;
+import unit.UnitController;
+import com.badlogic.gdx.audio.Music;
+
 
 import java.util.Random;
 
 public class Main extends ApplicationAdapter {
+
+    private Music bgMusic;
 
     private SpriteBatch batch;
     private SpriteSheetLoader sheet;
@@ -27,14 +32,19 @@ public class Main extends ApplicationAdapter {
     private BasePopup basePopup;
 
     private CharacterRenderer character;
-    private int charX = 20, charY = 20;
     private UnitView unitView;
     private Unit unit;
 
-
+    private UnitController unitController;
+    private HighlightSystem highlightSystem;
 
     @Override
     public void create() {
+
+        bgMusic = Gdx.audio.newMusic(Gdx.files.internal("lwjgl3/assets/Audio/Medieval Fantasy Tavern D&D Fantasy Music and Ambience - Daydreaming of Persephone (128k).mp3"));
+        bgMusic.setLooping(true);   // spelar om och om igen
+        bgMusic.setVolume(0.05f);    // 0.0 – 1.0
+        bgMusic.play();
 
         batch = new SpriteBatch();
         sheet = new SpriteSheetLoader();
@@ -47,11 +57,14 @@ public class Main extends ApplicationAdapter {
         baseGraphic = new Base(sheet);
         lakeGraphic = new Lake(sheet);
 
-        Unit unit = new Unit(20,5,4,2, Weapon.SWORD, 10,10);
+        unit = new Unit(20, 5, 4, 2, Weapon.SWORD, 10, 10);
         character = new CharacterRenderer();
         unitView = new UnitView(unit, character);
 
-        // Place two random lakes
+        unitController = new UnitController(tileController.getTileGrid());
+
+        highlightSystem = new HighlightSystem(unitController);
+
         Random random = new Random();
 
         int lake1Row = random.nextInt(10, world.getRows() - 10);
@@ -62,19 +75,21 @@ public class Main extends ApplicationAdapter {
         int lake2Col = random.nextInt(10, world.getCols() - 10);
         world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
 
-        world.placeBaseStructure(baseGraphic, 2,2);
-        world.placeBaseStructure(baseGraphic, 34,46);
+        world.placeBaseStructure(baseGraphic, 2, 2);
+        world.placeBaseStructure(baseGraphic, 34, 46);
 
         basePopup = new BasePopup(null, 200, 150, 300, 200);
 
-        Gdx.input.setInputProcessor(new GameInput(tileController, basePopup));
+        Gdx.input.setInputProcessor(
+            new GameInput(tileController, basePopup, unitController, unit, highlightSystem)
+        );
     }
-
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
 
+        // RITA KARTAN
         for (int row = 0; row < world.getRows(); row++) {
             for (int col = 0; col < world.getCols(); col++) {
 
@@ -82,35 +97,36 @@ public class Main extends ApplicationAdapter {
                 int x = col * WorldMap.TILE_SIZE;
                 int y = row * WorldMap.TILE_SIZE;
 
-                // Rita gräs
                 batch.draw(grass, x, y);
 
-                // Rita sjö
                 TextureRegion lakeTile = lakeGraphic.getTile(id);
                 if (lakeTile != null) {
                     batch.draw(lakeTile, x, y);
                     continue;
                 }
 
-                // Rita bas
                 TextureRegion baseTile = baseGraphic.getTile(id);
                 if (baseTile != null) {
                     batch.draw(baseTile, x, y, 16, 16);
                     continue;
                 }
-                character.update(Gdx.graphics.getDeltaTime());
-
-                float delta = Gdx.graphics.getDeltaTime();
-                unitView.update(delta);
-                unitView.render(batch);
             }
         }
+
         batch.end();
 
+        highlightSystem.render();
+
+        batch.begin();
+        float delta = Gdx.graphics.getDeltaTime();
+        unitView.update(delta);
+        unitView.render(batch);
+        batch.end();
     }
 
     @Override
     public void dispose() {
+        bgMusic.dispose();
         batch.dispose();
     }
 }
