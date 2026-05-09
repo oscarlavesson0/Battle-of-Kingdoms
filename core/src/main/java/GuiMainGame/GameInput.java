@@ -31,13 +31,12 @@ public class GameInput extends InputAdapter {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        // If popup is open then popup handle clicks
+        // If popup is open, let popup handle clicks
         if (basePopup != null && basePopup.isVisible()) {
             basePopup.handleClick(screenX, screenY);
             return true;
         }
 
-        // Convert screen coords to tile coords
         int tileX = screenX / WorldMap.TILE_SIZE;
         int tileY = (Gdx.graphics.getHeight() - screenY) / WorldMap.TILE_SIZE;
 
@@ -49,20 +48,20 @@ public class GameInput extends InputAdapter {
 
         Tile clickedTile = grid[tileY][tileX];
 
-        // Klick på unit → välj + highlight
+        // Click on unit = select + highlight
         if (unit.getX() == tileX && unit.getY() == tileY) {
             unitController.selectUnit(unit);
             highlightSystem.updateHighlight(unit);
             return true;
         }
 
-        // Klick på base → popup
+        // Click on base = open popup
         if (clickedTile.getBase() != null) {
             basePopup.show(clickedTile.getBase());
             return true;
         }
 
-        // Klick på tile → försök flytta
+        // Click on tile = try to move unit
         if (unitController.moveSelectedUnit(tileX, tileY)) {
             highlightSystem.clear();
             return true;
@@ -70,4 +69,6 @@ public class GameInput extends InputAdapter {
 
         return false;
     }
+
+
 }

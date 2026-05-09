@@ -12,7 +12,8 @@ import unit.Unit;
 import unit.Weapon;
 import unit.UnitController;
 import com.badlogic.gdx.audio.Music;
-
+import base.BaseStats;
+import base.Player;
 
 import java.util.Random;
 
@@ -57,6 +58,14 @@ public class Main extends ApplicationAdapter {
         baseGraphic = new Base(sheet);
         lakeGraphic = new Lake(sheet);
 
+        // Skapa logik-baser
+        BaseStats base1 = new BaseStats(new Player("1"), tileController.getTileGrid()[2][2]);
+        BaseStats base2 = new BaseStats(new Player("2"), tileController.getTileGrid()[34][46]);
+
+        // Placera grafik + logik på samma tiles
+        world.placeBaseStructure(baseGraphic, base1, 2, 2);
+        world.placeBaseStructure(baseGraphic, base2, 34, 46);
+
         unit = new Unit(20, 5, 4, 2, Weapon.SWORD, 10, 10);
         character = new CharacterRenderer();
         unitView = new UnitView(unit, character);
@@ -75,21 +84,19 @@ public class Main extends ApplicationAdapter {
         int lake2Col = random.nextInt(10, world.getCols() - 10);
         world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
 
-        world.placeBaseStructure(baseGraphic, 2, 2);
-        world.placeBaseStructure(baseGraphic, 34, 46);
-
         basePopup = new BasePopup(null, 200, 150, 300, 200);
 
         Gdx.input.setInputProcessor(
             new GameInput(tileController, basePopup, unitController, unit, highlightSystem)
         );
     }
+
     @Override
     public void render() {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
 
-        // RITA KARTAN
+        // rita kartan
         for (int row = 0; row < world.getRows(); row++) {
             for (int col = 0; col < world.getCols(); col++) {
 
@@ -114,6 +121,8 @@ public class Main extends ApplicationAdapter {
         }
 
         batch.end();
+
+        basePopup.render(batch);
 
         highlightSystem.render();
 
