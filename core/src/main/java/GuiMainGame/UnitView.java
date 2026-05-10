@@ -83,6 +83,7 @@ public class UnitView {
     }
 
     public void render(SpriteBatch batch) {
+        TextureRegion frame = renderer.getCurrentFrame();
         batch.draw(frame, animX, animY, 16, 16);
     }
 }
