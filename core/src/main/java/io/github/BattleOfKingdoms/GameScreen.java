@@ -77,6 +77,7 @@ public class GameScreen implements Screen {
         unitView = new UnitView(unit, character);
 
         unitController = new UnitController(tileController.getTileGrid());
+        unitController.setUnitView(unitView);
         highlightSystem = new HighlightSystem(unitController);
 
         Random random = new Random();
@@ -100,7 +101,6 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
-        // RITA KARTAN
         batch.begin();
         for (int row = 0; row < world.getRows(); row++) {
             for (int col = 0; col < world.getCols(); col++) {
