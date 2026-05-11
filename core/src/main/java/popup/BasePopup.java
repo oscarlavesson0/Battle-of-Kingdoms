@@ -107,7 +107,7 @@ public class BasePopup {
 
         // Owner text
         font.setColor(Color.BLACK);
-        font.draw(batch, "Owner: " + base.getOwner().getId(), x + 20, y + height - 20);
+        font.draw(batch, "Owner: " + base.getOwner().getDisplayName(), x + 20, y + height - 20);
 
         // HP text
         font.setColor(Color.GREEN);
