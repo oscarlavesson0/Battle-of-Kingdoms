@@ -1,5 +1,7 @@
 package unit;
 
+import base.Player;
+
 public class UnitSkapare {
 
     //Defaultvörden
@@ -52,11 +54,23 @@ public class UnitSkapare {
         return this;
     }
 
+    private Player player;
+
+    public UnitSkapare player(Player player) {
+        if (player == null)
+            throw new IllegalArgumentException("Player kan inte vara null.");
+        this.player = player;
+        return this;
+    }
+
+
+
     //Builder
     public CustomUnit build() {
         validate();
-        return new CustomUnit(maxHP, attack, speed, defence, weapon, startX, startY);
+        return new CustomUnit(maxHP, attack, speed, defence, weapon, startX, startY, player);
     }
+
 
     //Validering
     private void validate() {
@@ -64,6 +78,8 @@ public class UnitSkapare {
             throw new IllegalStateException("maxHP måste vara minst " + MIN_STAT);
         if (speed < MIN_STAT)
             throw new IllegalStateException("speed måste vara minst " + MIN_STAT);
+        if (player == null)
+            throw new IllegalStateException("Player måste anges innan build().");
 
     }
 
