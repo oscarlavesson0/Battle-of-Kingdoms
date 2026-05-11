@@ -1,5 +1,6 @@
 package GuiMainGame;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,7 +10,6 @@ public class CharacterRenderer {
         private Animation<TextureRegion> idleAnim;
         private Animation<TextureRegion> runAnim;
         private Animation<TextureRegion> attackAnim;
-
         private State currentState = State.IDLE;
         private float stateTime = 0f;
 
@@ -54,6 +54,9 @@ public class CharacterRenderer {
                 default     -> idleAnim.getKeyFrame(stateTime, true);
             };
         }
+
+
+
     }
 
 
