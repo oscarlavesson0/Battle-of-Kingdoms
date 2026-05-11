@@ -1,65 +1,77 @@
 package unit;
 
-import base.BaseStats;
-import base.Player;
 import terrain.Tile;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
-
-//Kontrollerar movement för units och spawnar dem bredvid baserna. Detta kommer att uppdateras senare då detta e för testdagen.
 public class UnitController {
 
-    private Unit selectedUnit;
     private Tile[][] tileGrid;
+    private Unit selectedUnit;
+    private GuiMainGame.UnitView unitView;
 
     public UnitController(Tile[][] tileGrid) {
         this.tileGrid = tileGrid;
     }
 
-    // Markerar en unit som vald.
+    public void setUnitView(GuiMainGame.UnitView view) {
+        this.unitView = view;
+    }
+
     public void selectUnit(Unit unit) {
         this.selectedUnit = unit;
     }
 
-    // Avmarkerar vald unit.
-    public void deselectUnit() {
-        this.selectedUnit = null;
+    public Unit getSelectedUnit() {
+        return selectedUnit;
     }
 
-    // Flyttar den valda uniten om avståndet är tillåtet.
-    public boolean moveSelectedUnit(int newX, int newY) {
-        if (selectedUnit == null) return false;
-
-        if (selectedUnit.canMoveTo(newX, newY)) {
-            selectedUnit.moveTo(newX, newY);
-            return true;
+    public boolean moveSelectedUnit(int targetX, int targetY) {
+        if (selectedUnit == null) {
+            return false;
         }
 
-        return false;
+        List<int[]> path = Pathfinder.findPath(tileGrid, selectedUnit, targetX, targetY);
+        if (path.isEmpty()) {
+            return false;
+        }
+
+        int maxSteps = selectedUnit.getSpeed();
+        int steps = Math.min(maxSteps, path.size());
+
+        Queue<int[]> queue = new LinkedList<>();
+        for (int i = 0; i < steps; i++) {
+            queue.add(path.get(i));
+        }
+
+        if (unitView != null) {
+            unitView.setMovementPath(queue);
+        }
+
+        return true;
     }
 
-    // Returnerar alla tiles som uniten kan nå baserat på speed.
     public List<int[]> getMovementTiles(Unit unit) {
-        List<int[]> tiles = new ArrayList<>();
+        List<int[]> tiles = new LinkedList<>();
 
+        int ux = unit.getX();
+        int uy = unit.getY();
         int speed = unit.getSpeed();
-        int startX = unit.getX();
-        int startY = unit.getY();
 
         for (int dx = -speed; dx <= speed; dx++) {
             for (int dy = -speed; dy <= speed; dy++) {
+                if (Math.abs(dx) + Math.abs(dy) <= speed) {
+                    int tx = ux + dx;
+                    int ty = uy + dy;
 
-                int newX = startX + dx;
-                int newY = startY + dy;
+                    if (tx >= 0 && ty >= 0 &&
+                        ty < tileGrid.length &&
+                        tx < tileGrid[0].length) {
 
-                // Bounds check
-                if (newX < 0 || newY < 0 || newX >= tileGrid[0].length || newY >= tileGrid.length)
-                    continue;
-
-                if (unit.canMoveTo(newX, newY)) {
-                    tiles.add(new int[]{newX, newY});
+                        tiles.add(new int[]{tx, ty});
+                    }
                 }
             }
         }
@@ -67,27 +79,27 @@ public class UnitController {
         return tiles;
     }
 
-    // Spawnar units bredvid spelarens bas. Player1: bas i övre högra hörnet → spawn nedanför + vänster. Player2: bas i nedre vänstra hörnet → spawn ovanför + höger.
-    public Unit spawnUnitNearBase(Player player, Unit unit) {
+    public void spawnUnitNearBase(base.Player owner, Unit unit) {
+        int bx = owner.getBase().getPosition().getX();
+        int by = owner.getBase().getPosition().getY();
 
-        BaseStats base = player.getBase();
-        Tile baseTile = base.getPosition();
+        int[][] dirs = {
+            {1, 0}, {-1, 0}, {0, 1}, {0, -1}
+        };
 
-        int baseX = baseTile.getX();
-        int baseY = baseTile.getY();
+        for (int[] d : dirs) {
+            int nx = bx + d[0];
+            int ny = by + d[1];
 
-        int spawnX;
-        int spawnY;
+            if (nx >= 0 && ny >= 0 &&
+                ny < tileGrid.length &&
+                nx < tileGrid[0].length &&
+                tileGrid[ny][nx].getUnit() == null) {
 
-        if (player.getId().equals("Player1")) {
-            spawnX = baseX - 1;
-            spawnY = baseY - 1;
-        } else {
-            spawnX = baseX + 1;
-            spawnY = baseY + 1;
+                unit.setPosition(nx, ny);
+                tileGrid[ny][nx].setUnit(unit);
+                return;
+            }
         }
-
-        unit.moveTo(spawnX, spawnY);
-        return unit;
     }
 }

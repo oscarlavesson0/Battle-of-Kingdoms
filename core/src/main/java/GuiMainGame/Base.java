@@ -1,11 +1,15 @@
 package GuiMainGame;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Base extends StructureRenderer {
 
     private TextureRegion[][] parts;
+    private Animation<TextureRegion> explosionAnim;
+    private float explosionTime = 0f;
+    private boolean exploding = false;
 
     public Base(SpriteSheetLoader sheet) {
 
@@ -46,6 +50,31 @@ public class Base extends StructureRenderer {
             default -> null;
         };
     }
+    private void loadExplosion() {
 
+        Texture explosionSheet = new Texture("lwjgl3/assets/ui/exp3_0.png");
+
+        int frameWidth = explosionSheet.getWidth() / 4;  // 4 kolumner
+        int frameHeight = explosionSheet.getHeight() / 3; // 3 rader
+
+        TextureRegion[][] tmp = TextureRegion.split(explosionSheet, frameWidth, frameHeight);
+
+        TextureRegion[] frames = new TextureRegion[12];
+        int index = 0;
+
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 4; col++) {
+                frames[index++] = tmp[row][col];
+            }
+        }
+
+        explosionAnim = new Animation<>(0.08f, frames); // 0.08f = lagom hastighet
+        explosionAnim.setPlayMode(Animation.PlayMode.NORMAL);
+
+    }
+    public void explode() {
+        exploding = true;
+        explosionTime = 0f;
+    }
 }
 

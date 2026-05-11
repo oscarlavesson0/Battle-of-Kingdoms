@@ -15,8 +15,8 @@ public class CharacterRenderer {
 
         public CharacterRenderer() {
 
-            idleAnim   = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Combat Ready Idle.png",   22, 24, 0.20f);
-            runAnim    = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Run.png",    22, 24, 5f);
+            idleAnim   = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Combat Ready Idle.png",   22, 24, 0.01f);
+            runAnim    = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Run.png",    22, 24, 0.20f);
             attackAnim = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Attack 1.png", 40, 30, 0.10f);
         }
 
