@@ -64,12 +64,12 @@ public class GameScreen implements Screen {
 
         grass = sheet.getTile(0, 5);
 
-        baseGraphic = new Base(sheet);
-        lakeGraphic = new Lake(sheet);
-
         // LOGIK-BASER
         BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
         BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[34][46]);
+
+        baseGraphic = new Base(sheet, base1);
+        lakeGraphic = new Lake(sheet);
 
 
         // GRAFIK + LOGIK
@@ -79,7 +79,7 @@ public class GameScreen implements Screen {
         character = new CharacterRenderer();
         unit = new Unit(20, 5, 4, 2, Weapon.SWORD, 10, 10, Player.PLAYER_ONE);
         unitView = new UnitView(unit, character);
-        unitView.setPlayerColor(2);
+        unitView.applyPlayerColor(Player.PLAYER_ONE);
 
 
 

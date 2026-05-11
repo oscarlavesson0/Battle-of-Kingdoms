@@ -23,9 +23,9 @@ public class BaseController {
             .speed(2)
             .defence(1)
             .weapon(Weapon.SWORD)
+            .player(base.getOwner())
             .startPosition(base.getPosition().getX(), base.getPosition().getY())
             .build();
-
         unitController.spawnUnitNearBase(base, unit);
 
         return unit;
