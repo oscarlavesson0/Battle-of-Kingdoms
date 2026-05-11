@@ -1,5 +1,6 @@
 package GuiMainGame;
 
+import base.Player;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -87,7 +88,6 @@ public class UnitView {
 
     public void render(SpriteBatch batch) {
 
-
             batch.setColor(tintColor);   // färga uniten
 
             int tileX = unit.getX();
@@ -102,11 +102,10 @@ public class UnitView {
 
             batch.setColor(Color.WHITE); // återställ färgen
     }
-    public void setPlayerColor(int playerId) {
-        if (playerId == 1) {
-            tintColor = new Color(1f, 0.3f, 0.3f, 1f); // röd ton
-        } else {
-            tintColor = new Color(0.3f, 0.3f, 1f, 1f); // blå ton
+    public void applyPlayerColor(Player player) {
+        switch (player) {
+            case PLAYER_ONE -> tintColor = new Color(1f, 0.3f, 0.3f, 1f); // röd
+            case PLAYER_TWO -> tintColor = new Color(0.3f, 0.3f, 1f, 1f); // blå
         }
     }
 }
