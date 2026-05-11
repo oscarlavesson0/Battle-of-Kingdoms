@@ -1,5 +1,7 @@
 package unit;
 
+import base.Player;
+
 public class Unit {
 
     private int maxHP;
@@ -10,8 +12,9 @@ public class Unit {
     private int x;
     private int y;
     private Weapon weapon;
+    private Player player;
 
-    public Unit(int maxHp, int attack, int speed, int defence, Weapon weapon, int startX, int startY) {
+    public Unit(int maxHp, int attack, int speed, int defence, Weapon weapon, int startX, int startY, Player player) {
         this.maxHP = maxHp;
         this.currentHP = maxHp;
         this.attack = attack;
@@ -20,6 +23,8 @@ public class Unit {
         this.weapon = weapon;
         this.x = startX;
         this.y = startY;
+        this.player = player;
+
     }
 
     public int getMaxHp()      { return maxHP; }
@@ -30,6 +35,7 @@ public class Unit {
     public int getX()          { return x; }
     public int getY()          { return y; }
     public Weapon getWeapon()  { return weapon; }
+    public Player getPlayer()     { return player; }
 
     public boolean canMoveTo(int newX, int newY) {
         int distance = Math.abs(newX - x) + Math.abs(newY - y);
