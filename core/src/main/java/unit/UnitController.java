@@ -1,5 +1,6 @@
 package unit;
 
+import base.BaseStats;
 import terrain.Tile;
 
 import java.util.LinkedList;
@@ -79,9 +80,10 @@ public class UnitController {
         return tiles;
     }
 
-    public void spawnUnitNearBase(base.Player owner, Unit unit) {
-        int bx = owner.getBase().getPosition().getX();
-        int by = owner.getBase().getPosition().getY();
+    public void spawnUnitNearBase(BaseStats base, Unit unit) {
+
+        int bx = base.getPosition().getX();
+        int by = base.getPosition().getY();
 
         int[][] dirs = {
             {1, 0}, {-1, 0}, {0, 1}, {0, -1}

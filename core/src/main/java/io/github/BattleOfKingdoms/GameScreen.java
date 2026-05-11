@@ -65,8 +65,9 @@ public class GameScreen implements Screen {
         lakeGraphic = new Lake(sheet);
 
         // LOGIK-BASER
-        BaseStats base1 = new BaseStats(new Player("1"), tileController.getTileGrid()[2][2]);
-        BaseStats base2 = new BaseStats(new Player("2"), tileController.getTileGrid()[34][46]);
+        BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
+        BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[34][46]);
+
 
         // GRAFIK + LOGIK
         world.placeBaseStructure(baseGraphic, base1, 2, 2);

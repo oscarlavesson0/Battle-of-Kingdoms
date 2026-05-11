@@ -26,7 +26,7 @@ public class BaseController {
             .startPosition(base.getPosition().getX(), base.getPosition().getY())
             .build();
 
-        unitController.spawnUnitNearBase(base.getOwner(), unit);
+        unitController.spawnUnitNearBase(base, unit);
 
         return unit;
     }
