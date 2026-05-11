@@ -1,6 +1,7 @@
 package io.github.BattleOfKingdoms;
 
 import GuiMainGame.*;
+import base.BaseController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,8 @@ import unit.UnitController;
 import com.badlogic.gdx.audio.Music;
 import base.BaseStats;
 import base.Player;
+import popup.TrainUnitListener;
+import unit.CustomUnit;
 
 import java.util.Random;
 
@@ -95,6 +98,16 @@ public class GameScreen implements Screen {
         world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
 
         basePopup = new BasePopup(null, 200, 150, 300, 200);
+
+        BaseController baseController = new BaseController(unitController);
+
+        basePopup.setTrainUnitListener(new TrainUnitListener() {
+            @Override
+            public void onTrainUnit(BaseStats base) {
+                CustomUnit newUnit = baseController.createUnit(base);
+                System.out.println("Unit created for: " + base.getOwner().getDisplayName());
+            }
+        });
 
         Gdx.input.setInputProcessor(
             new GameInput(tileController, basePopup, unitController, unit, highlightSystem)
