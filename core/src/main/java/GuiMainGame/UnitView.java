@@ -2,8 +2,10 @@ package GuiMainGame;
 
 import base.Player;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import unit.Unit;
 
 import java.util.LinkedList;
@@ -13,31 +15,35 @@ public class UnitView {
 
     private Unit unit;
     private CharacterRenderer renderer;
+    private ShapeRenderer shapeRenderer;
+    private BitmapFont font;
 
-    // Animation movement queue
     private Queue<int[]> movementQueue = new LinkedList<>();
 
-    // Smooth movement
     private float animX;
     private float animY;
-    private float moveSpeed = 4f; // pixels per frame
+    private float moveSpeed = 4f;
 
     private boolean isMoving = false;
     private int targetTileX;
     private int targetTileY;
     private Color tintColor;
 
-
     public UnitView(Unit unit, CharacterRenderer renderer) {
         this.unit = unit;
         this.renderer = renderer;
-
-        // Startposition i pixlar
+        this.shapeRenderer = new ShapeRenderer();
+        this.font = new BitmapFont();
+        this.font.getData().setScale(0.6f);
         this.animX = unit.getX() * WorldMap.TILE_SIZE;
         this.animY = unit.getY() * WorldMap.TILE_SIZE;
     }
 
-    // Called by UnitController
+    public void syncPosition() {
+        this.animX = unit.getX() * WorldMap.TILE_SIZE;
+        this.animY = unit.getY() * WorldMap.TILE_SIZE;
+    }
+
     public void setMovementPath(Queue<int[]> path) {
         this.movementQueue = path;
         startNextStep();
@@ -66,7 +72,6 @@ public class UnitView {
         float targetX = targetTileX * WorldMap.TILE_SIZE;
         float targetY = targetTileY * WorldMap.TILE_SIZE;
 
-        // Move smoothly
         if (Math.abs(animX - targetX) > 1) {
             animX += Math.signum(targetX - animX) * moveSpeed;
         }
@@ -74,38 +79,48 @@ public class UnitView {
             animY += Math.signum(targetY - animY) * moveSpeed;
         }
 
-        // Reached tile
         if (Math.abs(animX - targetX) <= 1 && Math.abs(animY - targetY) <= 1) {
             animX = targetX;
             animY = targetY;
-
-            // Update unit logic position
             unit.setPosition(targetTileX, targetTileY);
-
             startNextStep();
         }
     }
 
     public void render(SpriteBatch batch) {
-
-            batch.setColor(tintColor);   // färga uniten
-
-            int tileX = unit.getX();
-            int tileY = unit.getY();
-
-            int px = tileX * WorldMap.TILE_SIZE;
-            int py = tileY * WorldMap.TILE_SIZE;
-
-            TextureRegion frame = renderer.getCurrentFrame();
-
-            batch.draw(frame, px, py, 16, 16);
-
-            batch.setColor(Color.WHITE); // återställ färgen
+        batch.setColor(tintColor);
+        TextureRegion frame = renderer.getCurrentFrame();
+        batch.draw(frame, animX, animY, 16, 16);
+        batch.setColor(Color.WHITE);
     }
+
+    public void renderHpBar(ShapeRenderer shapeRenderer) {
+        float barWidth = 16f;
+        float barHeight = 3f;
+        float barX = animX;
+        float barY = animY + 18f;
+
+        float hpPercent = (float) unit.getCurrentHp() / unit.getMaxHp();
+
+        // Röd bakgrund
+        shapeRenderer.setColor(Color.RED);
+        shapeRenderer.rect(barX, barY, barWidth, barHeight);
+
+        // Grön del
+        shapeRenderer.setColor(Color.GREEN);
+        shapeRenderer.rect(barX, barY, barWidth * hpPercent, barHeight);
+    }
+
+    public void renderHpText(SpriteBatch batch) {
+        font.setColor(Color.WHITE);
+        String hpText = unit.getCurrentHp() + "/" + unit.getMaxHp();
+        font.draw(batch, hpText, animX + 18f, animY + 22f);
+    }
+
     public void applyPlayerColor(Player player) {
         switch (player) {
-            case PLAYER_ONE -> tintColor = new Color(1f, 0.3f, 0.3f, 1f); // röd
-            case PLAYER_TWO -> tintColor = new Color(0.3f, 0.3f, 1f, 1f); // blå
+            case PLAYER_ONE -> tintColor = new Color(1f, 0.3f, 0.3f, 1f);
+            case PLAYER_TWO -> tintColor = new Color(0.3f, 0.3f, 1f, 1f);
         }
     }
 }

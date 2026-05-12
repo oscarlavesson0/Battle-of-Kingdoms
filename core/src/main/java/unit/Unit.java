@@ -13,6 +13,7 @@ public class Unit {
     private int y;
     private Weapon weapon;
     private Player player;
+    private boolean alive = true;
 
     public Unit(int maxHp, int attack, int speed, int defence, Weapon weapon, int startX, int startY, Player player) {
         this.maxHP = maxHp;
@@ -24,18 +25,27 @@ public class Unit {
         this.x = startX;
         this.y = startY;
         this.player = player;
-
     }
 
-    public int getMaxHp()      { return maxHP; }
-    public int getCurrentHp()  { return currentHP; }
-    public int getAttack()     { return attack; }
-    public int getSpeed()      { return speed; }
-    public int getDefence()    { return defence; }
-    public int getX()          { return x; }
-    public int getY()          { return y; }
-    public Weapon getWeapon()  { return weapon; }
-    public Player getPlayer()     { return player; }
+    public int getMaxHp()     { return maxHP; }
+    public int getCurrentHp() { return currentHP; }
+    public int getAttack()    { return attack; }
+    public int getSpeed()     { return speed; }
+    public int getDefence()   { return defence; }
+    public int getX()         { return x; }
+    public int getY()         { return y; }
+    public Weapon getWeapon() { return weapon; }
+    public Player getPlayer() { return player; }
+    public boolean isAlive()  { return alive; }
+
+    public void takeDamage(int damage) {
+        int actualDamage = Math.max(1, damage - defence);
+        currentHP -= actualDamage;
+        if (currentHP <= 0) {
+            currentHP = 0;
+            alive = false;
+        }
+    }
 
     public boolean canMoveTo(int newX, int newY) {
         int distance = Math.abs(newX - x) + Math.abs(newY - y);
