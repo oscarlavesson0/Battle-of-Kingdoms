@@ -1,7 +1,6 @@
 package popup;
 
 import base.BaseStats;
-import base.BaseStats;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -15,6 +14,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 public class BasePopup {
 
     private BaseStats base;
+
+    private TrainUnitListener listener;
 
     // Popup position and size
     private float x, y, width, height;
@@ -107,7 +108,7 @@ public class BasePopup {
 
         // Owner text
         font.setColor(Color.BLACK);
-        font.draw(batch, "Owner: " + base.getOwner().getId(), x + 20, y + height - 20);
+        font.draw(batch, "Owner: " + base.getOwner().getDisplayName(), x + 20, y + height - 20);
 
         // HP text
         font.setColor(Color.GREEN);
@@ -169,7 +170,10 @@ public class BasePopup {
             realY >= buttonY && realY <= buttonY + buttonHeight;
 
         if (buttonClicked) {
-            System.out.println("Train Units clicked (not implemented)");
+            if (listener != null) {
+                listener.onTrainUnit(base);
+            }
+
         }
     }
 
@@ -178,6 +182,10 @@ public class BasePopup {
     public void show(BaseStats base) {
         this.base = base;
         this.visible = true;
+    }
+
+    public void setTrainUnitListener(TrainUnitListener listener){
+        this.listener = listener;
     }
 }
 

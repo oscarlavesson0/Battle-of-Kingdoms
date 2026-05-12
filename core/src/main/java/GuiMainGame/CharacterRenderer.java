@@ -1,5 +1,6 @@
 package GuiMainGame;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -9,15 +10,14 @@ public class CharacterRenderer {
         private Animation<TextureRegion> idleAnim;
         private Animation<TextureRegion> runAnim;
         private Animation<TextureRegion> attackAnim;
-
         private State currentState = State.IDLE;
         private float stateTime = 0f;
 
         public CharacterRenderer() {
 
-            idleAnim   = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Combat Ready Idle.png",   22, 24, 0.01f);
-            runAnim    = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Run.png",    22, 24, 0.20f);
-            attackAnim = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Attack 1.png", 40, 30, 0.10f);
+            idleAnim   = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Combat Ready Idle.png",   22, 24, 0.5f);
+            runAnim    = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Run.png",    22, 24, 0.5f);
+            attackAnim = loadAnimation("lwjgl3/assets/ui/Knight Hero Platfomer/Attack 1.png", 40, 30, 0.5f);
         }
 
         private Animation<TextureRegion> loadAnimation(String path, int frameWidth, int frameHeight, float speed) {
@@ -54,6 +54,9 @@ public class CharacterRenderer {
                 default     -> idleAnim.getKeyFrame(stateTime, true);
             };
         }
+
+
+
     }
 
 

@@ -1,6 +1,7 @@
 package io.github.BattleOfKingdoms;
 
 import GuiMainGame.*;
+import base.BaseController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,8 @@ import unit.UnitController;
 import com.badlogic.gdx.audio.Music;
 import base.BaseStats;
 import base.Player;
+import popup.TrainUnitListener;
+import unit.CustomUnit;
 
 import java.util.Random;
 
@@ -61,20 +64,24 @@ public class GameScreen implements Screen {
 
         grass = sheet.getTile(0, 5);
 
-        baseGraphic = new Base(sheet);
+        // LOGIK-BASER
+        BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
+        BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[34][46]);
+
+        baseGraphic = new Base(sheet, base1);
         lakeGraphic = new Lake(sheet);
 
-        // LOGIK-BASER
-        BaseStats base1 = new BaseStats(new Player("1"), tileController.getTileGrid()[2][2]);
-        BaseStats base2 = new BaseStats(new Player("2"), tileController.getTileGrid()[34][46]);
 
         // GRAFIK + LOGIK
         world.placeBaseStructure(baseGraphic, base1, 2, 2);
         world.placeBaseStructure(baseGraphic, base2, 34, 46);
 
-        unit = new Unit(20, 5, 4, 2, Weapon.SWORD, 10, 10);
         character = new CharacterRenderer();
+        unit = new Unit(20, 5, 4, 2, Weapon.SWORD, 10, 10, Player.PLAYER_ONE);
         unitView = new UnitView(unit, character);
+        unitView.applyPlayerColor(Player.PLAYER_ONE);
+
+
 
         unitController = new UnitController(tileController.getTileGrid());
         unitController.setUnitView(unitView);
@@ -91,6 +98,16 @@ public class GameScreen implements Screen {
         world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
 
         basePopup = new BasePopup(null, 200, 150, 300, 200);
+
+        BaseController baseController = new BaseController(unitController);
+
+        basePopup.setTrainUnitListener(new TrainUnitListener() {
+            @Override
+            public void onTrainUnit(BaseStats base) {
+                CustomUnit newUnit = baseController.createUnit(base);
+                System.out.println("Unit created for: " + base.getOwner().getDisplayName());
+            }
+        });
 
         Gdx.input.setInputProcessor(
             new GameInput(tileController, basePopup, unitController, unit, highlightSystem)

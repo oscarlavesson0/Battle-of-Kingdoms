@@ -1,5 +1,7 @@
 package GuiMainGame;
 
+import base.BaseStats;
+import base.Player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,8 +12,12 @@ public class Base extends StructureRenderer {
     private Animation<TextureRegion> explosionAnim;
     private float explosionTime = 0f;
     private boolean exploding = false;
+    private BaseStats stats;
+    SpriteSheetLoader sheet;
 
-    public Base(SpriteSheetLoader sheet) {
+    public Base(SpriteSheetLoader sheet, BaseStats stats) {
+        this.sheet = sheet;
+        this.stats = stats;
 
         Texture castleTexture = new Texture("lwjgl3/assets/ui/Castle Walls/Castle_door.png");
 
@@ -75,6 +81,9 @@ public class Base extends StructureRenderer {
     public void explode() {
         exploding = true;
         explosionTime = 0f;
+    }
+    public BaseStats getStats() {
+        return stats;
     }
 }
 

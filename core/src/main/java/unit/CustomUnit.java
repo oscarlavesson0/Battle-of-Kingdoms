@@ -1,9 +1,11 @@
 package unit;
 
+import base.Player;
+
 public class CustomUnit extends Unit {
 
-    public CustomUnit(int maxHP, int attack, int speed, int defence, Weapon weapon, int startX, int startY) {
-        super(maxHP, attack, speed, defence, weapon, startX, startY);
+    public CustomUnit(int maxHP, int attack, int speed, int defence, Weapon weapon, int startX, int startY, Player player) {
+        super(maxHP, attack, speed, defence, weapon, startX, startY, player);
     }
     @Override
     public String toString() {

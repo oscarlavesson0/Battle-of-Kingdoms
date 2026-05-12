@@ -1,23 +1,16 @@
 package base;
 
-public class Player {
+public enum Player{
+    PLAYER_ONE("Player 1"),
+    PLAYER_TWO("Player 2");
 
-    private String id;
-    private BaseStats base;
+    private final String displayName;
 
-    public Player(String id){
-        this.id = id;
+    Player(String displayName){
+        this.displayName = displayName;
     }
 
-    public String getId(){
-        return id;
-    }
-
-    public void setBase(BaseStats base){
-        this.base = base;
-    }
-
-    public BaseStats getBase() {
-        return base;
+    public String getDisplayName() {
+        return displayName;
     }
 }
