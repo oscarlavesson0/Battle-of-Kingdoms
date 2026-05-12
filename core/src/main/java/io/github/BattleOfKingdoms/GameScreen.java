@@ -20,6 +20,8 @@ import popup.TrainUnitListener;
 import unit.CustomUnit;
 import popup.UnitStatsPopup;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class GameScreen implements Screen {
@@ -41,8 +43,9 @@ public class GameScreen implements Screen {
     private UnitStatsPopup statsPopup;
 
     private CharacterRenderer character;
-    private UnitView unitView;
-    private Unit unit;
+    private List<UnitView> unitViews = new ArrayList<>();
+    private BaseController baseController;
+
 
     private UnitController unitController;
     private HighlightSystem highlightSystem;
@@ -79,18 +82,23 @@ public class GameScreen implements Screen {
         world.placeBaseStructure(baseGraphic, base1, 2, 2);
         world.placeBaseStructure(baseGraphic, base2, 34, 46);
 
-
-        unit = new Unit(20, 5, 4, 2, Weapon.AXE, 10, 10, Player.PLAYER_ONE, UnitType.AXEMAN);
-        character = new CharacterRenderer(UnitType.AXEMAN);
-        unitView = new UnitView(unit, character);
-        unitView.applyPlayerColor(Player.PLAYER_ONE);
-
-
-
-
         unitController = new UnitController(tileController.getTileGrid());
-        unitController.setUnitView(unitView);
         highlightSystem = new HighlightSystem(unitController);
+        baseController = new BaseController(unitController);
+
+
+        baseController.setSpawnListener(spawnedUnit -> {
+            UnitType type = spawnedUnit.getUnitType();
+            CharacterRenderer r = new CharacterRenderer(type);
+            UnitView view = new UnitView(spawnedUnit, r);
+            view.applyPlayerColor(spawnedUnit.getPlayer());
+            unitViews.add(view);
+        });
+
+
+
+
+
 
         Random random = new Random();
 
@@ -108,7 +116,7 @@ public class GameScreen implements Screen {
         //Popup för units-stats
         statsPopup = new UnitStatsPopup(300, 200, 300, 250);
 
-        BaseController baseController = new BaseController(unitController);
+
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override
@@ -131,7 +139,8 @@ public class GameScreen implements Screen {
 
         //Input
         Gdx.input.setInputProcessor(
-            new GameInput(tileController, basePopup, statsPopup,unitController, unit, highlightSystem)
+            new GameInput(tileController, basePopup, statsPopup,
+                unitController, null, highlightSystem)
         );
     }
 
@@ -177,8 +186,10 @@ public class GameScreen implements Screen {
 
         // RITA UNIT
         batch.begin();
-        unitView.update(delta);
-        unitView.render(batch);
+        for (UnitView uv : unitViews) {
+            uv.update(delta);
+            uv.render(batch);
+        }
         batch.end();
     }
 

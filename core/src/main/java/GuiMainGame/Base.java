@@ -74,7 +74,7 @@ public class Base extends StructureRenderer {
             }
         }
 
-        explosionAnim = new Animation<>(0.08f, frames); // 0.08f = lagom hastighet
+        explosionAnim = new Animation<>(0.08f, frames);
         explosionAnim.setPlayMode(Animation.PlayMode.NORMAL);
 
     }
