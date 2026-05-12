@@ -1,5 +1,11 @@
 package io.github.BattleOfKingdoms;
 
+import base.IncomeHelper;
+import base.TurnChangeListener;
+import base.TurnManager;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import GuiMainGame.*;
 import base.BaseController;
 import com.badlogic.gdx.Gdx;
@@ -37,6 +43,13 @@ public class GameScreen implements Screen {
     private BaseController baseController;
     private UnitController unitController;
     private HighlightSystem highlightSystem;
+    private TurnManager turnManager;
+    private IncomeHelper incomeHelper;
+    private BitmapFont hudFont;
+    private ShapeRenderer hudShape;
+    public static final float endTurnBtnW = 120f;
+    public static final float endTurnBtnH = 40f;
+    private float endTurnBtnX, endTurnBtnY;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -99,21 +112,51 @@ public class GameScreen implements Screen {
         statsPopup.setListener(new StatsChosenListener() {
             @Override
             public void onStatsChosen(BaseStats base, int hp, int attack, int speed, int defence) {
-                baseController.createUnitFromChoice(base);
+                baseController.createUnitFromChoice(base, hp, attack, speed, defence);
                 System.out.println("Unit created with stats: HP - " + hp +
                     " ATK - " + attack + " SPD - " + speed + " DEF - " + defence);
             }
         });
 
+        turnManager = new TurnManager();
+        incomeHelper = new IncomeHelper();
+        turnManager.setListener(new TurnChangeListener() {
+            @Override
+            public void onPlayerSwitch(Player newPlayer) {
+                basePopup.hide();
+                statsPopup.hide();
+                System.out.println("Currently " + newPlayer.getDisplayName() + "'s turn!");
+            }
+
+            @Override
+            public void onTurnComplete(int newTurnNumber) {
+                incomeHelper.applyIncome(Player.PLAYER_ONE);
+                incomeHelper.applyIncome(Player.PLAYER_TWO);
+                System.out.println("--- Turn " + newTurnNumber + " starting---");
+                System.out.println("P1 gold: " + Player.PLAYER_ONE.getGold());
+                System.out.println("P2 gold: " + Player.PLAYER_TWO.getGold());
+            }
+        });
+
+        hudFont = new BitmapFont();
+        hudFont.getData().setScale(1.4f);
+        hudShape = new ShapeRenderer();
+
+        endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
+        endTurnBtnY = 20;
+
         // FIX 2: skickar unitController.getUnits() och unitViews till GameInput
         Gdx.input.setInputProcessor(
             new GameInput(tileController, basePopup, statsPopup,
-                unitController, unitController.getUnits(), unitViews, highlightSystem)
+                unitController, unitController.getUnits(), unitViews, highlightSystem, turnManager, endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH)
         );
     }
 
     @Override
     public void render(float delta) {
+
+        turnManager.update(delta);
+
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
         batch.begin();
         for (int row = 0; row < world.getRows(); row++) {
@@ -140,9 +183,44 @@ public class GameScreen implements Screen {
             uv.render(batch);
         }
         batch.end();
+
+        renderHud();
     }
 
-    @Override public void resize(int width, int height) {}
+    private void renderHud(){
+        float screenW = Gdx.graphics.getWidth();
+        float screenH = Gdx.graphics.getHeight();
+
+        float endTurnBtnX = screenW - endTurnBtnW - 20;
+        float endTurnBtnY = 20;
+
+        hudShape.begin(ShapeRenderer.ShapeType.Filled);
+        hudShape.setColor(0.15f, 0.4f, 0.15f, 0.9f);
+        hudShape.rect(endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH);
+        hudShape.end();
+
+        batch.begin();
+        hudFont.setColor(Color.WHITE);
+
+        String topLine = "Turn " + turnManager.getTurnNumber()
+            + "  " + Math.round(turnManager.getTimeRemaining()) + "s"
+            + "  " + turnManager.getCurrentPlayer().getDisplayName();
+        hudFont.draw(batch, topLine, screenW/ 2f - 150, screenH - 20);
+
+        hudFont.setColor(Color.YELLOW);
+        hudFont.draw(batch, "P1: " + Player.PLAYER_ONE.getGold() + "g", 20, screenH - 20);
+        hudFont.draw(batch, "P2: " + Player.PLAYER_TWO.getGold() + "g", 20, screenH - 50);
+
+        hudFont.setColor(Color.WHITE);
+        hudFont.draw(batch, "End Turn", endTurnBtnX + 10, endTurnBtnY + 20);
+
+        batch.end();
+    }
+
+    @Override public void resize(int width, int height) {
+        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+        hudShape.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+    }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
@@ -151,5 +229,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         bgMusic.dispose();
         batch.dispose();
+        hudFont.dispose();
+        hudShape.dispose();
     }
 }

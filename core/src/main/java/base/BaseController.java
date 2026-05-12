@@ -14,13 +14,13 @@ public class BaseController {
         this.spawnListener = listener;
     }
 
-    public CustomUnit createUnitFromChoice(BaseStats base){
+    public CustomUnit createUnitFromChoice(BaseStats base, int hp, int attack, int speed, int defence){
         if(base == null) return null;
         Player owner = base.getOwner();
         if(owner == null) return null;
-        if(owner.getGold() < unitCost) return null;
+        //if(owner.getGold() < unitCost) return null;
 
-        owner.addGold(-unitCost);
+        //owner.addGold(-unitCost);
         CustomUnit unit = new UnitSkapare()
             .maxHP(10)
             .attack(2)

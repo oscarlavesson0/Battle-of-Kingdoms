@@ -1,5 +1,6 @@
 package GuiMainGame;
 
+import base.TurnManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import popup.BasePopup;
@@ -18,11 +19,15 @@ public class GameInput extends InputAdapter {
     private List<Unit> units;
     private List<UnitView> unitViews;
     private HighlightSystem highlightSystem;
+    private TurnManager turnManager;
+    private float btnX, btnY, btnW, btnH;
 
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup, UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
-                     HighlightSystem highlightSystem) {
+                     HighlightSystem highlightSystem,
+                     TurnManager turnManager,
+                     float btnX, float btnY, float btnW, float btnH) {
         this.tileController = tileController;
         this.basePopup = basePopup;
         this.statsPopup = statsPopup;
@@ -30,10 +35,24 @@ public class GameInput extends InputAdapter {
         this.units = units;
         this.unitViews = unitViews;
         this.highlightSystem = highlightSystem;
+        this.turnManager = turnManager;
+        this.btnX = btnX;
+        this.btnY = btnY;
+        this.btnW = btnW;
+        this.btnH = btnH;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        float realY = Gdx.graphics.getHeight() - screenY;
+        float btnX = Gdx.graphics.getWidth() - btnW - 20;
+        float btnY = 20;
+        if(screenX >= btnX && screenX <= btnX + btnW && realY >= btnY && realY <= btnY + btnH){
+            turnManager.endTurn();
+            return true;
+        }
+
         if (statsPopup != null && statsPopup.isVisible()) {
             statsPopup.handleClick(screenX, screenY);
             return true;
@@ -71,6 +90,9 @@ public class GameInput extends InputAdapter {
         // Klick på tile = försök flytta markerad unit
         Unit selected = unitController.getSelectedUnit();
         if (selected != null) {
+            if(!highlightSystem.isHighlighted(tileX, tileY)){
+                return false;
+            }
             UnitView selectedView = null;
             for (int i = 0; i < units.size(); i++) {
                 if (units.get(i) == selected) {
