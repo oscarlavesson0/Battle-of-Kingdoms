@@ -7,7 +7,6 @@ public class Tile {
 
     private int x;
     private int y;
-
     private Terrain terrain;
     private BaseStats base;
     private Unit unit;
@@ -20,6 +19,10 @@ public class Tile {
 
     public Terrain getTerrain() {
         return terrain;
+    }
+
+    public void setTerrain(Terrain terrain) {
+        this.terrain = terrain;
     }
 
     public BaseStats getBase() {
