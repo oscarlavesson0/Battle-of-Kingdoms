@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
             public void onStatsChosen(BaseStats base, int hp, int attack, int speed, int defence) {
 
                 // Basecontroller skapar och placerar unit
-                baseController.createUnit(base);
+                baseController.createUnitFromChoice(base);
 
                 System.out.println("Unit created with stats: HP - " + hp +" ATK - " + attack + " SPD - " + speed + " DEF - " + defence);
             }
