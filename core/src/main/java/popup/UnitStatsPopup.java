@@ -24,6 +24,9 @@ public class UnitStatsPopup {
     private final int MAX_SPEED = UnitSkapare.getMaxSpeed();
     private final int MAX_DEFENCE = UnitSkapare.getMaxDefence();
 
+    //Skill points
+    private int pointsLeft = 7;
+
     // Plus and Minus button position
     private final float BUTTON_MINUS_OFFSET = 140;
     private final float BUTTON_PLUS_OFFSET = 180;
@@ -54,6 +57,13 @@ public class UnitStatsPopup {
 
     public void open(BaseStats base){
         this.base = base;
+
+        this.hp = 10;
+        this.attack = 1;
+        this.speed = 1;
+        this.defence = 1;
+
+        this.pointsLeft = 7;
         visible = true;
     }
 
@@ -85,6 +95,9 @@ public class UnitStatsPopup {
         font.setColor(Color.BLACK);
 
         font.draw(batch, "Create Unit", x + 20, y + height - 20);
+
+        // Points left
+        font.draw(batch, "Points left" + pointsLeft, x + 20, y + height - 40);
 
         // Stats with plus and minus button
         font.draw(batch, "HP: " + hp, x + 20, y + height - 60);
@@ -143,48 +156,72 @@ public class UnitStatsPopup {
         // HP minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 80 && realY <= y + height - 50) {
-            if (hp > 1) hp--;
+            if (hp > 1) {
+                hp--;
+                pointsLeft++;
+            }
         }
 
         // HP plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 80 && realY <= y + height - 50) {
-            if (hp < MAX_HP) hp++;
+            if (hp < MAX_HP && pointsLeft > 0) {
+                hp++;
+                pointsLeft--;
+            }
         }
 
         // Attack minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 120 && realY <= y + height - 90) {
-            if (attack > 1) attack--;
+            if (attack > 1){
+                attack--;
+                pointsLeft++;
+            }
         }
 
         // Attack plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 120 && realY <= y + height - 90) {
-            if (attack < MAX_ATTACK) attack++;
+            if (attack < MAX_ATTACK && pointsLeft > 0) {
+                attack++;
+                pointsLeft--;
+            }
         }
 
         // Speed minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 160 && realY <= y + height - 130) {
-            if (speed > 1) speed--;
+            if (speed > 1) {
+                speed--;
+                pointsLeft++;
+            }
         }
         // Soeed plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 160 && realY <= y + height - 130) {
-            if (speed < MAX_SPEED) speed++;
+            if (speed < MAX_SPEED && pointsLeft > 0) {
+                speed++;
+                pointsLeft--;
+            }
         }
 
         // Defence minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 200 && realY <= y + height - 170) {
-            if (defence > 1) defence--;
+            if (defence > 1) {
+                defence--;
+                pointsLeft++;
+            }
         }
 
         // Defence plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 200 && realY <= y + height - 170) {
-            if (defence < MAX_DEFENCE) defence++;
+            if (defence < MAX_DEFENCE && pointsLeft > 0) {
+                defence++;
+                pointsLeft--;
+            }
         }
 
         // Create Unit button
