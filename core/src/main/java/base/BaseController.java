@@ -9,14 +9,18 @@ import unit.Weapon;
 public class BaseController {
 
     private UnitController unitController;
+    private UnitSpawnListener spawnListener;
+
 
     public BaseController(UnitController unitController){
         this.unitController = unitController;
     }
 
-    public CustomUnit createUnit(BaseStats base){
+    public void setSpawnListener(UnitSpawnListener listener) {
+        this.spawnListener = listener;
+    }
 
-        //Create a unit
+    public CustomUnit createUnit(BaseStats base) {
         CustomUnit unit = new UnitSkapare()
             .maxHP(10)
             .attack(2)
@@ -24,10 +28,15 @@ public class BaseController {
             .defence(1)
             .weapon(Weapon.SWORD)
             .player(base.getOwner())
-            .startPosition(base.getPosition().getX(), base.getPosition().getY())
+            .startPosition(base.getPosition().getX(),
+                base.getPosition().getY())
             .build();
+
         unitController.spawnUnitNearBase(base, unit);
 
+        if (spawnListener != null) {
+            spawnListener.onUnitSpawned(unit);
+        }
         return unit;
     }
 }

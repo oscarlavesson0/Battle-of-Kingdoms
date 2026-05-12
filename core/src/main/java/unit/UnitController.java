@@ -3,6 +3,7 @@ package unit;
 import base.BaseStats;
 import terrain.Tile;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -12,6 +13,8 @@ public class UnitController {
     private Tile[][] tileGrid;
     private Unit selectedUnit;
     private GuiMainGame.UnitView unitView;
+    private List<Unit> units = new ArrayList<>();
+
 
     public UnitController(Tile[][] tileGrid) {
         this.tileGrid = tileGrid;
@@ -100,8 +103,12 @@ public class UnitController {
 
                 unit.setPosition(nx, ny);
                 tileGrid[ny][nx].setUnit(unit);
+                units.add(unit);
                 return;
             }
         }
+    }
+    public List<Unit> getUnits() {
+        return units;
     }
 }

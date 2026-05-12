@@ -59,7 +59,7 @@ public class GameInput extends InputAdapter {
         Tile clickedTile = grid[tileY][tileX];
 
         // Click on unit = select + highlight
-        if (unit.getX() == tileX && unit.getY() == tileY) {
+        if (unit != null && unit.getX() == tileX && unit.getY() == tileY) {
             unitController.selectUnit(unit);
             highlightSystem.updateHighlight(unit);
             return true;
