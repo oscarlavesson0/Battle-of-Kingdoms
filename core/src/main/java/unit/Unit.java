@@ -1,5 +1,6 @@
 package unit;
 
+import GuiMainGame.UnitType;
 import base.Player;
 
 public class Unit {
@@ -13,8 +14,10 @@ public class Unit {
     private int y;
     private Weapon weapon;
     private Player player;
+    private UnitType unitType;
 
-    public Unit(int maxHp, int attack, int speed, int defence, Weapon weapon, int startX, int startY, Player player) {
+
+    public Unit(int maxHp, int attack, int speed, int defence, Weapon weapon, int startX, int startY, Player player, UnitType unitType) {
         this.maxHP = maxHp;
         this.currentHP = maxHp;
         this.attack = attack;
@@ -24,7 +27,7 @@ public class Unit {
         this.x = startX;
         this.y = startY;
         this.player = player;
-
+        this.unitType = unitType;
     }
 
     public int getMaxHp()      { return maxHP; }
@@ -52,5 +55,8 @@ public class Unit {
     public void setPosition(int newX, int newY) {
         x = newX;
         y = newY;
+    }
+    public UnitType getUnitType() {
+        return unitType;
     }
 }

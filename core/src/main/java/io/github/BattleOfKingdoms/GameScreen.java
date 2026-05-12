@@ -79,10 +79,12 @@ public class GameScreen implements Screen {
         world.placeBaseStructure(baseGraphic, base1, 2, 2);
         world.placeBaseStructure(baseGraphic, base2, 34, 46);
 
-        character = new CharacterRenderer();
-        unit = new Unit(20, 5, 4, 2, Weapon.SWORD, 10, 10, Player.PLAYER_ONE);
+
+        unit = new Unit(20, 5, 4, 2, Weapon.AXE, 10, 10, Player.PLAYER_ONE, UnitType.AXEMAN);
+        character = new CharacterRenderer(UnitType.AXEMAN);
         unitView = new UnitView(unit, character);
         unitView.applyPlayerColor(Player.PLAYER_ONE);
+
 
 
 
