@@ -1,5 +1,6 @@
 package unit;
 
+import GuiMainGame.UnitType;
 import base.Player;
 
 public class UnitSkapare {
@@ -12,7 +13,6 @@ public class UnitSkapare {
     private Weapon weapon = Weapon.SWORD;
     private int startX = 0;
     private int startY = 0;
-
     //Gränsvärden
     private static final int MIN_STAT = 1;
     private static final int MAX_HP = 25;
@@ -68,9 +68,8 @@ public class UnitSkapare {
     //Builder
     public CustomUnit build() {
         validate();
-        return new CustomUnit(maxHP, attack, speed, defence, weapon, startX, startY, player);
+        return new CustomUnit(maxHP, attack, speed, defence, weapon, startX, startY, player, UnitType.AXEMAN);
     }
-
 
     //Validering
     private void validate() {

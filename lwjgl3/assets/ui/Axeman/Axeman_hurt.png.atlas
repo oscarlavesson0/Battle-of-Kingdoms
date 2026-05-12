@@ -1,0 +1,10 @@
+Axemen_IDLENY.png
+size: 188, 91
+format: RGBA8888
+filter: Linear, Linear
+repeat: none
+pma: false
+Hurt2
+  bounds: 0, 0, 94, 91
+Hurt3
+  bounds: 94, 0, 94, 91
