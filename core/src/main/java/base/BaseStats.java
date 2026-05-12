@@ -1,8 +1,6 @@
 package base;
 
 import terrain.Tile;
-import unit.Unit;
-import unit.Weapon;
 
 public class BaseStats {
     private Player owner;
@@ -11,6 +9,7 @@ public class BaseStats {
     private int maxHp = 100;
     private int currentHp = 100;
     private int defense = 10;
+    private int goldPerTurn = 50;
 
     public BaseStats(Player owner, Tile position){
         this.owner = owner;
@@ -35,6 +34,10 @@ public class BaseStats {
 
     public int getCurrentHp() {
         return currentHp;
+    }
+
+    public int getGoldPerTurn() {
+        return goldPerTurn;
     }
 
 }
