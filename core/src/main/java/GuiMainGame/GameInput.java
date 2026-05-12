@@ -3,25 +3,29 @@ package GuiMainGame;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import popup.BasePopup;
+import popup.UnitStatsPopup;
 import terrain.Tile;
 import terrain.TileController;
 import unit.Unit;
 import unit.UnitController;
+import unit.UnitSkapare;
 
 public class GameInput extends InputAdapter {
 
     private TileController tileController;
     private BasePopup basePopup;
+    private UnitStatsPopup statsPopup;
     private UnitController unitController;
     private Unit unit;
     private HighlightSystem highlightSystem;
 
-    public GameInput(TileController tileController, BasePopup basePopup,
+    public GameInput(TileController tileController, BasePopup basePopup, UnitStatsPopup statsPopup,
                      UnitController unitController, Unit unit,
                      HighlightSystem highlightSystem) {
 
         this.tileController = tileController;
         this.basePopup = basePopup;
+        this.statsPopup = statsPopup;
         this.unitController = unitController;
         this.unit = unit;
         this.highlightSystem = highlightSystem;
@@ -30,6 +34,12 @@ public class GameInput extends InputAdapter {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+        //If stats-popup is open, let stats-popup handle clicks
+        if(statsPopup != null && statsPopup.isVisible()){
+            statsPopup.handleClick(screenX, screenY);
+            return true;
+        }
 
         // If popup is open, let popup handle clicks
         if (basePopup != null && basePopup.isVisible()) {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import popup.StatsChosenListener;
 import terrain.TileController;
 import popup.BasePopup;
 import unit.Unit;
@@ -17,6 +18,7 @@ import base.BaseStats;
 import base.Player;
 import popup.TrainUnitListener;
 import unit.CustomUnit;
+import popup.UnitStatsPopup;
 
 import java.util.Random;
 
@@ -36,6 +38,7 @@ public class GameScreen implements Screen {
     private Lake lakeGraphic;
 
     private BasePopup basePopup;
+    private UnitStatsPopup statsPopup;
 
     private CharacterRenderer character;
     private UnitView unitView;
@@ -50,7 +53,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-
+        //Musik
         bgMusic = Gdx.audio.newMusic(Gdx.files.internal("lwjgl3/assets/Audio/Medieval Fantasy Tavern D&D Fantasy Music and Ambience - Daydreaming of Persephone (128k).mp3"));
         bgMusic.setLooping(true);
         bgMusic.setVolume(0.05f);
@@ -97,20 +100,36 @@ public class GameScreen implements Screen {
         int lake2Col = random.nextInt(10, world.getCols() - 10);
         world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
 
+        //Popup Bas
         basePopup = new BasePopup(null, 200, 150, 300, 200);
+
+        //Popup för units-stats
+        statsPopup = new UnitStatsPopup(300, 200, 300, 250);
 
         BaseController baseController = new BaseController(unitController);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override
             public void onTrainUnit(BaseStats base) {
-                CustomUnit newUnit = baseController.createUnit(base);
-                System.out.println("Unit created for: " + base.getOwner().getDisplayName());
+                statsPopup.open(base); // Öppna stats popup
             }
         });
 
+        // Koppla stat-popupens "Train units"
+        statsPopup.setListener(new StatsChosenListener() {
+            @Override
+            public void onStatsChosen(BaseStats base, int hp, int attack, int speed, int defence) {
+
+                // Basecontroller skapar och placerar unit
+                baseController.createUnit(base);
+
+                System.out.println("Unit created with stats: HP - " + hp +" ATK - " + attack + " SPD - " + speed + " DEF - " + defence);
+            }
+        });
+
+        //Input
         Gdx.input.setInputProcessor(
-            new GameInput(tileController, basePopup, unitController, unit, highlightSystem)
+            new GameInput(tileController, basePopup, statsPopup,unitController, unit, highlightSystem)
         );
     }
 
@@ -145,6 +164,11 @@ public class GameScreen implements Screen {
 
         // RITA POPUPEN
         basePopup.render(batch);
+
+        // RITA UNIT-STATS POPUP
+        if (statsPopup.isVisible()){
+            statsPopup.render();
+        }
 
         // RITA HIGHLIGHT
         highlightSystem.render();
