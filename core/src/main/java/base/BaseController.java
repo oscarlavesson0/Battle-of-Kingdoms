@@ -18,14 +18,15 @@ public class BaseController {
         if(base == null) return null;
         Player owner = base.getOwner();
         if(owner == null) return null;
-        //if(owner.getGold() < unitCost) return null;
+        if(owner.getGold() < unitCost) return null;
 
-        //owner.addGold(-unitCost);
+        owner.subtractGold(unitCost);
+
         CustomUnit unit = new UnitSkapare()
-            .maxHP(10)
-            .attack(2)
-            .speed(2)
-            .defence(2)
+            .maxHP(hp)
+            .attack(attack)
+            .speed(speed)
+            .defence(defence)
             .weapon(Weapon.SWORD)
             .player(owner)
             .startPosition(base.getPosition().getX(), base.getPosition().getY())

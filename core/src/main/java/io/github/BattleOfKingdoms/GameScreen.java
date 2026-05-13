@@ -116,11 +116,19 @@ public class GameScreen implements Screen {
         statsPopup.setListener(new StatsChosenListener() {
             @Override
             public void onStatsChosen(BaseStats base, int hp, int attack, int speed, int defence) {
-                baseController.createUnitFromChoice(base, hp, attack, speed, defence);
+
+                CustomUnit unit = baseController.createUnitFromChoice(base, hp, attack, speed, defence);
+
+                if(unit == null){
+                    statsPopup.ShowError("Not enough gold!");
+                    return;
+                }
+
                 System.out.println("Unit created with stats: HP - " + hp +
                     " ATK - " + attack + " SPD - " + speed + " DEF - " + defence);
             }
         });
+
 
         turnManager = new TurnManager();
         incomeHelper = new IncomeHelper();
