@@ -27,6 +27,10 @@ public class UnitStatsPopup {
     //Skill points
     private int pointsLeft = 7;
 
+    //Error message
+    private boolean showError = false;
+    private String errorMessage = "";
+
     // Plus and Minus button position
     private final float BUTTON_MINUS_OFFSET = 140;
     private final float BUTTON_PLUS_OFFSET = 180;
@@ -64,6 +68,7 @@ public class UnitStatsPopup {
         this.defence = 1;
 
         this.pointsLeft = 7;
+        this.showError = false;
         visible = true;
     }
 
@@ -73,6 +78,11 @@ public class UnitStatsPopup {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public void ShowError(String errorMessage){
+        this.errorMessage = errorMessage;
+        this.showError = true;
     }
 
     public void render(){
@@ -87,7 +97,6 @@ public class UnitStatsPopup {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
         shapeRenderer.rect(x, y, width, height);
-
         shapeRenderer.end();
 
 
@@ -122,6 +131,26 @@ public class UnitStatsPopup {
         // Close-button
         font.setColor(Color.RED);
         font.draw(batch, "[ Close ]", x + width - 80, y + height - 20);
+
+        // Error message
+        if (showError){
+            if (batch.isDrawing()){
+                batch.end();
+            }
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
+            shapeRenderer.rect(x + 10, y + height - 330, 260, 90);
+            shapeRenderer.end();
+
+            batch.begin();
+
+            font.setColor(Color.RED);
+            font.draw(batch, errorMessage, x + 20, y + height - 260);
+
+            font.setColor(Color.BLACK);
+            font.draw(batch, "[ OK ]", x + 20, y + height - 300);
+        }
         batch.end();
     }
 
@@ -131,6 +160,24 @@ public class UnitStatsPopup {
         }
 
         float realY = Gdx.graphics.getHeight() - screenY;
+
+        if(showError){
+            if (screenX >= x + 20 && screenX <= x + 120 &&
+                realY >= y + height - 320 && realY <= y + height - 280) {
+
+                showError = false;
+                return;
+            }
+
+            boolean insidePopup = screenX >= x && screenX <= x + width &&
+                realY >= y && realY <= y + height;
+
+            if (!insidePopup) {
+                showError = false;
+            }
+
+            return;
+        }
 
         // Klick outside popup
         boolean insidePopup = screenX >= x && screenX <= x + width &&
@@ -232,7 +279,10 @@ public class UnitStatsPopup {
                 listener.onStatsChosen(base, hp, attack, speed, defence);
             }
 
-            hide();
+            if(!showError){
+                hide();
+            }
+            return;
         }
     }
 }

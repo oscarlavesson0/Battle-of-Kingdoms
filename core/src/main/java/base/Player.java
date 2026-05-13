@@ -9,7 +9,7 @@ public enum Player{
 
     Player(String displayName){
         this.displayName = displayName;
-        this.gold = 0;
+        this.gold = 100;
     }
 
     public String getDisplayName() {
@@ -23,4 +23,6 @@ public enum Player{
     public void addGold(int amount){
         this.gold += amount;
     }
+
+    public void subtractGold(int amount){this.gold -= amount;}
 }
