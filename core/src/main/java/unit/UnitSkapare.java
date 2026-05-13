@@ -13,6 +13,7 @@ public class UnitSkapare {
     private Weapon weapon = Weapon.SWORD;
     private int startX = 0;
     private int startY = 0;
+
     //Gränsvärden
     private static final int MIN_STAT = 1;
     private static final int MAX_HP = 25;

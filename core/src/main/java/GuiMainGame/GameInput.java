@@ -30,13 +30,13 @@ public class GameInput extends InputAdapter {
     private boolean awaitingAttackTarget = false;
     private Unit attackingUnit = null;
 
-    //  Konstruktor
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup, UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
                      HighlightSystem highlightSystem,
                      TurnManager turnManager,
                      float btnX, float btnY, float btnW, float btnH) {
+
         this.tileController = tileController;
         this.basePopup = basePopup;
         this.statsPopup = statsPopup;
@@ -51,39 +51,41 @@ public class GameInput extends InputAdapter {
     }
 
     public ActionMenu getActionMenu() { return actionMenu; }
-    //  update() – anropas varje frame från GameScreen.render()
+
     public void update() {
         if (pendingPostMoveUnit != null) {
             UnitView view = findViewFor(pendingPostMoveUnit);
             if (view != null && !view.isMoving()) {
-                showPostMoveMenu(pendingPostMoveUnit, view);
+                showPreWaitMenu(pendingPostMoveUnit);
                 pendingPostMoveUnit = null;
             }
         }
     }
 
-    //  Post-move meny
-    private void showPostMoveMenu(Unit unit, UnitView view) {
+    private void showPreWaitMenu(Unit unit) {
+
+        boolean canAttack = false;
         highlightSystem.updateAttackOnlyHighlight(unit);
 
-        boolean hasEnemy = false;
         for (int[] tile : highlightSystem.getInteractionTiles()) {
-            if (hasEnemyAt(tile[0], tile[1], unit)) { hasEnemy = true; break; }
+            if (hasEnemyAt(tile[0], tile[1], unit)) {
+                canAttack = true;
+                break;
+            }
         }
 
         float wx = unit.getX() * WorldMap.TILE_SIZE;
         float wy = unit.getY() * WorldMap.TILE_SIZE;
-        actionMenu.showPostMove(wx + WorldMap.TILE_SIZE, wy, hasEnemy);
 
+        actionMenu.showPreWait(wx + WorldMap.TILE_SIZE, wy, canAttack);
         unitController.selectUnit(unit);
     }
 
-    //  Input
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         float realY = Gdx.graphics.getHeight() - screenY;
 
-        // 1. End-turn-knapp
+        // End turn
         float bx = Gdx.graphics.getWidth() - btnW - 20;
         float by = 20;
         if (screenX >= bx && screenX <= bx + btnW && realY >= by && realY <= by + btnH) {
@@ -93,7 +95,7 @@ public class GameInput extends InputAdapter {
             return true;
         }
 
-        // 2. Popups
+        // Popups
         if (statsPopup != null && statsPopup.isVisible()) {
             statsPopup.handleClick(screenX, screenY);
             return true;
@@ -103,20 +105,20 @@ public class GameInput extends InputAdapter {
             return true;
         }
 
-        // 3. Post-move action-meny
+        // Action menu
         if (actionMenu.isVisible()) {
             ActionMenu.Action action = actionMenu.handleClick(screenX, realY);
             if (action != null) handleMenuAction(action);
             return true;
         }
 
-        // 4. Väntar på attack-target
+        // Attack target
         if (awaitingAttackTarget) {
             handleAttackTargetClick(screenX, realY);
             return true;
         }
 
-        // 5. Vanlig tile-klick
+        // Tile click
         int tileX = screenX / WorldMap.TILE_SIZE;
         int tileY = (Gdx.graphics.getHeight() - screenY) / WorldMap.TILE_SIZE;
 
@@ -128,35 +130,39 @@ public class GameInput extends InputAdapter {
         Unit selected    = unitController.getSelectedUnit();
 
         if (selected != null) {
-            // Klick på annan egen enhet – byt val
+
+            // Klick på annan unit → STÄNG BARA
             List<Unit> currentUnits =
                 unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
             for (Unit u : currentUnits) {
                 if (u == selected) continue;
                 if (u.getX() == tileX && u.getY() == tileY) {
-                    deselect();
-                    selectUnit(u);
+                    cancelAll();
                     return true;
                 }
             }
 
-            // Klick på blå rörelseruta → flytta, vänta på animation
+            // Klick på blå ruta → flytta
             if (highlightSystem.isHighlighted(tileX, tileY)) {
+
                 UnitView view      = findViewFor(selected);
                 Unit     movedUnit = selected;
+
                 if (unitController.moveSelectedUnit(tileX, tileY, view)) {
+
+                    actionMenu.hide();
                     highlightSystem.clear();
                     pendingPostMoveUnit = movedUnit;
                 }
                 return true;
             }
 
-            deselect();
+            cancelAll();
             if (clickedTile.getBase() != null) basePopup.show(clickedTile.getBase());
             return true;
         }
 
-        // Välj enhet
+        // Välj unit
         List<Unit> currentUnits =
             unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
         for (Unit u : currentUnits) {
@@ -173,48 +179,72 @@ public class GameInput extends InputAdapter {
         return false;
     }
 
-    //  Meny-hantering
     private void handleMenuAction(ActionMenu.Action action) {
         Unit selected = unitController.getSelectedUnit();
+        if (selected == null) return;
+
         switch (action) {
-            case ATTACK -> {
-                if (selected != null) {
-                    unitController.commitMove(selected);
-                    awaitingAttackTarget = true;
-                    attackingUnit        = selected;
-                }
+
+            case MOVE -> {
+                // Visa rörelsemarkering från PRE_MOVE
+                highlightSystem.updateHighlight(selected);
             }
+
             case WAIT -> {
-                if (selected != null) unitController.commitMove(selected);
-                highlightSystem.clear();
-                unitController.selectUnit(null);
+                // Oavsett om det är PRE_MOVE eller PRE_WAIT:
+                // commit uniten och lås den för resten av rundan
+                unitController.commitMove(selected);
+                cancelAll();
             }
-            case CANCEL -> cancelMoveForSelected(selected);
+
+            case ATTACK -> {
+                // Committa uniten på sin nuvarande plats innan attack
+                // så den låses oavsett om den rört sig eller inte
+                unitController.commitMove(selected);
+                highlightSystem.updateAttackOnlyHighlight(selected);
+                awaitingAttackTarget = true;
+                attackingUnit        = selected;
+            }
+
+            case CANCEL -> {
+                // Endast i PRE_WAIT: animera tillbaka till ursprungsposition
+                cancelMoveForSelected(selected);
+            }
+
+            case CLOSE -> {
+                cancelAll();
+            }
         }
     }
 
     private void cancelMoveForSelected(Unit unit) {
-        if (unit == null) { cancelAll(); return; }
 
         int[] origin = unitController.cancelMove(unit);
-        if (origin == null) { cancelAll(); return; }
+        if (origin == null) {
+            cancelAll();
+            return;
+        }
+
+        actionMenu.hide();
 
         UnitView view = findViewFor(unit);
         if (view != null) {
-            // setCancelPath sätter unit.setPosition(origin) när animationen är klar
             view.setCancelPath(origin[0], origin[1]);
         } else {
             unit.setPosition(origin[0], origin[1]);
         }
 
         highlightSystem.clear();
-        actionMenu.hide();
-        unitController.selectUnit(null);
-        awaitingAttackTarget = false;
-        attackingUnit        = null;
+
+        float wx = origin[0] * WorldMap.TILE_SIZE;
+        float wy = origin[1] * WorldMap.TILE_SIZE;
+        boolean canAttack = hasEnemyAdjacent(unit);
+
+        actionMenu.showPreMove(wx + WorldMap.TILE_SIZE, wy, canAttack);
+
+        unitController.selectUnit(unit);
     }
 
-    //  Attack-target
     private void handleAttackTargetClick(float screenX, float realY) {
         int tileX = (int) (screenX / WorldMap.TILE_SIZE);
         int tileY = (int) (realY   / WorldMap.TILE_SIZE);
@@ -226,23 +256,32 @@ public class GameInput extends InputAdapter {
             }
         }
 
-        highlightSystem.clear();
-        awaitingAttackTarget = false;
-        attackingUnit        = null;
-        unitController.selectUnit(null);
+        cancelAll();
     }
 
-    //  Hjälpmetoder
     private void selectUnit(Unit u) {
-        if (unitController.hasMovedThisTurn(u) && unitController.hasAttackedThisTurn(u))
-            return;
+        if (u == null) return;
+
         unitController.selectUnit(u);
+
         if (unitController.hasMovedThisTurn(u)) {
-            UnitView view = findViewFor(u);
-            if (view != null) showPostMoveMenu(u, view);
-        } else {
-            highlightSystem.updateHighlight(u);
+            // Uniten har redan väntat – visa after-wait menyn (bara Close)
+            float wx = u.getX() * WorldMap.TILE_SIZE;
+            float wy = u.getY() * WorldMap.TILE_SIZE;
+            actionMenu.showAfterWait(wx + WorldMap.TILE_SIZE, wy);
+            return;
         }
+
+        showPreMoveMenu(u);
+    }
+
+    private void showPreMoveMenu(Unit unit) {
+        boolean canAttack = hasEnemyAdjacent(unit);
+
+        float wx = unit.getX() * WorldMap.TILE_SIZE;
+        float wy = unit.getY() * WorldMap.TILE_SIZE;
+
+        actionMenu.showPreMove(wx + WorldMap.TILE_SIZE, wy, canAttack);
     }
 
     private void deselect() {
@@ -284,5 +323,15 @@ public class GameInput extends InputAdapter {
             if (units.get(i) == unit) return unitViews.get(i);
         }
         return null;
+    }
+
+    private boolean hasEnemyAdjacent(Unit unit) {
+        int x = unit.getX();
+        int y = unit.getY();
+
+        return hasEnemyAt(x + 1, y, unit) ||
+            hasEnemyAt(x - 1, y, unit) ||
+            hasEnemyAt(x, y + 1, unit) ||
+            hasEnemyAt(x, y - 1, unit);
     }
 }
