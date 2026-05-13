@@ -23,11 +23,13 @@ import base.Player;
 import popup.TrainUnitListener;
 import unit.CustomUnit;
 import popup.UnitStatsPopup;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class GameScreen implements Screen {
+
     private final Main game;
     private Music bgMusic;
     private SpriteBatch batch;
@@ -47,9 +49,11 @@ public class GameScreen implements Screen {
     private IncomeHelper incomeHelper;
     private BitmapFont hudFont;
     private ShapeRenderer hudShape;
+
     public static final float endTurnBtnW = 120f;
     public static final float endTurnBtnH = 40f;
     private float endTurnBtnX, endTurnBtnY;
+
     private GameInput gameInput;
 
     public GameScreen(Main game) {
@@ -64,11 +68,11 @@ public class GameScreen implements Screen {
         bgMusic.setVolume(0.05f);
         bgMusic.play();
 
-        batch = new SpriteBatch();
-        sheet = new SpriteSheetLoader();
+        batch         = new SpriteBatch();
+        sheet         = new SpriteSheetLoader();
         tileController = new TileController();
-        world = new WorldMap(tileController);
-        grass = sheet.getTile(0, 5);
+        world         = new WorldMap(tileController);
+        grass         = sheet.getTile(0, 5);
 
         BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
         BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[20][30]);
@@ -79,11 +83,11 @@ public class GameScreen implements Screen {
         world.placeBaseStructure(baseGraphic, base1, 2, 2);
         world.placeBaseStructure(baseGraphic, base2, 20, 30);
 
-        unitController = new UnitController(tileController.getTileGrid());
+        unitController  = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
-        baseController = new BaseController(unitController);
+        baseController  = new BaseController(unitController);
 
-        // FIX 1: spawnListener skapar UnitView och lägger till i listan
+        // Spawn-listener skapar UnitView och lägger till i listan
         baseController.setSpawnListener(spawnedUnit -> {
             UnitType type = spawnedUnit.getUnitType();
             CharacterRenderer r = new CharacterRenderer(type);
@@ -99,11 +103,12 @@ public class GameScreen implements Screen {
         int lake1Row = random.nextInt(10, world.getRows() - 10);
         int lake1Col = random.nextInt(10, world.getCols() - 10);
         world.placeLakeStructure(lakeGraphic, lake1Row, lake1Col);
+
         int lake2Row = random.nextInt(10, world.getRows() - 10);
         int lake2Col = random.nextInt(10, world.getCols() - 10);
         world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
 
-        basePopup = new BasePopup(null, 200, 150, 300, 200);
+        basePopup  = new BasePopup(null, 200, 150, 300, 200);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
@@ -116,22 +121,19 @@ public class GameScreen implements Screen {
         statsPopup.setListener(new StatsChosenListener() {
             @Override
             public void onStatsChosen(BaseStats base, int hp, int attack, int speed, int defence) {
-
                 CustomUnit unit = baseController.createUnitFromChoice(base, hp, attack, speed, defence);
-
-                if(unit == null){
+                if (unit == null) {
                     statsPopup.ShowError("Not enough gold!");
                     return;
                 }
-
                 System.out.println("Unit created with stats: HP - " + hp +
                     " ATK - " + attack + " SPD - " + speed + " DEF - " + defence);
             }
         });
 
-
-        turnManager = new TurnManager();
+        turnManager  = new TurnManager();
         incomeHelper = new IncomeHelper();
+
         turnManager.setListener(new TurnChangeListener() {
             @Override
             public void onPlayerSwitch(Player newPlayer) {
@@ -155,29 +157,39 @@ public class GameScreen implements Screen {
         hudFont.getData().setScale(1.4f);
         hudShape = new ShapeRenderer();
 
-        endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
+        endTurnBtnX = Gdx.graphics.getWidth()  - endTurnBtnW - 20;
         endTurnBtnY = 20;
 
-        // FIX 2: skickar unitController.getUnits() och unitViews till GameInput
-        gameInput = new GameInput(tileController, basePopup, statsPopup, unitController, unitController.getUnits(), unitViews, highlightSystem, turnManager, endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH);
+        gameInput = new GameInput(
+            tileController, basePopup, statsPopup,
+            unitController, unitController.getUnits(), unitViews,
+            highlightSystem, turnManager,
+            endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH);
+
         Gdx.input.setInputProcessor(gameInput);
     }
 
     @Override
     public void render(float delta) {
-
         turnManager.update(delta);
 
+        // Viktigt: kontrollera om en animerande enhet har anlänt, och visa då post-move-menyn
+        gameInput.update();
+
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+
         batch.begin();
         for (int row = 0; row < world.getRows(); row++) {
             for (int col = 0; col < world.getCols(); col++) {
                 int id = world.getTile(row, col);
-                int x = col * WorldMap.TILE_SIZE;
-                int y = row * WorldMap.TILE_SIZE;
+                int x  = col * WorldMap.TILE_SIZE;
+                int y  = row * WorldMap.TILE_SIZE;
+
                 batch.draw(grass, x, y);
+
                 TextureRegion lakeTile = lakeGraphic.getTile(id);
                 if (lakeTile != null) { batch.draw(lakeTile, x, y); continue; }
+
                 TextureRegion baseTile = baseGraphic.getTile(id);
                 if (baseTile != null) { batch.draw(baseTile, x, y, 16, 16); continue; }
             }
@@ -186,6 +198,7 @@ public class GameScreen implements Screen {
 
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
+
         highlightSystem.render();
 
         batch.begin();
@@ -208,46 +221,46 @@ public class GameScreen implements Screen {
         batch.end();
 
         renderHud();
+
         gameInput.getActionMenu().render(batch, hudShape);
     }
 
-    private void renderHud(){
+    private void renderHud() {
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
-
-        float endTurnBtnX = screenW - endTurnBtnW - 20;
-        float endTurnBtnY = 20;
+        float bx = screenW - endTurnBtnW - 20;
+        float by = 20;
 
         hudShape.begin(ShapeRenderer.ShapeType.Filled);
         hudShape.setColor(0.15f, 0.4f, 0.15f, 0.9f);
-        hudShape.rect(endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH);
+        hudShape.rect(bx, by, endTurnBtnW, endTurnBtnH);
         hudShape.end();
 
         batch.begin();
         hudFont.setColor(Color.WHITE);
-
         String topLine = "Turn " + turnManager.getTurnNumber()
             + "  " + Math.round(turnManager.getTimeRemaining()) + "s"
             + "  " + turnManager.getCurrentPlayer().getDisplayName();
-        hudFont.draw(batch, topLine, screenW/ 2f - 150, screenH - 20);
+        hudFont.draw(batch, topLine, screenW / 2f - 150, screenH - 20);
 
         hudFont.setColor(Color.YELLOW);
         hudFont.draw(batch, "P1: " + Player.PLAYER_ONE.getGold() + "g", 20, screenH - 20);
         hudFont.draw(batch, "P2: " + Player.PLAYER_TWO.getGold() + "g", 20, screenH - 50);
 
         hudFont.setColor(Color.WHITE);
-        hudFont.draw(batch, "End Turn", endTurnBtnX + 10, endTurnBtnY + 20);
-
+        hudFont.draw(batch, "End Turn", bx + 10, by + 20);
         batch.end();
     }
 
-    @Override public void resize(int width, int height) {
+    @Override
+    public void resize(int width, int height) {
         batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
         hudShape.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
     }
-    @Override public void pause() {}
+
+    @Override public void pause()  {}
     @Override public void resume() {}
-    @Override public void hide() {}
+    @Override public void hide()   {}
 
     @Override
     public void dispose() {
