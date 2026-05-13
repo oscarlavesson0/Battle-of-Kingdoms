@@ -1,5 +1,6 @@
 package GuiMainGame;
 
+import base.Player;
 import base.TurnManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -21,6 +22,9 @@ public class GameInput extends InputAdapter {
     private HighlightSystem highlightSystem;
     private TurnManager turnManager;
     private float btnX, btnY, btnW, btnH;
+    private ActionMenu actionMenu;
+    private int pendingTileX = -1;
+    private int pendingTileY = -1;
 
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup, UnitController unitController,
@@ -40,6 +44,11 @@ public class GameInput extends InputAdapter {
         this.btnY = btnY;
         this.btnW = btnW;
         this.btnH = btnH;
+        this.actionMenu = new ActionMenu();
+    }
+
+    public ActionMenu getActionMenu(){
+        return actionMenu;
     }
 
     @Override
@@ -62,6 +71,13 @@ public class GameInput extends InputAdapter {
             return true;
         }
 
+        if(actionMenu.isVisible()){
+            ActionMenu.Action action = actionMenu.handleClick(screenX, realY);
+            if(action != null) handleAction(action);
+            return true;
+        }
+
+        // 5. Tile-koordinater
         int tileX = screenX / WorldMap.TILE_SIZE;
         int tileY = (Gdx.graphics.getHeight() - screenY) / WorldMap.TILE_SIZE;
         Tile[][] grid = tileController.getTileGrid();
@@ -70,42 +86,166 @@ public class GameInput extends InputAdapter {
             return false;
 
         Tile clickedTile = grid[tileY][tileX];
+        Unit selected = unitController.getSelectedUnit();
 
-        // Klick på en unit = välj den och highlighta
-        for (int i = 0; i < units.size(); i++) {
-            Unit u = units.get(i);
+
+        if (selected != null) {
+            List<Unit> currentUnits =
+                unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
+            for (Unit u : currentUnits) {
+                if (u == selected) continue;
+                if (u.getX() == tileX && u.getY() == tileY) {
+                    selectUnit(u);
+                    return true;
+                }
+            }
+
+            boolean inMovement    = highlightSystem.isHighlighted(tileX, tileY);
+            boolean inInteraction = highlightSystem.isInteractionTile(tileX, tileY);
+            boolean hasEnemy      = hasEnemyAt(tileX, tileY, selected);
+
+            if (inMovement || (inInteraction && hasEnemy)) {
+                boolean canMove   = inMovement
+                    && !unitController.hasMovedThisTurn(selected);
+                boolean canAttack = hasEnemy
+                    && !unitController.hasAttackedThisTurn(selected);
+
+                if (!canMove && !canAttack) {
+                    deselect();
+                    return true;
+                }
+
+                pendingTileX = tileX;
+                pendingTileY = tileY;
+
+                if (canMove && !canAttack) {
+                    executeMove(selected);
+                } else if (!canMove && canAttack) {
+                    executeAttack(selected);
+                } else {
+                    float menuSX = tileX * WorldMap.TILE_SIZE;
+                    float menuSY = tileY * WorldMap.TILE_SIZE;
+                    actionMenu.show(menuSX, menuSY, true, true);
+                }
+                return true;
+            }
+
+            deselect();
+
+            if (clickedTile.getBase() != null) {
+                basePopup.show(clickedTile.getBase());
+            }
+            return true;
+        }
+
+        List<Unit> currentUnits =
+            unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
+        for (Unit u : currentUnits) {
             if (u.getX() == tileX && u.getY() == tileY) {
-                unitController.selectUnit(u);
-                highlightSystem.updateHighlight(u);
+                selectUnit(u);
                 return true;
             }
         }
 
-        // Klick på bas = öppna popup
         if (clickedTile.getBase() != null) {
             basePopup.show(clickedTile.getBase());
             return true;
         }
 
-        // Klick på tile = försök flytta markerad unit
+        return false;
+    }
+    private void handleAction(ActionMenu.Action action) {
         Unit selected = unitController.getSelectedUnit();
-        if (selected != null) {
-            if(!highlightSystem.isHighlighted(tileX, tileY)){
-                return false;
-            }
-            UnitView selectedView = null;
-            for (int i = 0; i < units.size(); i++) {
-                if (units.get(i) == selected) {
-                    selectedView = unitViews.get(i);
-                    break;
-                }
-            }
-            if (unitController.moveSelectedUnit(tileX, tileY, selectedView)) {
-                highlightSystem.clear();
-                return true;
+        if (selected == null) return;
+        switch (action) {
+            case MOVE   -> executeMove(selected);
+            case ATTACK -> executeAttack(selected);
+            case CANCEL -> deselect();
+        }
+    }
+
+    private void executeMove(Unit selected) {
+        UnitView selectedView = findViewFor(selected);
+        if (unitController.moveSelectedUnit(pendingTileX, pendingTileY, selectedView)) {
+            highlightSystem.clear();
+        }
+        pendingTileX = pendingTileY = -1;
+    }
+
+    private void executeAttack(Unit selected) {
+        Unit target = getEnemyAt(pendingTileX, pendingTileY, selected);
+        if (target == null) { deselect(); return; }
+
+        int dist = Math.abs(selected.getX() - pendingTileX)
+            + Math.abs(selected.getY() - pendingTileY);
+
+        if (dist == 1) {
+            unitController.attackUnit(selected, target);
+        } else {
+            int[] moveTile = findAdjacentMoveTile(
+                highlightSystem.getMovementTiles(), pendingTileX, pendingTileY);
+            if (moveTile != null) {
+                UnitView selectedView = findViewFor(selected);
+                unitController.moveAndAttack(selected, moveTile[0], moveTile[1], target, selectedView);
             }
         }
 
-        return false;
+        highlightSystem.clear();
+        pendingTileX = pendingTileY = -1;
+    }
+
+    private void selectUnit(Unit u) {
+        if (unitController.hasMovedThisTurn(u) && unitController.hasAttackedThisTurn(u))
+            return;
+
+        unitController.selectUnit(u);
+
+        System.out.println("Select: hasMoved=" + unitController.hasMovedThisTurn(u)
+            + ", hasAttacked=" + unitController.hasAttackedThisTurn(u));
+
+        if (unitController.hasMovedThisTurn(u)) {
+            highlightSystem.updateAttackOnlyHighlight(u);
+        } else {
+            highlightSystem.updateHighlight(u);
+        }
+    }
+
+    private void deselect() {
+        unitController.selectUnit(null);
+        highlightSystem.clear();
+        pendingTileX = pendingTileY = -1;
+    }
+
+    private boolean hasEnemyAt(int tileX, int tileY, Unit friendly) {
+        return getEnemyAt(tileX, tileY, friendly) != null;
+    }
+
+    private Unit getEnemyAt(int tileX, int tileY, Unit friendly) {
+        for (Unit u : unitController.getAllUnits()) {
+            if (u.isAlive()
+                && u.getPlayer() != friendly.getPlayer()
+                && u.getX() == tileX
+                && u.getY() == tileY)
+                return u;
+        }
+        return null;
+    }
+
+    private int[] findAdjacentMoveTile(List<int[]> movTiles, int tx, int ty) {
+        int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+        for (int[] t : movTiles) {
+            for (int[] d : dirs) {
+                if (t[0] + d[0] == tx && t[1] + d[1] == ty) return t;
+            }
+        }
+        return null;
+    }
+    private UnitView findViewFor(Unit unit) {
+        for (int i = 0; i < units.size(); i++) {
+            if (units.get(i) == unit) {
+                return unitViews.get(i);
+            }
+        }
+        return null;
     }
 }

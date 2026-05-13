@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
     public static final float endTurnBtnW = 120f;
     public static final float endTurnBtnH = 40f;
     private float endTurnBtnX, endTurnBtnY;
+    private GameInput gameInput;
 
     public GameScreen(Main game) {
         this.game = game;
@@ -70,13 +71,13 @@ public class GameScreen implements Screen {
         grass = sheet.getTile(0, 5);
 
         BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
-        BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[34][46]);
+        BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[20][30]);
 
         baseGraphic = new Base(sheet, base1);
         lakeGraphic = new Lake(sheet);
 
         world.placeBaseStructure(baseGraphic, base1, 2, 2);
-        world.placeBaseStructure(baseGraphic, base2, 34, 46);
+        world.placeBaseStructure(baseGraphic, base2, 20, 30);
 
         unitController = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
@@ -90,6 +91,9 @@ public class GameScreen implements Screen {
             view.applyPlayerColor(spawnedUnit.getPlayer());
             unitViews.add(view);
         });
+
+        baseController.createUnitFromChoice(base1, 20, 5, 5, 1);
+        baseController.createUnitFromChoice(base2, 20, 5, 5, 1);
 
         Random random = new Random();
         int lake1Row = random.nextInt(10, world.getRows() - 10);
@@ -125,6 +129,7 @@ public class GameScreen implements Screen {
             public void onPlayerSwitch(Player newPlayer) {
                 basePopup.hide();
                 statsPopup.hide();
+                unitController.resetMovement();
                 System.out.println("Currently " + newPlayer.getDisplayName() + "'s turn!");
             }
 
@@ -146,10 +151,8 @@ public class GameScreen implements Screen {
         endTurnBtnY = 20;
 
         // FIX 2: skickar unitController.getUnits() och unitViews till GameInput
-        Gdx.input.setInputProcessor(
-            new GameInput(tileController, basePopup, statsPopup,
-                unitController, unitController.getUnits(), unitViews, highlightSystem, turnManager, endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH)
-        );
+        gameInput = new GameInput(tileController, basePopup, statsPopup, unitController, unitController.getUnits(), unitViews, highlightSystem, turnManager, endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH);
+        Gdx.input.setInputProcessor(gameInput);
     }
 
     @Override
@@ -184,7 +187,20 @@ public class GameScreen implements Screen {
         }
         batch.end();
 
+        hudShape.begin(ShapeRenderer.ShapeType.Filled);
+        for (UnitView uv : unitViews) {
+            uv.renderHpBar(hudShape);
+        }
+        hudShape.end();
+
+        batch.begin();
+        for (UnitView uv : unitViews) {
+            uv.renderHpText(batch);
+        }
+        batch.end();
+
         renderHud();
+        gameInput.getActionMenu().render(batch, hudShape);
     }
 
     private void renderHud(){
