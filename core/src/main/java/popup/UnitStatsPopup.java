@@ -1,5 +1,7 @@
 package popup;
 
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -53,6 +55,7 @@ public class UnitStatsPopup {
     private Texture letterXIcon;
     private Texture hpIcon;
     private Texture woodBackground;
+    private Texture frameTexture;
 
     public UnitStatsPopup(int x, int y, int witdth, int height){
         this.x = x;
@@ -60,7 +63,12 @@ public class UnitStatsPopup {
         this.width = witdth;
         this.height = height;
 
-        this.font = new BitmapFont();
+        //this.font = new BitmapFont();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 16;
+        this.font = generator.generateFont(parameter);
+        generator.dispose();
         this.shapeRenderer = new ShapeRenderer();
         this.batch = new SpriteBatch();
 
@@ -72,6 +80,7 @@ public class UnitStatsPopup {
         this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
         this.hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
+        this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
     }
 
     public void setListener(StatsChosenListener listener){
@@ -120,20 +129,21 @@ public class UnitStatsPopup {
 
         batch.begin();
         batch.draw(woodBackground, x, y, width, height);
+        batch.draw(frameTexture, x - 13, y - 15, width + 30, height + 30);
         batch.end();
 
 
         batch.begin();
         font.setColor(Color.GOLD);
 
-        font.draw(batch, "Create Unit", x + 20, y + height - 20);
+        //font.draw(batch, "Create Unit", x + 20, y + height - 20);
 
         // Points left
-        batch.draw(pointsIcon, x + 20, y + height - 56, 20, 20);
-        font.draw(batch, "      Points left: " + pointsLeft, x + 20, y + height - 40);
+        batch.draw(pointsIcon, x + 20, y + height - 48, 20, 20);
+        font.draw(batch, "      Points left: " + pointsLeft, x + 20, y + height - 26);
 
         // Stats with plus and minus button
-        batch.draw(hpIcon, x + 20, y + height - 76, 20, 20);
+        batch.draw(hpIcon, x + 20, y + height - 80, 20, 20);
         font.draw(batch, "      " + hp, x + 20, y + height - 60);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 60);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 60);
@@ -143,26 +153,26 @@ public class UnitStatsPopup {
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 100);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 100);
 
-        batch.draw(speedIcon, x + 20, y + height - 155, 20, 20);
+        batch.draw(speedIcon, x + 20, y + height - 160, 20, 20);
         font.draw(batch, "      " + speed, x + 20, y + height - 140);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 140);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 140);
 
-        batch.draw(shieldIcon, x + 20, y + height - 196, 20, 20);
+        batch.draw(shieldIcon, x + 20, y + height - 200, 20, 20);
         font.draw(batch, "      " + defence, x + 20, y + height - 180);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 180);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 180);
 
         // Create unit button
-        font.draw(batch, "[ Create Unit ]", x + 20, y + 40);
-        batch.draw(coinIcon, x + 115, y + 7 + 20, 20, 15);
-        font.draw(batch, "100", x + 140, y + 40);
+        font.draw(batch, "    [ Create Unit ]", x + 20, y + 40);
+        batch.draw(coinIcon, x + 150, y + 7 + 20, 20, 15);
+        font.draw(batch, "100", x + 175, y + 40);
 
         // Close-button
         //font.setColor(Color.RED);
         //font.draw(batch, "[ Close ]", x + width - 80, y + height - 20);
 
-        batch.draw(letterXIcon, x + width - 35, y + height - 35, 25, 25);
+        batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
         // Error message
         if (showError){
             if (batch.isDrawing()){
