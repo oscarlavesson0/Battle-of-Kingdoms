@@ -1,5 +1,7 @@
 package popup;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -43,6 +45,10 @@ public class UnitStatsPopup {
     private StatsChosenListener listener;
     private BaseStats base;
     private ShapeRenderer shapeRenderer;
+    private Texture hpIcon;
+    private Texture swordIcon;
+    private Texture shieldIcon;
+    private Texture coinIcon;
 
     public UnitStatsPopup(int x, int y, int witdth, int height){
         this.x = x;
@@ -53,6 +59,10 @@ public class UnitStatsPopup {
         this.font = new BitmapFont();
         this.shapeRenderer = new ShapeRenderer();
         this.batch = new SpriteBatch();
+
+        this.hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/gem.png"));
+        this.swordIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/sword.png"));
+        this.shieldIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/shield.png"));
     }
 
     public void setListener(StatsChosenListener listener){
@@ -109,11 +119,13 @@ public class UnitStatsPopup {
         font.draw(batch, "Points left" + pointsLeft, x + 20, y + height - 40);
 
         // Stats with plus and minus button
-        font.draw(batch, "HP: " + hp, x + 20, y + height - 60);
+        batch.draw(hpIcon, x + 20, y + height - 76, 20, 20);
+        font.draw(batch, "      " + hp, x + 20, y + height - 60);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 60);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 60);
 
-        font.draw(batch, "Attack: " + attack, x + 20, y + height - 100);
+        batch.draw(swordIcon, x + 20, y + height - 116, 20, 20);
+        font.draw(batch, "      " + attack, x + 20, y + height - 100);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 100);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 100);
 
@@ -121,7 +133,8 @@ public class UnitStatsPopup {
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 140);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 140);
 
-        font.draw(batch, "Defence: " + defence, x + 20, y + height - 180);
+        batch.draw(shieldIcon, x + 20, y + height - 196, 20, 20);
+        font.draw(batch, "      " + defence, x + 20, y + height - 180);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 180);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 180);
 
