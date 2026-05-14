@@ -37,6 +37,7 @@ public class UnitStatsPopup {
     private final float BUTTON_PLUS_OFFSET = 180;
     private final float BUTTON_WIDTH = 30;
     private final float BUTTON_HEIGHT = 30;
+    private final Color GOLD = new Color(1f, 0.84f, 0.0f, 1f);
 
     private BitmapFont font = new BitmapFont();
     private SpriteBatch batch = new SpriteBatch();
@@ -44,10 +45,14 @@ public class UnitStatsPopup {
     private StatsChosenListener listener;
     private BaseStats base;
     private ShapeRenderer shapeRenderer;
-    private Texture hpIcon;
+    private Texture pointsIcon;
     private Texture swordIcon;
     private Texture shieldIcon;
     private Texture coinIcon;
+    private Texture speedIcon;
+    private Texture letterXIcon;
+    private Texture hpIcon;
+    private Texture woodBackground;
 
     public UnitStatsPopup(int x, int y, int witdth, int height){
         this.x = x;
@@ -59,9 +64,14 @@ public class UnitStatsPopup {
         this.shapeRenderer = new ShapeRenderer();
         this.batch = new SpriteBatch();
 
-        this.hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/gem.png"));
+        this.pointsIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/gem.png"));
         this.swordIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/sword.png"));
         this.shieldIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/shield.png"));
+        this.coinIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/coin.png"));
+        this.speedIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/boot.png"));
+        this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
+        this.hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
     }
 
     public void setListener(StatsChosenListener listener){
@@ -103,19 +113,24 @@ public class UnitStatsPopup {
             batch.end();
         }
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
-        shapeRenderer.rect(x, y, width, height);
-        shapeRenderer.end();
+        //shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        //shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
+        //shapeRenderer.rect(x, y, width, height);
+        //shapeRenderer.end();
+
+        batch.begin();
+        batch.draw(woodBackground, x, y, width, height);
+        batch.end();
 
 
         batch.begin();
-        font.setColor(Color.BLACK);
+        font.setColor(Color.GOLD);
 
         font.draw(batch, "Create Unit", x + 20, y + height - 20);
 
         // Points left
-        font.draw(batch, "Points left" + pointsLeft, x + 20, y + height - 40);
+        batch.draw(pointsIcon, x + 20, y + height - 56, 20, 20);
+        font.draw(batch, "      Points left: " + pointsLeft, x + 20, y + height - 40);
 
         // Stats with plus and minus button
         batch.draw(hpIcon, x + 20, y + height - 76, 20, 20);
@@ -128,7 +143,8 @@ public class UnitStatsPopup {
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 100);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 100);
 
-        font.draw(batch, "Speed: " + speed, x + 20, y + height - 140);
+        batch.draw(speedIcon, x + 20, y + height - 155, 20, 20);
+        font.draw(batch, "      " + speed, x + 20, y + height - 140);
         font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 140);
         font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 140);
 
@@ -139,11 +155,14 @@ public class UnitStatsPopup {
 
         // Create unit button
         font.draw(batch, "[ Create Unit ]", x + 20, y + 40);
+        batch.draw(coinIcon, x + 115, y + 7 + 20, 20, 15);
+        font.draw(batch, "100", x + 140, y + 40);
 
         // Close-button
-        font.setColor(Color.RED);
-        font.draw(batch, "[ Close ]", x + width - 80, y + height - 20);
+        //font.setColor(Color.RED);
+        //font.draw(batch, "[ Close ]", x + width - 80, y + height - 20);
 
+        batch.draw(letterXIcon, x + width - 35, y + height - 35, 25, 25);
         // Error message
         if (showError){
             if (batch.isDrawing()){
@@ -256,7 +275,7 @@ public class UnitStatsPopup {
                 pointsLeft++;
             }
         }
-        // Soeed plus
+        // Speed plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
             realY >= y + height - 160 && realY <= y + height - 130) {
             if (speed < MAX_SPEED && pointsLeft > 0) {
