@@ -1,5 +1,6 @@
 package GuiMainGame;
 
+import base.BaseStats;
 import base.TurnManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
@@ -14,40 +15,42 @@ import java.util.List;
 
 public class GameInput extends InputAdapter {
 
-    private TileController tileController;
-    private BasePopup basePopup;
-    private UnitStatsPopup statsPopup;
-    private UnitController unitController;
-    private List<Unit> units;
-    private List<UnitView> unitViews;
-    private HighlightSystem highlightSystem;
-    private TurnManager turnManager;
+    private TileController   tileController;
+    private BasePopup        basePopup;
+    private UnitStatsPopup   statsPopup;
+    private UnitController   unitController;
+    private List<Unit>       units;
+    private List<UnitView>   unitViews;
+    private HighlightSystem  highlightSystem;
+    private TurnManager      turnManager;
     private float btnX, btnY, btnW, btnH;
-    private ActionMenu actionMenu;
+    private ActionMenu       actionMenu;
 
-    private Unit pendingPostMoveUnit = null;
-
+    private Unit    pendingPostMoveUnit  = null;
     private boolean awaitingAttackTarget = false;
-    private Unit attackingUnit = null;
+    private Unit    attackingUnit        = null;
+
+    private List<BaseStats> bases;
 
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup, UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
                      HighlightSystem highlightSystem,
                      TurnManager turnManager,
-                     float btnX, float btnY, float btnW, float btnH) {
-
-        this.tileController = tileController;
-        this.basePopup = basePopup;
-        this.statsPopup = statsPopup;
-        this.unitController = unitController;
-        this.units = units;
-        this.unitViews = unitViews;
+                     float btnX, float btnY, float btnW, float btnH,
+                     List<BaseStats> bases /* NY PARAMETER */) {
+        this.tileController  = tileController;
+        this.basePopup       = basePopup;
+        this.statsPopup      = statsPopup;
+        this.unitController  = unitController;
+        this.units           = units;
+        this.unitViews       = unitViews;
         this.highlightSystem = highlightSystem;
-        this.turnManager = turnManager;
+        this.turnManager     = turnManager;
         this.btnX = btnX; this.btnY = btnY;
         this.btnW = btnW; this.btnH = btnH;
-        this.actionMenu = new ActionMenu();
+        this.actionMenu      = new ActionMenu();
+        this.bases = bases;
     }
 
     public ActionMenu getActionMenu() { return actionMenu; }
@@ -63,20 +66,20 @@ public class GameInput extends InputAdapter {
     }
 
     private void showPreWaitMenu(Unit unit) {
-
         boolean canAttack = false;
         highlightSystem.updateAttackOnlyHighlight(unit);
-
         for (int[] tile : highlightSystem.getInteractionTiles()) {
             if (hasEnemyAt(tile[0], tile[1], unit)) {
                 canAttack = true;
                 break;
             }
+            if (hasEnemyBaseAt(tile[0], tile[1], unit)) {
+                canAttack = true;
+                break;
+            }
         }
-
         float wx = unit.getX() * WorldMap.TILE_SIZE;
         float wy = unit.getY() * WorldMap.TILE_SIZE;
-
         actionMenu.showPreWait(wx + WorldMap.TILE_SIZE, wy, canAttack);
         unitController.selectUnit(unit);
     }
@@ -121,19 +124,15 @@ public class GameInput extends InputAdapter {
         // Tile click
         int tileX = screenX / WorldMap.TILE_SIZE;
         int tileY = (Gdx.graphics.getHeight() - screenY) / WorldMap.TILE_SIZE;
-
         Tile[][] grid = tileController.getTileGrid();
         if (tileX < 0 || tileY < 0 || tileY >= grid.length || tileX >= grid[0].length)
             return false;
-
         Tile clickedTile = grid[tileY][tileX];
-        Unit selected    = unitController.getSelectedUnit();
 
+        Unit selected = unitController.getSelectedUnit();
         if (selected != null) {
-
-            // Klick på annan unit → STÄNG BARA
-            List<Unit> currentUnits =
-                unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
+            // Klick på annan unit → stäng
+            List<Unit> currentUnits = unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
             for (Unit u : currentUnits) {
                 if (u == selected) continue;
                 if (u.getX() == tileX && u.getY() == tileY) {
@@ -141,37 +140,31 @@ public class GameInput extends InputAdapter {
                     return true;
                 }
             }
-
             // Klick på blå ruta → flytta
             if (highlightSystem.isHighlighted(tileX, tileY)) {
-
-                UnitView view      = findViewFor(selected);
-                Unit     movedUnit = selected;
-
+                UnitView view   = findViewFor(selected);
+                Unit movedUnit  = selected;
                 if (unitController.moveSelectedUnit(tileX, tileY, view)) {
-
                     actionMenu.hide();
                     highlightSystem.clear();
                     pendingPostMoveUnit = movedUnit;
                 }
                 return true;
             }
-
             cancelAll();
-            if (clickedTile.getBase() != null) basePopup.show(clickedTile.getBase());
+            if (clickedTile.getBase() != null)
+                basePopup.show(clickedTile.getBase());
             return true;
         }
 
         // Välj unit
-        List<Unit> currentUnits =
-            unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
+        List<Unit> currentUnits = unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
         for (Unit u : currentUnits) {
             if (u.getX() == tileX && u.getY() == tileY) {
                 selectUnit(u);
                 return true;
             }
         }
-
         if (clickedTile.getBase() != null) {
             basePopup.show(clickedTile.getBase());
             return true;
@@ -182,105 +175,76 @@ public class GameInput extends InputAdapter {
     private void handleMenuAction(ActionMenu.Action action) {
         Unit selected = unitController.getSelectedUnit();
         if (selected == null) return;
-
         switch (action) {
-
-            case MOVE -> {
-                // Visa rörelsemarkering från PRE_MOVE
-                highlightSystem.updateHighlight(selected);
-            }
-
+            case MOVE -> highlightSystem.updateHighlight(selected);
             case WAIT -> {
-                // Oavsett om det är PRE_MOVE eller PRE_WAIT:
-                // commit uniten och lås den för resten av rundan
                 unitController.commitMove(selected);
                 cancelAll();
             }
-
             case ATTACK -> {
-                // Committa uniten på sin nuvarande plats innan attack
-                // så den låses oavsett om den rört sig eller inte
                 unitController.commitMove(selected);
                 highlightSystem.updateAttackOnlyHighlight(selected);
                 awaitingAttackTarget = true;
-                attackingUnit        = selected;
+                attackingUnit = selected;
             }
-
-            case CANCEL -> {
-                // Endast i PRE_WAIT: animera tillbaka till ursprungsposition
-                cancelMoveForSelected(selected);
-            }
-
-            case CLOSE -> {
-                cancelAll();
-            }
+            case CANCEL -> cancelMoveForSelected(selected);
+            case CLOSE  -> cancelAll();
         }
     }
 
     private void cancelMoveForSelected(Unit unit) {
-
         int[] origin = unitController.cancelMove(unit);
-        if (origin == null) {
-            cancelAll();
-            return;
-        }
-
+        if (origin == null) { cancelAll(); return; }
         actionMenu.hide();
-
         UnitView view = findViewFor(unit);
-        if (view != null) {
-            view.setCancelPath(origin[0], origin[1]);
-        } else {
-            unit.setPosition(origin[0], origin[1]);
-        }
-
+        if (view != null) view.setCancelPath(origin[0], origin[1]);
+        else              unit.setPosition(origin[0], origin[1]);
         highlightSystem.clear();
-
         float wx = origin[0] * WorldMap.TILE_SIZE;
         float wy = origin[1] * WorldMap.TILE_SIZE;
         boolean canAttack = hasEnemyAdjacent(unit);
-
         actionMenu.showPreMove(wx + WorldMap.TILE_SIZE, wy, canAttack);
-
         unitController.selectUnit(unit);
     }
 
     private void handleAttackTargetClick(float screenX, float realY) {
-        int tileX = (int) (screenX / WorldMap.TILE_SIZE);
-        int tileY = (int) (realY   / WorldMap.TILE_SIZE);
+        int tileX = (int)(screenX / WorldMap.TILE_SIZE);
+        int tileY = (int)(realY   / WorldMap.TILE_SIZE);
 
         if (highlightSystem.isInteractionTile(tileX, tileY)) {
+            // Försök attackera unit
             Unit target = getEnemyAt(tileX, tileY, attackingUnit);
             if (target != null) {
                 unitController.attackUnit(attackingUnit, target);
+                cancelAll();
+                return;
+            }
+            BaseStats targetBase = getEnemyBaseAt(tileX, tileY, attackingUnit);
+            if (targetBase != null) {
+                unitController.attackBase(attackingUnit, targetBase);
+                cancelAll();
+                return;
             }
         }
-
         cancelAll();
     }
 
     private void selectUnit(Unit u) {
         if (u == null) return;
-
         unitController.selectUnit(u);
-
         if (unitController.hasMovedThisTurn(u)) {
-            // Uniten har redan väntat – visa after-wait menyn (bara Close)
             float wx = u.getX() * WorldMap.TILE_SIZE;
             float wy = u.getY() * WorldMap.TILE_SIZE;
             actionMenu.showAfterWait(wx + WorldMap.TILE_SIZE, wy);
             return;
         }
-
         showPreMoveMenu(u);
     }
 
     private void showPreMoveMenu(Unit unit) {
-        boolean canAttack = hasEnemyAdjacent(unit);
-
+        boolean canAttack = hasEnemyAdjacent(unit) || hasEnemyBaseAdjacent(unit);
         float wx = unit.getX() * WorldMap.TILE_SIZE;
         float wy = unit.getY() * WorldMap.TILE_SIZE;
-
         actionMenu.showPreMove(wx + WorldMap.TILE_SIZE, wy, canAttack);
     }
 
@@ -303,6 +267,7 @@ public class GameInput extends InputAdapter {
             unitController.commitMove(sel);
     }
 
+    // Hjälpmetoder – units
     private boolean hasEnemyAt(int tileX, int tileY, Unit friendly) {
         return getEnemyAt(tileX, tileY, friendly) != null;
     }
@@ -318,20 +283,50 @@ public class GameInput extends InputAdapter {
         return null;
     }
 
-    private UnitView findViewFor(Unit unit) {
-        for (int i = 0; i < units.size(); i++) {
-            if (units.get(i) == unit) return unitViews.get(i);
+    private boolean hasEnemyAdjacent(Unit unit) {
+        int x = unit.getX(), y = unit.getY();
+        return hasEnemyAt(x+1,y,unit) || hasEnemyAt(x-1,y,unit)
+            || hasEnemyAt(x,y+1,unit) || hasEnemyAt(x,y-1,unit);
+    }
+
+    private BaseStats getEnemyBaseAt(int tileX, int tileY, Unit friendly) {
+        if (bases == null) return null;
+        for (BaseStats b : bases) {
+            if (b.isDestroyed()) continue;
+            if (b.getOwner() == friendly.getPlayer()) continue;
+            int bx = b.getPosition().getX();
+            int by = b.getPosition().getY();
+            // Kolla om tilen är inuti basens 4x4-area
+            if (tileX >= bx && tileX < bx + 4 && tileY >= by && tileY < by + 4)
+                return b;
+            // Kolla också om tilen gränsar till basens area (en tile utanför)
+            for (int dr = 0; dr < 4; dr++) {
+                for (int dc = 0; dc < 4; dc++) {
+                    int tx = bx + dc;
+                    int ty = by + dr;
+                    if ((Math.abs(tileX - tx) == 1 && tileY == ty) ||
+                        (Math.abs(tileY - ty) == 1 && tileX == tx)) {
+                        return b;
+                    }
+                }
+            }
         }
         return null;
     }
 
-    private boolean hasEnemyAdjacent(Unit unit) {
-        int x = unit.getX();
-        int y = unit.getY();
+    private boolean hasEnemyBaseAt(int tileX, int tileY, Unit friendly) {
+        return getEnemyBaseAt(tileX, tileY, friendly) != null;
+    }
 
-        return hasEnemyAt(x + 1, y, unit) ||
-            hasEnemyAt(x - 1, y, unit) ||
-            hasEnemyAt(x, y + 1, unit) ||
-            hasEnemyAt(x, y - 1, unit);
+    private boolean hasEnemyBaseAdjacent(Unit unit) {
+        int x = unit.getX(), y = unit.getY();
+        return hasEnemyBaseAt(x+1,y,unit) || hasEnemyBaseAt(x-1,y,unit)
+            || hasEnemyBaseAt(x,y+1,unit) || hasEnemyBaseAt(x,y-1,unit);
+    }
+
+    private UnitView findViewFor(Unit unit) {
+        for (int i = 0; i < units.size(); i++)
+            if (units.get(i) == unit) return unitViews.get(i);
+        return null;
     }
 }

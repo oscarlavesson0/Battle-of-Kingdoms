@@ -1,7 +1,7 @@
 package io.github.BattleOfKingdoms;
 
+import base.Player;
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 
 public class Main extends Game {
@@ -25,6 +25,11 @@ public class Main extends Game {
 
     public void startGame() {
         currentScreen = new GameScreen(this);
+        setScreen(currentScreen);
+    }
+
+    public void showWinScreen(Player winner) {
+        currentScreen = new WinScreen(this, winner);
         setScreen(currentScreen);
     }
 }

@@ -1,30 +1,32 @@
 package io.github.BattleOfKingdoms;
 
+import base.BaseDestroyedListener;   // NY IMPORT
+import base.BaseStats;
 import base.IncomeHelper;
+import base.Player;
 import base.TurnChangeListener;
 import base.TurnManager;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import GuiMainGame.*;
-import base.BaseController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
-import popup.StatsChosenListener;
-import terrain.TileController;
+import GuiMainGame.*;
+import base.BaseController;
 import popup.BasePopup;
-import unit.UnitController;
-import com.badlogic.gdx.audio.Music;
-import base.BaseStats;
-import base.Player;
+import popup.StatsChosenListener;
 import popup.TrainUnitListener;
-import unit.CustomUnit;
 import popup.UnitStatsPopup;
+import terrain.TileController;
+import unit.CustomUnit;
+import unit.UnitController;
 
 import java.util.ArrayList;
+import java.util.Arrays;  // NY IMPORT
 import java.util.List;
 import java.util.Random;
 
@@ -56,9 +58,9 @@ public class GameScreen implements Screen {
 
     private GameInput gameInput;
 
-    public GameScreen(Main game) {
-        this.game = game;
-    }
+    private BaseStats base1, base2;
+
+    public GameScreen(Main game) { this.game = game; }
 
     @Override
     public void show() {
@@ -74,20 +76,29 @@ public class GameScreen implements Screen {
         world         = new WorldMap(tileController);
         grass         = sheet.getTile(0, 5);
 
-        BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
-        BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[20][30]);
+        base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
+        base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[20][30]);
 
         baseGraphic = new Base(sheet, base1);
         lakeGraphic = new Lake(sheet);
 
-        world.placeBaseStructure(baseGraphic, base1, 2, 2);
+        world.placeBaseStructure(baseGraphic, base1, 2,  2);
         world.placeBaseStructure(baseGraphic, base2, 20, 30);
 
         unitController  = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
         baseController  = new BaseController(unitController);
 
-        // Spawn-listener skapar UnitView och lägger till i listan
+        unitController.setBaseDestroyedListener(new BaseDestroyedListener() {
+            @Override
+            public void onBaseDestroyed(BaseStats destroyedBase, Player winner) {
+                // Byt till vinst-skärmen på nästa render-cykel är säkrast,
+                // men ett direkt anrop fungerar också i libGDX.
+                bgMusic.stop();
+                game.showWinScreen(winner);
+            }
+        });
+
         baseController.setSpawnListener(spawnedUnit -> {
             UnitType type = spawnedUnit.getUnitType();
             CharacterRenderer r = new CharacterRenderer(type);
@@ -100,71 +111,62 @@ public class GameScreen implements Screen {
         baseController.createUnitFromChoice(base2, 20, 5, 5, 1);
 
         Random random = new Random();
-        int lake1Row = random.nextInt(10, world.getRows() - 10);
-        int lake1Col = random.nextInt(10, world.getCols() - 10);
-        world.placeLakeStructure(lakeGraphic, lake1Row, lake1Col);
+        world.placeLakeStructure(lakeGraphic,
+            random.nextInt(10, world.getRows()-10),
+            random.nextInt(10, world.getCols()-10));
+        world.placeLakeStructure(lakeGraphic,
+            random.nextInt(10, world.getRows()-10),
+            random.nextInt(10, world.getCols()-10));
 
-        int lake2Row = random.nextInt(10, world.getRows() - 10);
-        int lake2Col = random.nextInt(10, world.getCols() - 10);
-        world.placeLakeStructure(lakeGraphic, lake2Row, lake2Col);
-
-        basePopup  = new BasePopup(null, 200, 150, 300, 200);
+        basePopup = new BasePopup(null, 200, 150, 300, 200);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
-            @Override
-            public void onTrainUnit(BaseStats base) {
-                statsPopup.open(base);
-            }
+            @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base); }
         });
 
         statsPopup.setListener(new StatsChosenListener() {
             @Override
             public void onStatsChosen(BaseStats base, int hp, int attack, int speed, int defence) {
                 CustomUnit unit = baseController.createUnitFromChoice(base, hp, attack, speed, defence);
-                if (unit == null) {
-                    statsPopup.ShowError("Not enough gold!");
-                    return;
-                }
-                System.out.println("Unit created with stats: HP - " + hp +
-                    " ATK - " + attack + " SPD - " + speed + " DEF - " + defence);
+                if (unit == null) { statsPopup.ShowError("Not enough gold!"); return; }
+                System.out.println("Unit created: HP=" + hp + " ATK=" + attack
+                    + " SPD=" + speed + " DEF=" + defence);
             }
         });
 
         turnManager  = new TurnManager();
         incomeHelper = new IncomeHelper();
-
         turnManager.setListener(new TurnChangeListener() {
-            @Override
-            public void onPlayerSwitch(Player newPlayer) {
+            @Override public void onPlayerSwitch(Player newPlayer) {
                 basePopup.hide();
                 statsPopup.hide();
                 unitController.resetMovement();
                 System.out.println("Currently " + newPlayer.getDisplayName() + "'s turn!");
             }
-
-            @Override
-            public void onTurnComplete(int newTurnNumber) {
+            @Override public void onTurnComplete(int newTurnNumber) {
                 incomeHelper.applyIncome(Player.PLAYER_ONE);
                 incomeHelper.applyIncome(Player.PLAYER_TWO);
-                System.out.println("--- Turn " + newTurnNumber + " starting---");
+                System.out.println("--- Turn " + newTurnNumber + " ---");
                 System.out.println("P1 gold: " + Player.PLAYER_ONE.getGold());
                 System.out.println("P2 gold: " + Player.PLAYER_TWO.getGold());
             }
         });
 
-        hudFont = new BitmapFont();
+        hudFont  = new BitmapFont();
         hudFont.getData().setScale(1.4f);
         hudShape = new ShapeRenderer();
 
-        endTurnBtnX = Gdx.graphics.getWidth()  - endTurnBtnW - 20;
+        endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
         endTurnBtnY = 20;
 
+        List<BaseStats> allBases = Arrays.asList(base1, base2);
         gameInput = new GameInput(
             tileController, basePopup, statsPopup,
             unitController, unitController.getUnits(), unitViews,
             highlightSystem, turnManager,
-            endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH);
+            endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH,
+            allBases);
 
         Gdx.input.setInputProcessor(gameInput);
     }
@@ -172,10 +174,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         turnManager.update(delta);
-
-        // Viktigt: kontrollera om en animerande enhet har anlänt, och visa då post-move-menyn
         gameInput.update();
-
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
         batch.begin();
@@ -184,12 +183,9 @@ public class GameScreen implements Screen {
                 int id = world.getTile(row, col);
                 int x  = col * WorldMap.TILE_SIZE;
                 int y  = row * WorldMap.TILE_SIZE;
-
                 batch.draw(grass, x, y);
-
                 TextureRegion lakeTile = lakeGraphic.getTile(id);
                 if (lakeTile != null) { batch.draw(lakeTile, x, y); continue; }
-
                 TextureRegion baseTile = baseGraphic.getTile(id);
                 if (baseTile != null) { batch.draw(baseTile, x, y, 16, 16); continue; }
             }
@@ -198,31 +194,41 @@ public class GameScreen implements Screen {
 
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
-
         highlightSystem.render();
 
         batch.begin();
-        for (UnitView uv : unitViews) {
-            uv.update(delta);
-            uv.render(batch);
-        }
+        for (UnitView uv : unitViews) { uv.update(delta); uv.render(batch); }
         batch.end();
 
         hudShape.begin(ShapeRenderer.ShapeType.Filled);
-        for (UnitView uv : unitViews) {
-            uv.renderHpBar(hudShape);
-        }
+        for (UnitView uv : unitViews) uv.renderHpBar(hudShape);
+
+        renderBaseHpBars();
+
         hudShape.end();
 
         batch.begin();
-        for (UnitView uv : unitViews) {
-            uv.renderHpText(batch);
-        }
+        for (UnitView uv : unitViews) uv.renderHpText(batch);
         batch.end();
 
         renderHud();
-
         gameInput.getActionMenu().render(batch, hudShape);
+    }
+
+    private void renderBaseHpBars() {
+        for (BaseStats b : new BaseStats[]{ base1, base2 }) {
+            if (b.isDestroyed()) continue;
+            float bx = b.getPosition().getX() * WorldMap.TILE_SIZE;
+            float by = b.getPosition().getY() * WorldMap.TILE_SIZE + 4 * WorldMap.TILE_SIZE + 4;
+            float barW = 4 * WorldMap.TILE_SIZE;
+            float barH = 4f;
+            float pct  = (float) b.getCurrentHp() / b.getMaxHp();
+            hudShape.setColor(com.badlogic.gdx.graphics.Color.DARK_GRAY);
+            hudShape.rect(bx, by, barW, barH);
+            hudShape.setColor(pct > 0.5f ? com.badlogic.gdx.graphics.Color.GREEN
+                : com.badlogic.gdx.graphics.Color.ORANGE);
+            hudShape.rect(bx, by, barW * pct, barH);
+        }
     }
 
     private void renderHud() {
@@ -241,11 +247,17 @@ public class GameScreen implements Screen {
         String topLine = "Turn " + turnManager.getTurnNumber()
             + "  " + Math.round(turnManager.getTimeRemaining()) + "s"
             + "  " + turnManager.getCurrentPlayer().getDisplayName();
-        hudFont.draw(batch, topLine, screenW / 2f - 150, screenH - 20);
+        hudFont.draw(batch, topLine, screenW/2f - 150, screenH - 20);
 
         hudFont.setColor(Color.YELLOW);
         hudFont.draw(batch, "P1: " + Player.PLAYER_ONE.getGold() + "g", 20, screenH - 20);
         hudFont.draw(batch, "P2: " + Player.PLAYER_TWO.getGold() + "g", 20, screenH - 50);
+
+        hudFont.setColor(Color.WHITE);
+        hudFont.draw(batch, "Bas P1: " + base1.getCurrentHp() + "/" + base1.getMaxHp(),
+            20, screenH - 80);
+        hudFont.draw(batch, "Bas P2: " + base2.getCurrentHp() + "/" + base2.getMaxHp(),
+            20, screenH - 110);
 
         hudFont.setColor(Color.WHITE);
         hudFont.draw(batch, "End Turn", bx + 10, by + 20);

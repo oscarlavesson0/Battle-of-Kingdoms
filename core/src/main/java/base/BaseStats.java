@@ -5,7 +5,6 @@ import terrain.Tile;
 public class BaseStats {
     private Player owner;
     private Tile position;
-
     private int maxHp = 100;
     private int currentHp = 100;
     private int defense = 10;
@@ -16,28 +15,20 @@ public class BaseStats {
         this.position = position;
     }
 
-    public Player getOwner() {
-        return owner;
+    public Player getOwner() { return owner; }
+    public Tile getPosition() { return position; }
+    public int getDefense() { return defense; }
+    public int getMaxHp() { return maxHp; }
+    public int getCurrentHp() { return currentHp; }
+    public int getGoldPerTurn(){ return goldPerTurn; }
+
+
+    public void takeDamage(int rawDamage) {
+        int actual = Math.max(1, rawDamage - defense);
+        currentHp  = Math.max(0, currentHp - actual);
     }
 
-    public Tile getPosition(){
-        return position;
+    public boolean isDestroyed() {
+        return currentHp <= 0;
     }
-
-    public int getDefense(){
-        return defense;
-    }
-
-    public int getMaxHp() {
-        return maxHp;
-    }
-
-    public int getCurrentHp() {
-        return currentHp;
-    }
-
-    public int getGoldPerTurn() {
-        return goldPerTurn;
-    }
-
 }
