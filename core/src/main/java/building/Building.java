@@ -4,6 +4,7 @@ import base.Player;
 
 public abstract class Building {
 
+    private int id;
     private String name;
     private int maxHealth;
     private int health;
@@ -12,10 +13,11 @@ public abstract class Building {
 
     private Player owner;
 
-    public Building(int x, int y, Player owner){
+    public Building(int x, int y, Player owner, int id){
         this.x = x;
         this.y = y;
         this.owner = owner;
+        this.id = id;
     }
 
     public abstract void ActivateBuildingAbility();
@@ -25,6 +27,9 @@ public abstract class Building {
     }
     public String getName(){
         return name;
+    }
+    public int getId(){
+        return id;
     }
     public int getX() {
         return x;
