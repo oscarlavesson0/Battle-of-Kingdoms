@@ -1,12 +1,20 @@
 package building;
 
+import base.Player;
+
 public abstract class Building {
 
-    String name;
-    int maxHealth;
-    int health;
+    private String name;
+    private int maxHealth;
+    private int health;
+    private int x;
+    private int y;
 
-    public Building(){
+    private Player owner;
 
+    public Building(int x, int y, Player owner){
+        this.x = x;
+        this.y = y;
+        this.owner = owner;
     }
 }
