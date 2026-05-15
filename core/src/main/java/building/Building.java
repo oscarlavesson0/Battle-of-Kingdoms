@@ -17,4 +17,12 @@ public abstract class Building {
         this.y = y;
         this.owner = owner;
     }
+
+    public abstract void ActivateBuildingAbility();
+
+    public Player getOwner(){
+        return owner;
+    }
+
+
 }
