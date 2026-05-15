@@ -23,6 +23,19 @@ public abstract class Building {
     public Player getOwner(){
         return owner;
     }
-
-
+    public String getName(){
+        return name;
+    }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+    public int getHealth() {
+        return health;
+    }
+    public void setHealth(int health) {
+        this.health = health;
+    }
 }
