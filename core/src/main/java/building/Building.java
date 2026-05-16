@@ -9,6 +9,7 @@ public abstract class Building {
     private int maxHealth;
     private int constructionTime;
     private int cost;
+    private int turnCounter;
     private boolean isBuilt;
     private int health;
     private int x;
@@ -16,12 +17,24 @@ public abstract class Building {
 
     private Player owner;
 
-    public Building(int x, int y, Player owner, int id){
+    public Building(int x, int y, Player owner, int id, int constructionTime){
         this.x = x;
         this.y = y;
         this.owner = owner;
         this.id = id;
+        this.constructionTime = constructionTime;
         this.isBuilt = false;
+        turnCounter = 0;
+    }
+
+    public void updateBuilding(){
+        if (turnCounter >= constructionTime){
+            isBuilt = true;
+        }
+        if (isBuilt){
+            ActivateBuildingAbility();
+        }
+        turnCounter++;
     }
 
     public abstract void ActivateBuildingAbility();

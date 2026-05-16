@@ -7,7 +7,7 @@ public class Hospital extends Building{
     int healingRange;
 
     public Hospital(int x, int y, Player owner, int id){
-        super(x, y, owner, id);
+        super(x, y, owner, id, 3);
         healingRange = 3;
     }
 
