@@ -4,6 +4,7 @@ import base.BaseStats;
 import building.BuildingController;
 import building.BuildingType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -97,8 +98,20 @@ public class BuildingPopup {
             if (batch.isDrawing()){
                 batch.end();
             }
-            
+
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+            shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
+            shapeRenderer.rect(x + 10, y + height - 330, 260, 90);
+            shapeRenderer.end();
+
+            batch.begin();
+            font.setColor(Color.RED);
+            font.draw(batch, errorMessage, x + 20, y + height - 260);
+
+            font.setColor(Color.BLACK);
+            font.draw(batch, "[ OK ]", x + 20, y + height - 300);
         }
+        batch.end();
     }
 
     public void handleClick(float screenX, float screenY){
