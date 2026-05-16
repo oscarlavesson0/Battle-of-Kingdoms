@@ -90,7 +90,7 @@ public class BuildingPopup {
 
         batch.begin();
         batch.draw(woodBackground, x, y, width, height);
-        batch.draw(frameTexture, x, y, width, height);
+        batch.draw(frameTexture, x - 13, y - 15, width + 30, height + 30);
         batch.end();
 
         if (showError){

@@ -5,6 +5,7 @@ import base.TurnManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import popup.BasePopup;
+import popup.BuildingPopup;
 import popup.UnitStatsPopup;
 import terrain.Tile;
 import terrain.TileController;
@@ -18,6 +19,7 @@ public class GameInput extends InputAdapter {
     private TileController   tileController;
     private BasePopup        basePopup;
     private UnitStatsPopup   statsPopup;
+    private BuildingPopup    buildingPopup;
     private UnitController   unitController;
     private List<Unit>       units;
     private List<UnitView>   unitViews;
@@ -33,7 +35,8 @@ public class GameInput extends InputAdapter {
     private List<BaseStats> bases;
 
     public GameInput(TileController tileController, BasePopup basePopup,
-                     UnitStatsPopup statsPopup, UnitController unitController,
+                     UnitStatsPopup statsPopup, BuildingPopup buildingPopup,
+                     UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
                      HighlightSystem highlightSystem,
                      TurnManager turnManager,
@@ -42,6 +45,7 @@ public class GameInput extends InputAdapter {
         this.tileController  = tileController;
         this.basePopup       = basePopup;
         this.statsPopup      = statsPopup;
+        this.buildingPopup   = buildingPopup;
         this.unitController  = unitController;
         this.units           = units;
         this.unitViews       = unitViews;

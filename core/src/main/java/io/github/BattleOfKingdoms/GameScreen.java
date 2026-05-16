@@ -149,6 +149,7 @@ public class GameScreen implements Screen {
             @Override public void onPlayerSwitch(Player newPlayer) {
                 basePopup.hide();
                 statsPopup.hide();
+                buildingPopup.hide();
                 unitController.resetMovement();
                 System.out.println("Currently " + newPlayer.getDisplayName() + "'s turn!");
             }
@@ -170,7 +171,7 @@ public class GameScreen implements Screen {
 
         List<BaseStats> allBases = Arrays.asList(base1, base2);
         gameInput = new GameInput(
-            tileController, basePopup, statsPopup,
+            tileController, basePopup, statsPopup, buildingPopup,
             unitController, unitController.getUnits(), unitViews,
             highlightSystem, turnManager,
             endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH,
