@@ -97,6 +97,11 @@ public class BuildingPopup {
         batch.end();
 
         batch.begin();
+        font.setColor(Color.GOLD);
+
+        for (BuildingType building : buildings) {
+            
+        }
 
         batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
 
@@ -148,6 +153,7 @@ public class BuildingPopup {
 
         if(!insidePopup){
             hide();
+            System.out.println("utanför utanför");
             return;
         }
 
