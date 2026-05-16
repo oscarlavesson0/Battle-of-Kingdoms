@@ -111,6 +111,10 @@ public class GameInput extends InputAdapter {
             basePopup.handleClick(screenX, screenY);
             return true;
         }
+        if (buildingPopup != null && buildingPopup.isVisible()) {
+            buildingPopup.handleClick(screenX, screenY);
+            return true;
+        }
 
         // Action menu
         if (actionMenu.isVisible()) {

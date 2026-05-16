@@ -143,6 +143,13 @@ public class GameScreen implements Screen {
             }
         });
 
+        buildingPopup.setListener(new BuildingChosenListener() {
+            @Override
+            public void OnBuildingChosen() {
+
+            }
+        });
+
         turnManager  = new TurnManager();
         incomeHelper = new IncomeHelper();
         turnManager.setListener(new TurnChangeListener() {
@@ -203,6 +210,7 @@ public class GameScreen implements Screen {
 
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
+        if (buildingPopup.isVisible()) buildingPopup.render();
         highlightSystem.render();
 
         batch.begin();
