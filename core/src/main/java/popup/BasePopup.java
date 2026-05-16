@@ -16,6 +16,7 @@ public class BasePopup {
     private BaseStats base;
 
     private TrainUnitListener listener;
+    private CreateBuildingListener createBuildingListener;
 
     // Popup position and size
     private float x, y, width, height;
@@ -27,7 +28,8 @@ public class BasePopup {
 
     // Button area
     private float buttonX, buttonY, buttonWidth, buttonHeight;
-    
+    // Create Buildings button area
+    private float buildingButtonX, buildingButtonY, buildingButtonWidth, buildingButtonHeight;
 
     /**
      * Creates a popup window for a specific Base.
@@ -52,6 +54,11 @@ public class BasePopup {
         buttonHeight = 40;
         buttonX = x + 20;
         buttonY = y + 20;
+        // Building button size and position
+        buildingButtonWidth = width - 200;
+        buildingButtonHeight = 40;
+        buildingButtonX = x + 150;
+        buildingButtonY = y + 20;
     }
 
     /**
@@ -179,6 +186,19 @@ public class BasePopup {
             }
 
         }
+
+        // Create Buildings button
+        boolean buildingButtonClicked = screenX >= buildingButtonX
+            && screenX <= buildingButtonX + buildingButtonWidth
+            && realY >= buildingButtonY
+            && realY <= buildingButtonY + buildingButtonHeight;
+
+        if (buildingButtonClicked){
+            if (createBuildingListener != null){
+                createBuildingListener.onCreateBuilding(base);
+            }
+        }
+
     }
 
 
