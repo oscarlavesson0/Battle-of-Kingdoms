@@ -19,7 +19,7 @@ public class Hospital extends Building{
         for (int i = -healingRange; i < healingRange; i++){
             for (int j = -healingRange; j < healingRange; j++){
                 // Gör heal på units av samma owner.
-
+                
             }
         }
     }
