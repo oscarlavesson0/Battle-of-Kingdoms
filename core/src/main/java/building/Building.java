@@ -21,6 +21,7 @@ public abstract class Building {
         this.y = y;
         this.owner = owner;
         this.id = id;
+        this.isBuilt = false;
     }
 
     public abstract void ActivateBuildingAbility();
