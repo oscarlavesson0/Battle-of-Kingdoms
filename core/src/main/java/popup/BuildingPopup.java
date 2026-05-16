@@ -41,6 +41,7 @@ public class BuildingPopup {
     private Texture frameTexture;
     private Texture hospitalIcon;
     private Texture barracksIcon;
+    private Texture toolSmithIcon;
     private Texture letterXIcon;
 
     public BuildingPopup(int x, int y,  int width, int height) {
@@ -59,12 +60,14 @@ public class BuildingPopup {
 
         buildings = new ArrayList<BuildingType>();
 
-        buildingIconX = 0;
-        buildingIconY = 0;
+        buildingIconX = 30;
+        buildingIconY = 30;
 
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
         this.hospitalIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        this.toolSmithIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/anvil.png"));
+        this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/barracks.png"));
         this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
     }
 
@@ -105,21 +108,23 @@ public class BuildingPopup {
         batch.begin();
         font.setColor(Color.GOLD);
 
+        buildingIconY = 230;
+
         for (BuildingType building : buildings) {
-            Texture buildingIcon = null;
+            Texture buildingIcon = hospitalIcon;
             if (building == BuildingType.Hospital){
                 buildingIcon = hospitalIcon;
             }
             if (building == BuildingType.Barracks){
-                //buildingIcon = barracksIcon;
+                buildingIcon = barracksIcon;
             }
             if (building == BuildingType.Blacksmith){
-
+                buildingIcon = toolSmithIcon;
             }
-            batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY, 20, 20);
-            font.draw(batch, building.getName(), x + buildingIconX, y + buildingIconY - 30);
+            batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY - 30, 20, 20);
+            font.draw(batch, building.getName(), x + buildingIconX + 40, y + buildingIconY - 10);
 
-            buildingIconY -= 20;
+            buildingIconY -= 30;
         }
 
         batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
