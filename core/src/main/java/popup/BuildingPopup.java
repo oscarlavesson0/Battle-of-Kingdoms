@@ -23,10 +23,13 @@ public class BuildingPopup {
     private int width;
     private int height;
 
+    private int buildingIconX;
+    private int buildingIconY;
+
     private List<BuildingType> buildings;
 
-    String errorMessage;
-    boolean showError = false;
+    private String errorMessage;
+    private boolean showError = false;
 
     private BitmapFont font;
     private SpriteBatch batch;
@@ -55,6 +58,9 @@ public class BuildingPopup {
         this.batch = new SpriteBatch();
 
         buildings = new ArrayList<BuildingType>();
+
+        buildingIconX = 0;
+        buildingIconY = 0;
 
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
@@ -100,7 +106,20 @@ public class BuildingPopup {
         font.setColor(Color.GOLD);
 
         for (BuildingType building : buildings) {
-            
+            Texture buildingIcon = null;
+            if (building == BuildingType.Hospital){
+                buildingIcon = hospitalIcon;
+            }
+            if (building == BuildingType.Barracks){
+                //buildingIcon = barracksIcon;
+            }
+            if (building == BuildingType.Blacksmith){
+
+            }
+            batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY, 20, 20);
+            font.draw(batch, building.getName(), x + buildingIconX, y + buildingIconY - 30);
+
+            buildingIconY -= 20;
         }
 
         batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
