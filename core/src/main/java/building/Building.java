@@ -1,8 +1,11 @@
 package building;
 
 import base.Player;
+import terrain.TileController;
 
 public abstract class Building {
+
+    private TileController tileController;
 
     private int id;
     private String name;
@@ -17,11 +20,12 @@ public abstract class Building {
 
     private Player owner;
 
-    public Building(int x, int y, Player owner, int id, int constructionTime){
+    public Building(int x, int y, Player owner, int id, int constructionTime, TileController tileController){
         this.x = x;
         this.y = y;
         this.owner = owner;
         this.id = id;
+        this.tileController = tileController;
         this.constructionTime = constructionTime;
         this.isBuilt = false;
         turnCounter = 0;
@@ -35,12 +39,12 @@ public abstract class Building {
             isBuilt = false;
         }
         if (isBuilt){
-            ActivateBuildingAbility();
+            ActivateBuildingAbility(tileController);
         }
         turnCounter++;
     }
 
-    public abstract void ActivateBuildingAbility();
+    public abstract void ActivateBuildingAbility(TileController tileController);
 
     public Player getOwner(){
         return owner;
