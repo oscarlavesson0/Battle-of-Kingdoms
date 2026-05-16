@@ -1,6 +1,8 @@
 package popup;
 
 import base.BaseStats;
+import building.BuildingController;
+import building.BuildingType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -9,6 +11,9 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BuildingPopup {
     private boolean visible = false;
 
@@ -16,6 +21,11 @@ public class BuildingPopup {
     private int y;
     private int width;
     private int height;
+
+    private List<BuildingType> buildings;
+
+    String errorMessage;
+    boolean showError = false;
 
     private BitmapFont font;
     private SpriteBatch batch;
@@ -42,6 +52,8 @@ public class BuildingPopup {
         this.shapeRenderer = new ShapeRenderer();
         this.batch = new SpriteBatch();
 
+        buildings = new ArrayList<BuildingType>();
+
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
         this.hospitalIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
@@ -51,14 +63,20 @@ public class BuildingPopup {
         this.listener = listener;
     }
 
-    public void open(BaseStats base){
+    public void open(BaseStats base, BuildingController buildingController) {
         visible = true;
+        buildings = buildingController.getBuildingTypes();
     }
     public void hide(){
         visible = false;
     }
     public boolean isVisible(){
         return visible;
+    }
+
+    public void ShowError(String errorMessage){
+        this.errorMessage = errorMessage;
+        this.showError = true;
     }
 
     public void render(){
@@ -74,6 +92,13 @@ public class BuildingPopup {
         batch.draw(woodBackground, x, y, width, height);
         batch.draw(frameTexture, x, y, width, height);
         batch.end();
+
+        if (showError){
+            if (batch.isDrawing()){
+                batch.end();
+            }
+
+        }
     }
 
     public void handleClick(float screenX, float screenY){

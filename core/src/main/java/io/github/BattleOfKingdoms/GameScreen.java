@@ -6,6 +6,7 @@ import base.IncomeHelper;
 import base.Player;
 import base.TurnChangeListener;
 import base.TurnManager;
+import building.BuildingController;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -44,6 +45,7 @@ public class GameScreen implements Screen {
     private List<UnitView> unitViews = new ArrayList<>();
     private BaseController baseController;
     private UnitController unitController;
+    private BuildingController buildingController;
     private HighlightSystem highlightSystem;
     private TurnManager turnManager;
     private IncomeHelper incomeHelper;
@@ -86,6 +88,7 @@ public class GameScreen implements Screen {
         unitController  = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
         baseController  = new BaseController(unitController);
+        buildingController = new BuildingController();
 
         unitController.setBaseDestroyedListener(new BaseDestroyedListener() {
             @Override
@@ -125,7 +128,7 @@ public class GameScreen implements Screen {
 
             @Override
             public void onCreateBuilding(BaseStats base) {
-                buildingPopup.open(base);
+                buildingPopup.open(base, buildingController);
             }
 
         });
