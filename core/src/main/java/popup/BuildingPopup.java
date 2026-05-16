@@ -178,7 +178,6 @@ public class BuildingPopup {
 
         if(!insidePopup){
             hide();
-            System.out.println("utanför utanför");
             return;
         }
 

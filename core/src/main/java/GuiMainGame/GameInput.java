@@ -103,16 +103,16 @@ public class GameInput extends InputAdapter {
         }
 
         // Popups
+        if (buildingPopup != null && buildingPopup.isVisible()) {
+            buildingPopup.handleClick(screenX, screenY);
+            return true;
+        }
         if (statsPopup != null && statsPopup.isVisible()) {
             statsPopup.handleClick(screenX, screenY);
             return true;
         }
         if (basePopup != null && basePopup.isVisible()) {
             basePopup.handleClick(screenX, screenY);
-            return true;
-        }
-        if (buildingPopup != null && buildingPopup.isVisible()) {
-            buildingPopup.handleClick(screenX, screenY);
             return true;
         }
 
