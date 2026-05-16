@@ -47,7 +47,7 @@ public class BasePopup {
         shapeRenderer = new ShapeRenderer();
 
         // Button size and position
-        buttonWidth = width - 40;
+        buttonWidth = width - 210;
         buttonHeight = 40;
         buttonX = x + 20;
         buttonY = y + 20;
@@ -126,6 +126,9 @@ public class BasePopup {
         // Train Units button
         font.setColor(Color.DARK_GRAY);
         font.draw(batch, "[ Train Units ]", buttonX + 0, buttonY + 10);
+
+        // Create buildings button
+        font.draw(batch, "[ Create Buildings ]", buttonX + 100, buttonY + 10);
 
         batch.end();
     }
