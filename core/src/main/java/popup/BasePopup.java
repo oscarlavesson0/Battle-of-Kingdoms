@@ -27,6 +27,7 @@ public class BasePopup {
 
     // Button area
     private float buttonX, buttonY, buttonWidth, buttonHeight;
+    
 
     /**
      * Creates a popup window for a specific Base.
