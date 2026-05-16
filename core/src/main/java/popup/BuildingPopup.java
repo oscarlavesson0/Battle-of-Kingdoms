@@ -175,6 +175,7 @@ public class BuildingPopup {
         boolean insidePopup = screenX >= x && screenX <= x + width &&
             realY >= y && realY <= y + height;
 
+
         if(!insidePopup){
             hide();
             System.out.println("utanför utanför");
