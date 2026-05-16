@@ -38,6 +38,7 @@ public class BuildingPopup {
     private Texture frameTexture;
     private Texture hospitalIcon;
     private Texture barracksIcon;
+    private Texture letterXIcon;
 
     public BuildingPopup(int x, int y,  int width, int height) {
         this.x = x;
@@ -58,6 +59,7 @@ public class BuildingPopup {
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
         this.hospitalIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
     }
 
     public void setListener(BuildingChosenListener listener) {
@@ -95,6 +97,8 @@ public class BuildingPopup {
         batch.end();
 
         batch.begin();
+
+        batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
 
         if (showError){
             if (batch.isDrawing()){
