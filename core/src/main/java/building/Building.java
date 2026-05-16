@@ -1,6 +1,7 @@
 package building;
 
 import base.Player;
+import terrain.Tile;
 import terrain.TileController;
 
 public abstract class Building {
@@ -39,12 +40,12 @@ public abstract class Building {
             isBuilt = false;
         }
         if (isBuilt){
-            ActivateBuildingAbility(tileController);
+            ActivateBuildingAbility(tileController.getTileGrid());
         }
         turnCounter++;
     }
 
-    public abstract void ActivateBuildingAbility(TileController tileController);
+    public abstract void ActivateBuildingAbility(Tile[][] tileGrid);
 
     public Player getOwner(){
         return owner;
