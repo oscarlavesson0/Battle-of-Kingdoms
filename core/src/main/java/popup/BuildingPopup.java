@@ -97,7 +97,7 @@ public class BuildingPopup {
             if (batch.isDrawing()){
                 batch.end();
             }
-
+            
         }
     }
 
@@ -109,6 +109,20 @@ public class BuildingPopup {
         float realY = Gdx.graphics.getHeight() - screenY;
 
         //error
+        if (showError){
+            if (screenX >= x + 20 && screenX <= x + width + 120 &&
+            realY >= y + height - 320 && realY <= y + height - 280){
+                showError = false;
+                return;
+            }
+            boolean insidePopup = screenX >= x && screenX <= x + width &&
+                screenY >= y && screenY <= y + height;
+
+            if (!insidePopup){
+                showError = false;
+            }
+            return;
+        }
 
         boolean insidePopup = screenX >= x && screenX <= x + width &&
             realY >= y && realY <= y + height;
