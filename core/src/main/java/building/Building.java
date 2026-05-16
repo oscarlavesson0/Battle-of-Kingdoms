@@ -31,6 +31,9 @@ public abstract class Building {
         if (turnCounter >= constructionTime){
             isBuilt = true;
         }
+        if (health <= 0){
+            isBuilt = false;
+        }
         if (isBuilt){
             ActivateBuildingAbility();
         }
