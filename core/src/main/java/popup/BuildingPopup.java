@@ -94,6 +94,8 @@ public class BuildingPopup {
         batch.draw(frameTexture, x - 13, y - 15, width + 30, height + 30);
         batch.end();
 
+        batch.begin();
+
         if (showError){
             if (batch.isDrawing()){
                 batch.end();
