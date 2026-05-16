@@ -17,10 +17,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import GuiMainGame.*;
 import base.BaseController;
-import popup.BasePopup;
-import popup.StatsChosenListener;
-import popup.TrainUnitListener;
-import popup.UnitStatsPopup;
+import popup.*;
 import terrain.TileController;
 import unit.CustomUnit;
 import unit.UnitController;
@@ -43,6 +40,7 @@ public class GameScreen implements Screen {
     private Lake lakeGraphic;
     private BasePopup basePopup;
     private UnitStatsPopup statsPopup;
+    private BuildingPopup buildingPopup;
     private List<UnitView> unitViews = new ArrayList<>();
     private BaseController baseController;
     private UnitController unitController;
@@ -120,9 +118,16 @@ public class GameScreen implements Screen {
 
         basePopup = new BasePopup(null, 200, 150, 300, 200);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250);
+        buildingPopup = new BuildingPopup(300, 200, 300, 250);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
-            @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base); }
+            @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base);}
+
+            @Override
+            public void onCreateBuilding(BaseStats base) {
+                buildingPopup.open(base);
+            }
+
         });
 
         statsPopup.setListener(new StatsChosenListener() {

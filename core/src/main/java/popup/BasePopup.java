@@ -16,7 +16,6 @@ public class BasePopup {
     private BaseStats base;
 
     private TrainUnitListener listener;
-    private CreateBuildingListener createBuildingListener;
 
     // Popup position and size
     private float x, y, width, height;
@@ -184,7 +183,6 @@ public class BasePopup {
             if (listener != null) {
                 listener.onTrainUnit(base);
             }
-
         }
 
         // Create Buildings button
@@ -194,11 +192,10 @@ public class BasePopup {
             && realY <= buildingButtonY + buildingButtonHeight;
 
         if (buildingButtonClicked){
-            if (createBuildingListener != null){
-                createBuildingListener.onCreateBuilding(base);
+            if (listener != null){
+                listener.onCreateBuilding(base);
             }
         }
-
     }
 
 

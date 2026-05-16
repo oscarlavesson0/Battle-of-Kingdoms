@@ -6,4 +6,5 @@ public interface TrainUnitListener {
 
     void onTrainUnit(BaseStats base);
 
+    void onCreateBuilding(BaseStats base);
 }
