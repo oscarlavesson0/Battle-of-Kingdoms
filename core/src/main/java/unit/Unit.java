@@ -58,7 +58,7 @@ public class Unit {
         }
     }
 
-    public void setCurrentHP(int currentHP) {
+    public void addToCurrentHP(int currentHP) {
         this.currentHP = this.currentHP + currentHP;
     }
 

@@ -8,6 +8,7 @@ import unit.Unit;
 public class Hospital extends Building{
 
     int healingRange;
+    int healingPoints;
     int mapRange;
 
     Tile[][] tileGrid;
@@ -15,6 +16,7 @@ public class Hospital extends Building{
     public Hospital(int x, int y, Player owner, int id, TileController tileController){
         super(x, y, owner, id, 3, tileController);
         healingRange = 3;
+        healingPoints = 10;
         tileGrid = tileController.getTileGrid();
         mapRange = tileGrid.length;
     }
@@ -35,7 +37,7 @@ public class Hospital extends Building{
                     Unit unit = tileGrid[a][b].getUnit();
                     if (unit != null){
                         if (unit.getPlayer() == super.getOwner()){
-                            // unit.setHealth
+                            unit.addToCurrentHP(healingPoints);
                         }
                     }
                 }
