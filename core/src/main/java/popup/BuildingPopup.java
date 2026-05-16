@@ -69,5 +69,38 @@ public class BuildingPopup {
         if (batch.isDrawing()){
             batch.end();
         }
+
+        batch.begin();
+        batch.draw(woodBackground, x, y, width, height);
+        batch.draw(frameTexture, x, y, width, height);
+        batch.end();
+    }
+
+    public void handleClick(float screenX, float screenY){
+        if (!isVisible()){
+            return;
+        }
+
+        float realY = Gdx.graphics.getHeight() - screenY;
+
+        
+
+        boolean insidePopup = screenX >= x && screenX <= x + width &&
+            realY >= y && realY <= y + height;
+
+        if(!insidePopup){
+            hide();
+            return;
+        }
+
+        float closeX1 = x + width - 90;
+        float closeX2 = x + width - 20;
+        float closeY1 = y + height - 35;
+        float closeY2 = y + height - 5;
+
+        if (screenX >= closeX1 && screenX <= closeX2
+            && realY >= closeY1 && realY <= closeY2){
+            hide();
+        }
     }
 }
