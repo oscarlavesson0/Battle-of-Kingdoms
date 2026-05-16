@@ -7,6 +7,9 @@ public abstract class Building {
     private int id;
     private String name;
     private int maxHealth;
+    private int constructionTime;
+    private int cost;
+    private boolean isBuilt;
     private int health;
     private int x;
     private int y;
@@ -42,5 +45,14 @@ public abstract class Building {
     }
     public void setHealth(int health) {
         this.health = health;
+    }
+    public int getCost(){
+        return cost;
+    }
+    public void setBuilt(boolean built){
+        isBuilt = built;
+    }
+    public boolean isBuilt(){
+        return isBuilt;
     }
 }
