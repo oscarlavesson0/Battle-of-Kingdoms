@@ -58,6 +58,10 @@ public class Unit {
         }
     }
 
+    public void setCurrentHP(int currentHP) {
+        this.currentHP = this.currentHP + currentHP;
+    }
+
     public void moveTo(int newX, int newY) {
         if (canMoveTo(newX, newY)) {
             x = newX;
