@@ -10,6 +10,7 @@ public abstract class Building {
 
     private int id;
     private String name;
+    String description;
     private int maxHealth;
     private int constructionTime;
     private int cost;
@@ -70,6 +71,9 @@ public abstract class Building {
     }
     public int getCost(){
         return cost;
+    }
+    public int getConstructionTime(){
+        return constructionTime;
     }
     public void setBuilt(boolean built){
         isBuilt = built;
