@@ -16,4 +16,17 @@ public enum BuildingType {
         this.constructionTime = constructionTime;
         this.description = description;
     }
+
+    public String getName() {
+        return name;
+    }
+    public int getCost() {
+        return cost;
+    }
+    public int getConstructionTime() {
+        return constructionTime;
+    }
+    public String getDescription() {
+        return description;
+    }
 }

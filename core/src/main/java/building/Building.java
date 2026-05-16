@@ -10,7 +10,6 @@ public abstract class Building {
 
     private int id;
     private String name;
-    String description;
     private int maxHealth;
     private int constructionTime;
     private int cost;

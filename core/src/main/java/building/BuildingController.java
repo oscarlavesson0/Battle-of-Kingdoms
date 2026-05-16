@@ -13,4 +13,5 @@ public class BuildingController {
         buildingTypes.add(BuildingType.Barracks);
         buildingTypes.add(BuildingType.Blacksmith);
     }
+
 }
