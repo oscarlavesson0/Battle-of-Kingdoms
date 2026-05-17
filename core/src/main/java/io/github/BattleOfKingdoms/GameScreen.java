@@ -7,6 +7,7 @@ import base.Player;
 import base.TurnChangeListener;
 import base.TurnManager;
 import building.BuildingController;
+import building.BuildingType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
@@ -88,7 +89,7 @@ public class GameScreen implements Screen {
         unitController  = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
         baseController  = new BaseController(unitController);
-        buildingController = new BuildingController();
+        buildingController = new BuildingController(tileController);
 
         unitController.setBaseDestroyedListener(new BaseDestroyedListener() {
             @Override
@@ -145,7 +146,7 @@ public class GameScreen implements Screen {
 
         buildingPopup.setListener(new BuildingChosenListener() {
             @Override
-            public void OnBuildingChosen() {
+            public void OnBuildingChosen(BuildingType buildingType, TurnManager turnManager) {
 
             }
         });

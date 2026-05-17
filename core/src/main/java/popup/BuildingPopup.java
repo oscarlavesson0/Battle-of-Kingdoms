@@ -80,7 +80,6 @@ public class BuildingPopup {
         for (BuildingType building : buildings) {
             buildingButtons.add(new BuildingButton(x + buildingIconX, y + buildingIconY - 30, 20, 200, building));
             buildingIconY -= 30;
-            System.out.println(y + buildingIconY - 30);
         }
     }
 
@@ -212,6 +211,12 @@ public class BuildingPopup {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
             && realY <= button.getHeight() + button.getY() && realY >= button.getY()){
                 System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
+                if (listener != null){
+                    listener.OnBuildingChosen(button.getBuildingType());
+                }
+                if (!showError){
+                    hide();
+                }
             }
             i++;
         }
