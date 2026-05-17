@@ -1,7 +1,5 @@
 package terrain;
 
-import GuiMainGame.WorldMap;
-
 public class TileController {
 
     Tile[][] tileGrid;

@@ -109,7 +109,7 @@ public class BuildingPopup {
         font.setColor(Color.GOLD);
 
         buildingIconY = 230;
-
+        // Loopa genom alla buildingtyper för att visa alternativ i fönstret.
         for (BuildingType building : buildings) {
             Texture buildingIcon = hospitalIcon;
             if (building == BuildingType.Hospital){
