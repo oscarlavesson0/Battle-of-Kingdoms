@@ -6,6 +6,7 @@ import base.IncomeHelper;
 import base.Player;
 import base.TurnChangeListener;
 import base.TurnManager;
+import building.Building;
 import building.BuildingController;
 import building.BuildingType;
 import com.badlogic.gdx.Gdx;
@@ -146,8 +147,11 @@ public class GameScreen implements Screen {
 
         buildingPopup.setListener(new BuildingChosenListener() {
             @Override
-            public void OnBuildingChosen(BuildingType buildingType, TurnManager turnManager) {
-
+            public void OnBuildingChosen(BuildingType buildingType, BaseStats baseStats) {
+                Building building = buildingController.createBuilding(buildingType, baseStats);
+                if (building == null) {
+                    buildingPopup.ShowError("Not enough gold!");
+                }
             }
         });
 

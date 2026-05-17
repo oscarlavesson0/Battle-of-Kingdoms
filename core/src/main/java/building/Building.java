@@ -21,11 +21,11 @@ public abstract class Building {
 
     private Player owner;
 
-    public Building(int x, int y, Player owner, int id, int constructionTime, TileController tileController){
+    public Building(int x, int y, Player owner, String name, int constructionTime, TileController tileController){
         this.x = x;
         this.y = y;
         this.owner = owner;
-        this.id = id;
+        this.name = name;
         this.tileController = tileController;
         this.constructionTime = constructionTime;
         this.isBuilt = false;

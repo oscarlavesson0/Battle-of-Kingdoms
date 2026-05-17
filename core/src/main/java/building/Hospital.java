@@ -14,7 +14,7 @@ public class Hospital extends Building{
     Tile[][] tileGrid;
 
     public Hospital(int x, int y, Player owner, int id, TileController tileController){
-        super(x, y, owner, id, 3, tileController);
+        super(x, y, owner, "Hospital", 3, tileController);
         healingRange = 3;
         healingPoints = 10;
         tileGrid = tileController.getTileGrid();

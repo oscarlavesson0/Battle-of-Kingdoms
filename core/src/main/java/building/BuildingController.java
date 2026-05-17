@@ -1,6 +1,7 @@
 package building;
 
-import base.TurnManager;
+import base.BaseStats;
+import base.Player;
 import terrain.TileController;
 
 import java.util.ArrayList;
@@ -8,9 +9,9 @@ import java.util.List;
 
 public class BuildingController {
 
-    TileController tileController;
-    List<BuildingType> buildingTypes;
-    List<Building> buildings;
+    private TileController tileController;
+    private List<BuildingType> buildingTypes;
+    private List<Building> buildings;
 
     public BuildingController(TileController tileController) {
         this.tileController = tileController;
@@ -25,17 +26,27 @@ public class BuildingController {
         return buildingTypes;
     }
 
+    public List<Building> getBuildings() {
+        return buildings;
+    }
+
     public void addBuilding(Building building){
         buildings.add(building);
     }
 
-    public Building createBuilding(BuildingType buildingType, TurnManager turnManager){
+    public Building createBuilding(BuildingType buildingType, BaseStats baseStats) {
+        if (baseStats == null) return null;
+        Player owner = baseStats.getOwner();
+        if (owner == null) return null;
+        if (owner.getGold() < buildingType.getCost()) return null;
+
+        owner.subtractGold(buildingType.getCost());
 
         Building building = null;
 
         switch (buildingType){
             case Hospital:
-                building = new Hospital(1, 1, turnManager.getCurrentPlayer(), 1, tileController);
+                building = new Hospital(30, 30, baseStats.getOwner(), 1, tileController);
                 break;
             case Barracks:
 
