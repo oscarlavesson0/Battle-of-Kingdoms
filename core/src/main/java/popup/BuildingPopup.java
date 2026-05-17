@@ -121,9 +121,12 @@ public class BuildingPopup {
             if (building == BuildingType.Blacksmith){
                 buildingIcon = toolSmithIcon;
             }
+            font.setColor(Color.GOLD);
             batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY - 30, 20, 20);
             font.draw(batch, building.getName(), x + buildingIconX + 40, y + buildingIconY - 10);
             font.draw(batch, Integer.toString(building.getCost()) + "g", x + buildingIconX + 150, y + buildingIconY - 10);
+            font.setColor(Color.WHITE);
+            font.draw(batch, Integer.toString(building.getConstructionTime()) + "h", x + buildingIconX + 190, y + buildingIconY - 10);
 
             buildingIconY -= 30;
         }
