@@ -123,7 +123,7 @@ public class GameScreen implements Screen {
 
         basePopup = new BasePopup(null, 200, 150, 300, 200);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250);
-        buildingPopup = new BuildingPopup(buildingController,300, 200, 300, 250);
+        buildingPopup = new BuildingPopup(buildingController, 300, 200, 300, 250);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base);}
@@ -235,6 +235,8 @@ public class GameScreen implements Screen {
 
         renderHud();
         gameInput.getActionMenu().render(batch, hudShape);
+
+
     }
 
     private void renderBaseHpBars() {

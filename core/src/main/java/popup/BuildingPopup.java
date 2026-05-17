@@ -30,6 +30,7 @@ public class BuildingPopup {
     private List<BuildingButton> buildingButtons;
 
     private BuildingController buildingController;
+    private BaseStats baseStats;
 
     private String errorMessage;
     private boolean showError = false;
@@ -54,6 +55,7 @@ public class BuildingPopup {
         this.height = height;
 
         this.buildingController = buildingController;
+
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -89,6 +91,7 @@ public class BuildingPopup {
 
     public void open(BaseStats base, BuildingController buildingController) {
         visible = true;
+        baseStats = base;
     }
     public void hide(){
         visible = false;
@@ -212,7 +215,7 @@ public class BuildingPopup {
             && realY <= button.getHeight() + button.getY() && realY >= button.getY()){
                 System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
                 if (listener != null){
-                    listener.OnBuildingChosen(button.getBuildingType());
+                    listener.OnBuildingChosen(button.getBuildingType(), baseStats);
                 }
                 if (!showError){
                     hide();

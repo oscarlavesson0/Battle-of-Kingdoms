@@ -46,10 +46,14 @@ public class BuildingController {
 
         switch (buildingType){
             case Hospital:
-                building = new Hospital(30, 30, baseStats.getOwner(), 1, tileController);
+                building = new Hospital(30, 30, baseStats.getOwner(), tileController);
                 break;
             case Barracks:
-
+                building = new Barracks(60, 30, baseStats.getOwner(), tileController);
+                break;
+            case Blacksmith:
+                building = new Blacksmith(90, 30, baseStats.getOwner(), tileController);
+                break;
         }
         addBuilding(building);
 
