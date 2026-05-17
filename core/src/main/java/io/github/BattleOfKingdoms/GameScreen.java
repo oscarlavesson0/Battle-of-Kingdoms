@@ -236,6 +236,9 @@ public class GameScreen implements Screen {
         renderHud();
         gameInput.getActionMenu().render(batch, hudShape);
 
+        batch.begin();
+        buildingController.getBuildingRenderer().render(batch);
+        batch.end();
 
     }
 

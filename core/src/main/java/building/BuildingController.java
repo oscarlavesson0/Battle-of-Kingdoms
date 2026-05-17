@@ -13,7 +13,10 @@ public class BuildingController {
     private List<BuildingType> buildingTypes;
     private List<Building> buildings;
 
+    private BuildingRenderer buildingRenderer;
+
     public BuildingController(TileController tileController) {
+        buildingRenderer = new BuildingRenderer(this);
         this.tileController = tileController;
         buildings = new ArrayList<>();
         buildingTypes = new ArrayList<>();
@@ -46,13 +49,13 @@ public class BuildingController {
 
         switch (buildingType){
             case Hospital:
-                building = new Hospital(30, 30, baseStats.getOwner(), tileController);
+                building = new Hospital(120, 100, baseStats.getOwner(), tileController);
                 break;
             case Barracks:
-                building = new Barracks(60, 30, baseStats.getOwner(), tileController);
+                building = new Barracks(120, 40, baseStats.getOwner(), tileController);
                 break;
             case Blacksmith:
-                building = new Blacksmith(90, 30, baseStats.getOwner(), tileController);
+                building = new Blacksmith(50, 120, baseStats.getOwner(), tileController);
                 break;
         }
         addBuilding(building);
@@ -64,6 +67,10 @@ public class BuildingController {
         for (Building building : buildings){
             building.updateBuilding();
         }
+    }
+
+    public BuildingRenderer getBuildingRenderer() {
+        return buildingRenderer;
     }
 
 }

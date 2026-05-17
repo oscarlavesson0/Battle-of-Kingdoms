@@ -74,8 +74,8 @@ public class BuildingPopup {
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
         this.hospitalIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
-        this.toolSmithIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/anvil.png"));
-        this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/barracks.png"));
+        this.toolSmithIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Blacksmith.png"));
+        this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Barracks.png"));
         this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
 
         buildings = buildingController.getBuildingTypes();
