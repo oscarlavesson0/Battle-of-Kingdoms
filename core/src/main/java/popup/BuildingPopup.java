@@ -27,6 +27,7 @@ public class BuildingPopup {
     private int buildingIconY;
 
     private List<BuildingType> buildings;
+    private List<BuildingButton> buildingButtons;
 
     private String errorMessage;
     private boolean showError = false;
@@ -59,6 +60,7 @@ public class BuildingPopup {
         this.batch = new SpriteBatch();
 
         buildings = new ArrayList<BuildingType>();
+        buildingButtons = new ArrayList<BuildingButton>();
 
         buildingIconX = 30;
         buildingIconY = 30;
@@ -128,6 +130,8 @@ public class BuildingPopup {
             font.setColor(Color.WHITE);
             font.draw(batch, Integer.toString(building.getConstructionTime()) + "h", x + buildingIconX + 190, y + buildingIconY - 10);
 
+            buildingButtons.add(new BuildingButton(x + buildingIconX, buildingIconY - 30, 20, 200, building));
+
             buildingIconY -= 30;
         }
 
@@ -196,8 +200,11 @@ public class BuildingPopup {
             return;
         }
 
-        for (BuildingType building : buildings) {
-
+        for (BuildingButton button : buildingButtons) {
+            if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
+            && realY <= button.getHeight() + button.getY() && screenY >= button.getY()){
+                
+            }
         }
     }
 }
