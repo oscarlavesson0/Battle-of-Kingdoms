@@ -123,6 +123,7 @@ public class BuildingPopup {
             }
             batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY - 30, 20, 20);
             font.draw(batch, building.getName(), x + buildingIconX + 40, y + buildingIconY - 10);
+            font.draw(batch, Integer.toString(building.getCost()) + "g", x + buildingIconX + 150, y + buildingIconY - 10);
 
             buildingIconY -= 30;
         }
