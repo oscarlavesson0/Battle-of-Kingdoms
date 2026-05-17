@@ -29,6 +29,8 @@ public class BuildingPopup {
     private List<BuildingType> buildings;
     private List<BuildingButton> buildingButtons;
 
+    private BuildingController buildingController;
+
     private String errorMessage;
     private boolean showError = false;
 
@@ -45,11 +47,13 @@ public class BuildingPopup {
     private Texture toolSmithIcon;
     private Texture letterXIcon;
 
-    public BuildingPopup(int x, int y,  int width, int height) {
+    public BuildingPopup(BuildingController buildingController, int x, int y,  int width, int height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+
+        this.buildingController = buildingController;
 
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
@@ -63,7 +67,7 @@ public class BuildingPopup {
         buildingButtons = new ArrayList<BuildingButton>();
 
         buildingIconX = 30;
-        buildingIconY = 30;
+        buildingIconY = 230;
 
         this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
@@ -71,6 +75,13 @@ public class BuildingPopup {
         this.toolSmithIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/anvil.png"));
         this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/barracks.png"));
         this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
+
+        buildings = buildingController.getBuildingTypes();
+        for (BuildingType building : buildings) {
+            buildingButtons.add(new BuildingButton(x + buildingIconX, y + buildingIconY - 30, 20, 200, building));
+            buildingIconY -= 30;
+            System.out.println(y + buildingIconY - 30);
+        }
     }
 
     public void setListener(BuildingChosenListener listener) {
@@ -79,7 +90,6 @@ public class BuildingPopup {
 
     public void open(BaseStats base, BuildingController buildingController) {
         visible = true;
-        buildings = buildingController.getBuildingTypes();
     }
     public void hide(){
         visible = false;
@@ -129,8 +139,6 @@ public class BuildingPopup {
             font.draw(batch, Integer.toString(building.getCost()) + "g", x + buildingIconX + 150, y + buildingIconY - 10);
             font.setColor(Color.WHITE);
             font.draw(batch, Integer.toString(building.getConstructionTime()) + "h", x + buildingIconX + 190, y + buildingIconY - 10);
-
-            buildingButtons.add(new BuildingButton(x + buildingIconX, buildingIconY - 30, 20, 200, building));
 
             buildingIconY -= 30;
         }
@@ -199,12 +207,13 @@ public class BuildingPopup {
             hide();
             return;
         }
-
+        int i = 0;
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
-            && realY <= button.getHeight() + button.getY() && screenY >= button.getY()){
-
+            && realY <= button.getHeight() + button.getY() && realY >= button.getY()){
+                System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
             }
+            i++;
         }
     }
 }
