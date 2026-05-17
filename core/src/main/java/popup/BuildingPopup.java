@@ -203,7 +203,7 @@ public class BuildingPopup {
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
             && realY <= button.getHeight() + button.getY() && screenY >= button.getY()){
-                
+
             }
         }
     }
