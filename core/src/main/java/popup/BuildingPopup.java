@@ -193,6 +193,11 @@ public class BuildingPopup {
         if (screenX >= closeX1 && screenX <= closeX2
             && realY >= closeY1 && realY <= closeY2){
             hide();
+            return;
+        }
+
+        for (BuildingType building : buildings) {
+
         }
     }
 }
