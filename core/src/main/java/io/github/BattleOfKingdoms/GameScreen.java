@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -20,6 +21,8 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import GuiMainGame.*;
 import base.BaseController;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import popup.*;
 import terrain.TileController;
 import unit.CustomUnit;
@@ -62,6 +65,11 @@ public class GameScreen implements Screen {
 
     private BaseStats base1, base2;
 
+    private OrthographicCamera camera;
+    private Viewport viewport;
+    private static final float VIRTUAL_WIDTH = 960f;
+    private static final float VIRTUAL_HEIGHT = 960f;
+
     public GameScreen(Main game) { this.game = game; }
 
     @Override
@@ -71,6 +79,12 @@ public class GameScreen implements Screen {
         bgMusic.setLooping(true);
         bgMusic.setVolume(0.05f);
         bgMusic.play();
+
+        camera = new OrthographicCamera();
+        viewport = new StretchViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
+        viewport.apply();
+        camera.position.set(VIRTUAL_WIDTH / 2f, VIRTUAL_HEIGHT / 2f, 0);
+        camera.update();
 
         batch         = new SpriteBatch();
         sheet         = new SpriteSheetLoader();
@@ -194,9 +208,13 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        turnManager.update(delta);
-        gameInput.update();
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+
+        gameInput.update();
+        batch.setProjectionMatrix(camera.combined);
+        hudShape.setProjectionMatrix(camera.combined);
+        viewport.apply();
+        turnManager.update(delta);
 
         batch.begin();
         for (int row = 0; row < world.getRows(); row++) {
@@ -215,20 +233,23 @@ public class GameScreen implements Screen {
 
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
+
         if (buildingPopup.isVisible()) buildingPopup.render();
-        highlightSystem.render();
+
+        highlightSystem.render(camera);
 
         batch.begin();
         for (UnitView uv : unitViews) { uv.update(delta); uv.render(batch); }
         batch.end();
 
+        hudShape.setProjectionMatrix(camera.combined);
         hudShape.begin(ShapeRenderer.ShapeType.Filled);
         for (UnitView uv : unitViews) uv.renderHpBar(hudShape);
-
         renderBaseHpBars();
-
         hudShape.end();
 
+        // HP-TEXT
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for (UnitView uv : unitViews) uv.renderHpText(batch);
         batch.end();
@@ -236,6 +257,8 @@ public class GameScreen implements Screen {
         renderHud();
         gameInput.getActionMenu().render(batch, hudShape);
 
+        // BYGGNADER
+        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         buildingController.getBuildingRenderer().render(batch);
         batch.end();
