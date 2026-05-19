@@ -3,6 +3,8 @@ package GuiMainGame;
 import base.TurnManager;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import popup.BasePopup;
 import popup.UnitStatsPopup;
 import terrain.Tile;
@@ -21,13 +23,14 @@ public class GameInput extends InputAdapter {
     private HighlightSystem highlightSystem;
     private TurnManager turnManager;
     private float btnX, btnY, btnW, btnH;
+    private Viewport viewport;
 
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup, UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
                      HighlightSystem highlightSystem,
                      TurnManager turnManager,
-                     float btnX, float btnY, float btnW, float btnH) {
+                     float btnX, float btnY, float btnW, float btnH, Viewport viewport) {
         this.tileController = tileController;
         this.basePopup = basePopup;
         this.statsPopup = statsPopup;
@@ -40,40 +43,49 @@ public class GameInput extends InputAdapter {
         this.btnY = btnY;
         this.btnW = btnW;
         this.btnH = btnH;
+        this.viewport = viewport;
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        float realY = Gdx.graphics.getHeight() - screenY;
-        float btnX = Gdx.graphics.getWidth() - btnW - 20;
-        float btnY = 20;
-        if(screenX >= btnX && screenX <= btnX + btnW && realY >= btnY && realY <= btnY + btnH){
+        Vector3 worldCoords = new Vector3(screenX, screenY, 0);
+        viewport.getCamera().unproject(worldCoords,
+            viewport.getScreenX(), viewport.getScreenY(),
+            viewport.getScreenWidth(), viewport.getScreenHeight());
+
+        float worldX = worldCoords.x;
+        float worldY = worldCoords.y;
+
+        int tileX = (int) (worldX / WorldMap.TILE_SIZE);
+        int tileY = (int) (worldY / WorldMap.TILE_SIZE);
+
+        // Popup-klick använder också världskoordinater
+        if (statsPopup != null && statsPopup.isVisible()) {
+            statsPopup.handleClick(worldX, viewport.getWorldHeight() - worldY);
+            return true;
+        }
+        if (basePopup != null && basePopup.isVisible()) {
+            basePopup.handleClick(worldX, viewport.getWorldHeight() - worldY);
+            return true;
+        }
+
+        // End Turn-knapp (HUD ligger i skärmkoordinater — använd råa koordinater)
+        float rawY = Gdx.graphics.getHeight() - screenY;
+        if (screenX >= btnX && screenX <= btnX + btnW &&
+            rawY >= btnY && rawY <= btnY + btnH) {
             turnManager.endTurn();
             return true;
         }
 
-        if (statsPopup != null && statsPopup.isVisible()) {
-            statsPopup.handleClick(screenX, screenY);
-            return true;
-        }
-        if (basePopup != null && basePopup.isVisible()) {
-            basePopup.handleClick(screenX, screenY);
-            return true;
-        }
-
-        int tileX = screenX / WorldMap.TILE_SIZE;
-        int tileY = (Gdx.graphics.getHeight() - screenY) / WorldMap.TILE_SIZE;
         Tile[][] grid = tileController.getTileGrid();
-
         if (tileX < 0 || tileY < 0 || tileY >= grid.length || tileX >= grid[0].length)
             return false;
 
         Tile clickedTile = grid[tileY][tileX];
 
-        // Klick på en unit = välj den och highlighta
-        for (int i = 0; i < units.size(); i++) {
-            Unit u = units.get(i);
+        // Klick på unit
+        for (Unit u : units) {
             if (u.getX() == tileX && u.getY() == tileY) {
                 unitController.selectUnit(u);
                 highlightSystem.updateHighlight(u);
@@ -81,22 +93,19 @@ public class GameInput extends InputAdapter {
             }
         }
 
-        // Klick på bas = öppna popup
+        // Klick på bas
         if (clickedTile.getBase() != null) {
             basePopup.show(clickedTile.getBase());
             return true;
         }
 
-        // Klick på tile = försök flytta markerad unit
         Unit selected = unitController.getSelectedUnit();
         if (selected != null) {
-            if(!highlightSystem.isHighlighted(tileX, tileY)){
-                return false;
-            }
+            // Hitta UnitView som tillhör den valda uniten
             UnitView selectedView = null;
-            for (int i = 0; i < units.size(); i++) {
-                if (units.get(i) == selected) {
-                    selectedView = unitViews.get(i);
+            for (UnitView uv : unitViews) {
+                if (uv.getUnit() == selected) {
+                    selectedView = uv;
                     break;
                 }
             }
@@ -105,7 +114,6 @@ public class GameInput extends InputAdapter {
                 return true;
             }
         }
-
         return false;
     }
 }

@@ -123,4 +123,7 @@ public class UnitView {
             case PLAYER_TWO -> tintColor = new Color(0.3f, 0.3f, 1f, 1f);
         }
     }
+    public Unit getUnit() {
+        return unit;
+    }
 }

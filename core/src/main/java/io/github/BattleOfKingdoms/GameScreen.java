@@ -4,6 +4,7 @@ import base.IncomeHelper;
 import base.TurnChangeListener;
 import base.TurnManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import GuiMainGame.*;
@@ -13,6 +14,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import popup.StatsChosenListener;
 import terrain.TileController;
 import popup.BasePopup;
@@ -26,16 +29,19 @@ import popup.UnitStatsPopup;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+
 
 public class GameScreen implements Screen {
-    private final Main game;
+    private Main game;
     private Music bgMusic;
     private SpriteBatch batch;
     private SpriteSheetLoader sheet;
     private TextureRegion grass;
     private TileController tileController;
     private WorldMap world;
-    private Base baseGraphic;
+    private Base baseGraphic1;
+    private Base baseGraphic2;
     private Lake lakeGraphic;
     private BasePopup basePopup;
     private UnitStatsPopup statsPopup;
@@ -50,9 +56,15 @@ public class GameScreen implements Screen {
     public static final float endTurnBtnW = 120f;
     public static final float endTurnBtnH = 40f;
     private float endTurnBtnX, endTurnBtnY;
+    private OrthographicCamera camera;
+    private Viewport viewport;
+    private static final float VIRTUAL_WIDTH = 960f;
+    private static final float VIRTUAL_HEIGHT = 960f;
 
     public GameScreen(Main game) {
         this.game = game;
+        ///viewport = new FitViewport(1280, 720, camera);
+
     }
 
     @Override
@@ -63,6 +75,12 @@ public class GameScreen implements Screen {
         bgMusic.setVolume(0.05f);
         bgMusic.play();
 
+        camera = new OrthographicCamera();
+        viewport = new StretchViewport(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, camera);
+        viewport.apply();
+        camera.position.set(VIRTUAL_WIDTH / 2f, VIRTUAL_HEIGHT / 2f, 0);
+        camera.update();
+
         batch = new SpriteBatch();
         sheet = new SpriteSheetLoader();
         tileController = new TileController();
@@ -72,11 +90,12 @@ public class GameScreen implements Screen {
         BaseStats base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
         BaseStats base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[34][46]);
 
-        baseGraphic = new Base(sheet, base1);
+        baseGraphic1 = new Base(sheet, base1);
+        baseGraphic2 = new Base(sheet, base2);
         lakeGraphic = new Lake(sheet);
 
-        world.placeBaseStructure(baseGraphic, base1, 2, 2);
-        world.placeBaseStructure(baseGraphic, base2, 34, 46);
+        world.placeBaseStructure(baseGraphic1, base1, 2, 2);
+        world.placeBaseStructure(baseGraphic2, base2, 34, 46);
 
         unitController = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
@@ -148,12 +167,18 @@ public class GameScreen implements Screen {
         // FIX 2: skickar unitController.getUnits() och unitViews till GameInput
         Gdx.input.setInputProcessor(
             new GameInput(tileController, basePopup, statsPopup,
-                unitController, unitController.getUnits(), unitViews, highlightSystem, turnManager, endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH)
+                unitController, unitController.getUnits(), unitViews, highlightSystem, turnManager, endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH, viewport)
         );
     }
 
     @Override
     public void render(float delta) {
+        ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
+
+        camera.update();
+        batch.setProjectionMatrix(camera.combined);
+
+        viewport.apply();
 
         turnManager.update(delta);
 
@@ -167,7 +192,14 @@ public class GameScreen implements Screen {
                 batch.draw(grass, x, y);
                 TextureRegion lakeTile = lakeGraphic.getTile(id);
                 if (lakeTile != null) { batch.draw(lakeTile, x, y); continue; }
-                TextureRegion baseTile = baseGraphic.getTile(id);
+                TextureRegion baseTile = baseGraphic1.getTile(id);
+                if (baseTile == null) {
+                    baseTile = baseGraphic2.getTile(id);
+                }
+                if (baseTile != null) {
+                    batch.draw(baseTile, x, y, 16, 16);
+                    continue;
+                }
                 if (baseTile != null) { batch.draw(baseTile, x, y, 16, 16); continue; }
             }
         }
@@ -175,7 +207,16 @@ public class GameScreen implements Screen {
 
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
-        highlightSystem.render();
+        highlightSystem.render(camera);
+
+        batch.begin();
+        for (UnitView uv : unitViews) {
+            uv.update(delta);
+            uv.render(batch);
+        }
+        batch.end();
+        // HighlightSystem använder ShapeRenderer — den behöver också kameran
+        highlightSystem.render(camera);
 
         batch.begin();
         for (UnitView uv : unitViews) {
@@ -190,6 +231,11 @@ public class GameScreen implements Screen {
     private void renderHud(){
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
+
+        hudShape.setProjectionMatrix(new com.badlogic.gdx.math.Matrix4()
+            .setToOrtho2D(0, 0, screenW, screenH));
+        batch.setProjectionMatrix(new com.badlogic.gdx.math.Matrix4()
+            .setToOrtho2D(0, 0, screenW, screenH));
 
         float endTurnBtnX = screenW - endTurnBtnW - 20;
         float endTurnBtnY = 20;
@@ -215,15 +261,22 @@ public class GameScreen implements Screen {
         hudFont.draw(batch, "End Turn", endTurnBtnX + 10, endTurnBtnY + 20);
 
         batch.end();
+
+        batch.setProjectionMatrix(camera.combined);
     }
 
-    @Override public void resize(int width, int height) {
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-        hudShape.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+    @Override
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
     }
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
+
+    public GameScreen() {
+        camera = new OrthographicCamera();
+        viewport = new FitViewport(1280, 720, camera); // virtuell spelstorlek
+    }
 
     @Override
     public void dispose() {
