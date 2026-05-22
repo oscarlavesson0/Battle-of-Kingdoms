@@ -74,6 +74,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
+        System.out.println("show() started");
         bgMusic = Gdx.audio.newMusic(Gdx.files.internal(
             "lwjgl3/assets/Audio/Medieval Fantasy Tavern D&D Fantasy Music and Ambience - Daydreaming of Persephone (128k).mp3"));
         bgMusic.setLooping(true);
@@ -135,9 +136,9 @@ public class GameScreen implements Screen {
             random.nextInt(10, world.getRows()-10),
             random.nextInt(10, world.getCols()-10));
 
-        basePopup = new BasePopup(null, 200, 150, 300, 200);
-        statsPopup = new UnitStatsPopup(300, 200, 300, 250);
-        buildingPopup = new BuildingPopup(buildingController, 300, 200, 300, 250);
+        basePopup = new BasePopup(null, 200, 150, 300, 200, camera);
+        statsPopup = new UnitStatsPopup(300, 200, 300, 250, camera);
+        buildingPopup = new BuildingPopup(buildingController, 300, 200, 300, 250, camera);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base);}
@@ -201,7 +202,7 @@ public class GameScreen implements Screen {
             unitController, unitController.getUnits(), unitViews,
             highlightSystem, turnManager,
             endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH,
-            allBases);
+            allBases, viewport);
 
         Gdx.input.setInputProcessor(gameInput);
     }
@@ -210,12 +211,16 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
 
-        gameInput.update();
+
+        viewport.apply(true);
+        camera.update();
         batch.setProjectionMatrix(camera.combined);
         hudShape.setProjectionMatrix(camera.combined);
-        viewport.apply();
+
+        gameInput.update();
         turnManager.update(delta);
 
+        // KARTA
         batch.begin();
         for (int row = 0; row < world.getRows(); row++) {
             for (int col = 0; col < world.getCols(); col++) {
@@ -231,34 +236,38 @@ public class GameScreen implements Screen {
         }
         batch.end();
 
+        // POPUPS
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
-
         if (buildingPopup.isVisible()) buildingPopup.render();
 
+        if (batch.isDrawing()) batch.end();
+        if (hudShape.isDrawing()) hudShape.end();
+
+        // HIGHLIGHT
         highlightSystem.render(camera);
 
+        // UNITS
         batch.begin();
         for (UnitView uv : unitViews) { uv.update(delta); uv.render(batch); }
         batch.end();
 
-        hudShape.setProjectionMatrix(camera.combined);
+        // HP-BARS
         hudShape.begin(ShapeRenderer.ShapeType.Filled);
         for (UnitView uv : unitViews) uv.renderHpBar(hudShape);
         renderBaseHpBars();
         hudShape.end();
 
         // HP-TEXT
-        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for (UnitView uv : unitViews) uv.renderHpText(batch);
         batch.end();
 
+        // HUD
         renderHud();
         gameInput.getActionMenu().render(batch, hudShape);
 
         // BYGGNADER
-        batch.setProjectionMatrix(camera.combined);
         batch.begin();
         buildingController.getBuildingRenderer().render(batch);
         batch.end();
@@ -292,6 +301,16 @@ public class GameScreen implements Screen {
         hudShape.rect(bx, by, endTurnBtnW, endTurnBtnH);
         hudShape.end();
 
+        hudShape.setProjectionMatrix(new com.badlogic.gdx.math.Matrix4()
+            .setToOrtho2D(0, 0, screenW, screenH));
+        batch.setProjectionMatrix(new com.badlogic.gdx.math.Matrix4()
+            .setToOrtho2D(0, 0, screenW, screenH));
+
+        hudShape.begin(ShapeRenderer.ShapeType.Filled);
+        hudShape.setColor(0.15f, 0.4f, 0.15f, 0.9f);
+        hudShape.rect(bx, by, endTurnBtnW, endTurnBtnH);
+        hudShape.end();
+
         batch.begin();
         hudFont.setColor(Color.WHITE);
         String topLine = "Turn " + turnManager.getTurnNumber()
@@ -312,12 +331,14 @@ public class GameScreen implements Screen {
         hudFont.setColor(Color.WHITE);
         hudFont.draw(batch, "End Turn", bx + 10, by + 20);
         batch.end();
+
+        batch.setProjectionMatrix(camera.combined);
+        hudShape.setProjectionMatrix(camera.combined);
     }
 
     @Override
     public void resize(int width, int height) {
-        batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
-        hudShape.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+        viewport.update(width, height, true);
     }
 
     @Override public void pause()  {}

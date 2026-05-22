@@ -1,5 +1,6 @@
 package popup;
 
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.Texture;
@@ -56,12 +57,15 @@ public class UnitStatsPopup {
     private Texture hpIcon;
     private Texture woodBackground;
     private Texture frameTexture;
+    private com.badlogic.gdx.graphics.OrthographicCamera camera;
 
-    public UnitStatsPopup(int x, int y, int witdth, int height){
+
+    public UnitStatsPopup(int x, int y, int witdth, int height, OrthographicCamera camera){
         this.x = x;
         this.y = y;
         this.width = witdth;
         this.height = height;
+        this.camera = camera;
 
         //this.font = new BitmapFont();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
@@ -117,6 +121,8 @@ public class UnitStatsPopup {
         if (!visible){
             return;
         }
+        batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
 
         if (batch.isDrawing()){
             batch.end();
@@ -200,18 +206,16 @@ public class UnitStatsPopup {
             return;
         }
 
-        float realY = Gdx.graphics.getHeight() - screenY;
-
         if(showError){
             if (screenX >= x + 20 && screenX <= x + 120 &&
-                realY >= y + height - 320 && realY <= y + height - 280) {
+                screenY >= y + height - 320 && screenY <= y + height - 280) {
 
                 showError = false;
                 return;
             }
 
             boolean insidePopup = screenX >= x && screenX <= x + width &&
-                realY >= y && realY <= y + height;
+                screenY >= y && screenY <= y + height;
 
             if (!insidePopup) {
                 showError = false;
@@ -222,7 +226,7 @@ public class UnitStatsPopup {
 
         // Klick outside popup
         boolean insidePopup = screenX >= x && screenX <= x + width &&
-            realY >= y && realY <= y + height;
+            screenY >= y && screenY <= y + height;
 
         if(!insidePopup){
             hide();
@@ -236,14 +240,14 @@ public class UnitStatsPopup {
         float closeY2 = y + height - 5;
 
         if (screenX >= closeX1 && screenX <= closeX2 &&
-            realY >= closeY1 && realY <= closeY2) {
+            screenY >= closeY1 && screenY <= closeY2) {
             hide();
             return;
         }
 
         // HP minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 80 && realY <= y + height - 50) {
+            screenY >= y + height - 80 && screenY <= y + height - 50) {
             if (hp > 1) {
                 hp--;
                 pointsLeft++;
@@ -252,7 +256,7 @@ public class UnitStatsPopup {
 
         // HP plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 80 && realY <= y + height - 50) {
+            screenY >= y + height - 80 && screenY <= y + height - 50) {
             if (hp < MAX_HP && pointsLeft > 0) {
                 hp++;
                 pointsLeft--;
@@ -261,7 +265,7 @@ public class UnitStatsPopup {
 
         // Attack minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 120 && realY <= y + height - 90) {
+            screenY >= y + height - 120 && screenY <= y + height - 90) {
             if (attack > 1){
                 attack--;
                 pointsLeft++;
@@ -270,7 +274,7 @@ public class UnitStatsPopup {
 
         // Attack plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 120 && realY <= y + height - 90) {
+            screenY >= y + height - 120 && screenY <= y + height - 90) {
             if (attack < MAX_ATTACK && pointsLeft > 0) {
                 attack++;
                 pointsLeft--;
@@ -279,7 +283,7 @@ public class UnitStatsPopup {
 
         // Speed minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 160 && realY <= y + height - 130) {
+            screenY >= y + height - 160 && screenY <= y + height - 130) {
             if (speed > 1) {
                 speed--;
                 pointsLeft++;
@@ -287,7 +291,7 @@ public class UnitStatsPopup {
         }
         // Speed plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 160 && realY <= y + height - 130) {
+            screenY >= y + height - 160 && screenY <= y + height - 130) {
             if (speed < MAX_SPEED && pointsLeft > 0) {
                 speed++;
                 pointsLeft--;
@@ -296,7 +300,7 @@ public class UnitStatsPopup {
 
         // Defence minus
         if (screenX >= x + BUTTON_MINUS_OFFSET && screenX <= x + BUTTON_MINUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 200 && realY <= y + height - 170) {
+            screenY >= y + height - 200 && screenY <= y + height - 170) {
             if (defence > 1) {
                 defence--;
                 pointsLeft++;
@@ -305,7 +309,7 @@ public class UnitStatsPopup {
 
         // Defence plus
         if (screenX >= x + BUTTON_PLUS_OFFSET && screenX <= x + BUTTON_PLUS_OFFSET + BUTTON_WIDTH &&
-            realY >= y + height - 200 && realY <= y + height - 170) {
+            screenY >= y + height - 200 && screenY <= y + height - 170) {
             if (defence < MAX_DEFENCE && pointsLeft > 0) {
                 defence++;
                 pointsLeft--;
@@ -314,7 +318,7 @@ public class UnitStatsPopup {
 
         // Create Unit button
         if (screenX >= x + 20 && screenX <= x + 200 &&
-            realY >= y + 20 && realY <= y + 60) {
+            screenY >= y + 20 && screenY <= y + 60) {
 
             if (listener != null) {
                 listener.onStatsChosen(base, hp, attack, speed, defence);
@@ -323,7 +327,6 @@ public class UnitStatsPopup {
             if(!showError){
                 hide();
             }
-            return;
         }
     }
 }

@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+
 /**
  * Popup window that displays information about a Base.
  * Shows owner name, HP bar, HP text, defense value and a button.
  */
 public class BasePopup {
+    private com.badlogic.gdx.graphics.OrthographicCamera camera;
+
 
     private BaseStats base;
 
@@ -38,12 +41,13 @@ public class BasePopup {
      * @param width Popup width
      * @param height Popup height
      */
-    public BasePopup(BaseStats base, float x, float y, float width, float height) {
+    public BasePopup(BaseStats base, float x, float y, float width, float height, com.badlogic.gdx.graphics.OrthographicCamera camera) {
         this.base = base;
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.camera = camera;
 
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
@@ -91,7 +95,7 @@ public class BasePopup {
         if (batch.isDrawing()) {
             batch.end();
         }
-
+        shapeRenderer.setProjectionMatrix(camera.combined);
         // Draw background and HP bar with ShapeRenderer
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
@@ -151,12 +155,9 @@ public class BasePopup {
      */
     public void handleClick(float screenX, float screenY) {
         if (!visible) return;
-
-        float realY = Gdx.graphics.getHeight() - screenY;
-
         // Check if click is inside popup
         boolean insidePopup = screenX >= x && screenX <= x + width &&
-            realY >= y && realY <= y + height;
+            screenY >= y && screenY <= y + height;
 
         if (!insidePopup) {
             hide(); // Close when clicking outside
@@ -170,14 +171,14 @@ public class BasePopup {
         float closeY2 = y + height - 5;
 
         if (screenX >= closeX1 && screenX <= closeX2 &&
-            realY >= closeY1 && realY <= closeY2) {
+            screenY >= closeY1 && screenY <= closeY2) {
             hide();
             return;
         }
 
         // Train units button
         boolean buttonClicked = screenX >= buttonX && screenX <= buttonX + buttonWidth &&
-            realY >= buttonY && realY <= buttonY + buttonHeight;
+            screenY >= buttonY && screenY <= buttonY + buttonHeight;
 
         if (buttonClicked) {
             if (listener != null) {
@@ -188,8 +189,8 @@ public class BasePopup {
         // Create Buildings button
         boolean buildingButtonClicked = screenX >= buildingButtonX
             && screenX <= buildingButtonX + buildingButtonWidth
-            && realY >= buildingButtonY
-            && realY <= buildingButtonY + buildingButtonHeight;
+            && screenY >= buildingButtonY
+            && screenY <= buildingButtonY + buildingButtonHeight;
 
         if (buildingButtonClicked){
             if (listener != null){

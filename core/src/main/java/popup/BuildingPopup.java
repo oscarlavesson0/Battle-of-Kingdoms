@@ -5,6 +5,7 @@ import building.BuildingController;
 import building.BuildingType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -47,12 +48,15 @@ public class BuildingPopup {
     private Texture barracksIcon;
     private Texture toolSmithIcon;
     private Texture letterXIcon;
+    private OrthographicCamera camera;
 
-    public BuildingPopup(BuildingController buildingController, int x, int y,  int width, int height) {
+
+    public BuildingPopup(BuildingController buildingController, int x, int y,  int width, int height, OrthographicCamera camera) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.camera = camera;
 
         this.buildingController = buildingController;
 
@@ -109,6 +113,8 @@ public class BuildingPopup {
         if (!visible){
             return;
         }
+        batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
 
         if (batch.isDrawing()){
             batch.end();
@@ -172,12 +178,10 @@ public class BuildingPopup {
             return;
         }
 
-        float realY = Gdx.graphics.getHeight() - screenY;
-
         //error
         if (showError){
             if (screenX >= x + 20 && screenX <= x + width + 120 &&
-            realY >= y + height - 320 && realY <= y + height - 280){
+            screenY >= y + height - 320 && screenY <= y + height - 280){
                 showError = false;
                 return;
             }
@@ -191,7 +195,7 @@ public class BuildingPopup {
         }
 
         boolean insidePopup = screenX >= x && screenX <= x + width &&
-            realY >= y && realY <= y + height;
+            screenY >= y && screenY <= y + height;
 
 
         if(!insidePopup){
@@ -205,14 +209,14 @@ public class BuildingPopup {
         float closeY2 = y + height - 5;
 
         if (screenX >= closeX1 && screenX <= closeX2
-            && realY >= closeY1 && realY <= closeY2){
+            && screenY >= closeY1 && screenY <= closeY2){
             hide();
             return;
         }
         int i = 0;
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
-            && realY <= button.getHeight() + button.getY() && realY >= button.getY()){
+            && screenY <= button.getHeight() + button.getY() && screenY >= button.getY()){
                 System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
                 if (listener != null){
                     listener.OnBuildingChosen(button.getBuildingType(), baseStats);

@@ -58,11 +58,11 @@ public class HighlightSystem {
 
     // rendering
     public void render(OrthographicCamera camera) {
-
         if (highlightedTiles.isEmpty() && movementTiles.isEmpty() && interactionTiles.isEmpty()) return;
-
+        if (shapeRenderer.isDrawing()) shapeRenderer.end();
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
         shapeRenderer.setColor(0f, 0f, 1f, 0.35f);
         for (int[] pos : highlightedTiles) {
             int x = pos[0] * WorldMap.TILE_SIZE;
@@ -72,7 +72,7 @@ public class HighlightSystem {
 
         if (movementTiles.isEmpty() && interactionTiles.isEmpty()) return;
 
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
 
         // Movement zone
         shapeRenderer.setColor(Color.BLUE);
