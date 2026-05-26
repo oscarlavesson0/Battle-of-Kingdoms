@@ -45,6 +45,9 @@ public class BuildingController {
 
         owner.subtractGold(buildingType.getCost());
 
+        int x = baseStats.getPosition().getX();
+        int y = baseStats.getPosition().getY();
+
         Building building = null;
 
         switch (buildingType){
