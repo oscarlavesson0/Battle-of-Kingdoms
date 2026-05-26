@@ -12,9 +12,9 @@ public class UnitController {
 
     private Tile[][] tileGrid;
     private Unit selectedUnit;
-    private List<Unit> units              = new ArrayList<>();
-    private List<Unit> movedThisTurn      = new ArrayList<>();
-    private List<Unit> attackedThisTurn   = new ArrayList<>();
+    private List<Unit> units = new ArrayList<>();
+    private List<Unit> movedThisTurn = new ArrayList<>();
+    private List<Unit> attackedThisTurn = new ArrayList<>();
     private Map<Unit, int[]> pendingMoveOrigin = new HashMap<>();
 
     private BaseDestroyedListener baseDestroyedListener;
@@ -28,8 +28,13 @@ public class UnitController {
     }
 
     // Selektion
-    public void selectUnit(Unit unit) { this.selectedUnit = unit; }
-    public Unit getSelectedUnit()     { return selectedUnit; }
+    public void selectUnit(Unit unit) {
+        this.selectedUnit = unit;
+    }
+
+    public Unit getSelectedUnit() {
+        return selectedUnit;
+    }
 
     // Rörelse
     public boolean moveSelectedUnit(int targetX, int targetY, UnitView unitView) {
@@ -40,12 +45,12 @@ public class UnitController {
         if (path.isEmpty()) return false;
 
         int maxSteps = selectedUnit.getSpeed();
-        int steps    = Math.min(maxSteps, path.size());
+        int steps = Math.min(maxSteps, path.size());
         Queue<int[]> queue = new LinkedList<>();
         for (int i = 0; i < steps; i++) queue.add(path.get(i));
 
         pendingMoveOrigin.put(selectedUnit,
-            new int[]{ selectedUnit.getX(), selectedUnit.getY() });
+            new int[]{selectedUnit.getX(), selectedUnit.getY()});
 
         tileGrid[selectedUnit.getY()][selectedUnit.getX()].setUnit(null);
         if (unitView != null) unitView.setMovementPath(queue);
@@ -83,7 +88,7 @@ public class UnitController {
                 if (tx == ux && ty == uy) continue;
                 List<int[]> path = Pathfinder.findPath(tileGrid, unit, tx, ty);
                 if (path.isEmpty() || path.size() > speed) continue;
-                tiles.add(new int[]{ tx, ty });
+                tiles.add(new int[]{tx, ty});
             }
         }
         return tiles;
@@ -95,10 +100,10 @@ public class UnitController {
         for (int[] t : movementTiles) movSet.add(t[0] + "," + t[1]);
 
         List<int[]> result = new ArrayList<>();
-        Set<String> added  = new HashSet<>();
-        int[][] dirs = {{0,1},{0,-1},{1,0},{-1,0}};
+        Set<String> added = new HashSet<>();
+        int[][] dirs = {{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
         List<int[]> sources = new ArrayList<>(movementTiles);
-        sources.add(new int[]{ unit.getX(), unit.getY() });
+        sources.add(new int[]{unit.getX(), unit.getY()});
 
         for (int[] tile : sources) {
             for (int[] d : dirs) {
@@ -106,7 +111,7 @@ public class UnitController {
                 String key = nx + "," + ny;
                 if (movSet.contains(key) || added.contains(key)) continue;
                 if (nx < 0 || ny < 0 || ny >= tileGrid.length || nx >= tileGrid[0].length) continue;
-                result.add(new int[]{ nx, ny });
+                result.add(new int[]{nx, ny});
                 added.add(key);
             }
         }
@@ -114,8 +119,13 @@ public class UnitController {
     }
 
     // Status
-    public boolean hasMovedThisTurn(Unit unit)    { return movedThisTurn.contains(unit); }
-    public boolean hasAttackedThisTurn(Unit unit) { return attackedThisTurn.contains(unit); }
+    public boolean hasMovedThisTurn(Unit unit) {
+        return movedThisTurn.contains(unit);
+    }
+
+    public boolean hasAttackedThisTurn(Unit unit) {
+        return attackedThisTurn.contains(unit);
+    }
 
     public void resetMovement() {
         movedThisTurn.clear();
@@ -125,8 +135,13 @@ public class UnitController {
     }
 
     // Enhetslista
-    public List<Unit> getAllUnits()  { return units; }
-    public List<Unit> getUnits()    { return units; }
+    public List<Unit> getAllUnits() {
+        return units;
+    }
+
+    public List<Unit> getUnits() {
+        return units;
+    }
 
     public List<Unit> getUnitsForPlayer(base.Player player) {
         List<Unit> result = new ArrayList<>();
@@ -196,19 +211,41 @@ public class UnitController {
 
     // Spawn
     public void spawnUnitNearBase(BaseStats base, Unit unit) {
-        int bx = base.getPosition().getX();
-        int by = base.getPosition().getY();
-        int[][] dirs = {{1,0},{-1,0},{0,1},{0,-1}};
-        for (int[] d : dirs) {
-            int nx = bx + d[0], ny = by + d[1];
-            if (nx >= 0 && ny >= 0
-                && ny < tileGrid.length
-                && nx < tileGrid[0].length
-                && tileGrid[ny][nx].getUnit() == null) {
-                unit.setPosition(nx, ny);
-                tileGrid[ny][nx].setUnit(unit);
-                units.add(unit);
-                return;
+        int baseRow = base.getPosition().getX();
+        int baseCol = base.getPosition().getY();
+
+        System.out.println("Spawning near base at row=" + baseRow + " col=" + baseCol);
+        int spawnRow = baseRow - 1;
+
+        for (int rowOffset = 1; rowOffset <= 5; rowOffset++) {
+            spawnRow = baseRow - rowOffset;
+            for (int col = baseCol; col < baseCol + 4; col++) {
+                if (spawnRow >= 0
+                    && spawnRow < tileGrid.length
+                    && col >= 0
+                    && col < tileGrid[0].length
+                    && tileGrid[spawnRow][col].getUnit() == null
+                    && !(tileGrid[spawnRow][col].getTerrain() instanceof Water)) {
+                    unit.setPosition(col, spawnRow);
+                    tileGrid[spawnRow][col].setUnit(unit);
+                    units.add(unit);
+                    return;
+                }
+            }
+        }
+        for (int rowOffset = 4; rowOffset <= 8; rowOffset++) {
+            spawnRow = baseRow + rowOffset;
+            for (int col = baseCol; col < baseCol + 4; col++) {
+                if (spawnRow < tileGrid.length
+                    && col >= 0
+                    && col < tileGrid[0].length
+                    && tileGrid[spawnRow][col].getUnit() == null
+                    && !(tileGrid[spawnRow][col].getTerrain() instanceof Water)) {
+                    unit.setPosition(col, spawnRow);
+                    tileGrid[spawnRow][col].setUnit(unit);
+                    units.add(unit);
+                    return;
+                }
             }
         }
     }

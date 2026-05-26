@@ -31,4 +31,8 @@ public class BaseStats {
     public boolean isDestroyed() {
         return currentHp <= 0;
     }
+
+    public void setPosition(Tile position) {
+        this.position = position;
+    }
 }
