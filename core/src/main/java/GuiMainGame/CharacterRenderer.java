@@ -34,12 +34,12 @@ public class CharacterRenderer {
                 }
 
                 case AXEMAN: {
-                    idleAnim   = loadAnimation("lwjgl3/assets/ui/Axeman/Axeman_idleNY.png", 94, 92, 0.1f);
-                    runAnim    = loadAnimation("lwjgl3/assets/ui/Axeman/Axemen_runNY.png", 94, 92, 0.1f);
-                    attackAnim = loadAnimation("lwjgl3/assets/ui/Axeman/Axemen_attackNY.png", 94, 92, 0.1f);
-                    damageAnim = loadAnimation("lwjgl3/assets/ui/Axeman/Axemen_hurtNY.png", 94, 92, 0.1f);
-                    deathAnim = loadAnimation("lwjgl3/assets/ui/Axeman/Axemen_deathNY.png", 94, 92, 0.1f);
-
+                    String path = "lwjgl3/assets/ui/Axeman/Minotaur.png";
+                    idleAnim   = loadAnimationRow(path, 94, 94, 0.25f, 0, 5);
+                    runAnim    = loadAnimationRow(path, 94, 94, 0.1f,  1, 8);
+                    attackAnim = loadAnimationRow(path, 94, 94, 0.1f,  3, 9);
+                    damageAnim = loadAnimationRow(path, 94, 94, 0.1f,  8, 3);
+                    deathAnim  = loadAnimationRow(path, 94, 94, 0.15f, 9, 5);
                     break;
                 }
             }
@@ -79,6 +79,17 @@ public class CharacterRenderer {
                 case DAMAGE -> damageAnim != null ? damageAnim.getKeyFrame(stateTime, false) : idleAnim.getKeyFrame(stateTime, true);
                 default     -> idleAnim.getKeyFrame(stateTime, true);
         };
+    }
+    private Animation<TextureRegion> loadAnimationRow(String path, int frameWidth,
+                                                      int frameHeight, float speed,
+                                                      int row, int frameCount) {
+        Texture sheet = new Texture(path);
+        TextureRegion[] frames = new TextureRegion[frameCount];
+        for (int i = 0; i < frameCount; i++) {
+            frames[i] = new TextureRegion(sheet, i * frameWidth, row * frameHeight,
+                frameWidth, frameHeight);
+        }
+        return new Animation<>(speed, frames);
     }
 
 }
