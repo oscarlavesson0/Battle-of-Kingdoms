@@ -122,15 +122,15 @@ public class UnitView {
     public void render(SpriteBatch batch) {
         batch.setColor(tintColor != null ? tintColor : Color.WHITE);
         TextureRegion frame = renderer.getCurrentFrame();
-        batch.draw(frame, animX, animY, 16, 16);
+        batch.draw(frame, animX - 8f, animY - 8f, 32, 32);
         batch.setColor(Color.WHITE);
     }
 
     public void renderHpBar(ShapeRenderer shapeRenderer) {
         float barWidth   = 16f;
         float barHeight  = 3f;
-        float barX       = animX;
-        float barY       = animY + 18f;
+        float barX       = animX - 8f;
+        float barY       = animY + 26f;
         float hpPercent  = (float) unit.getCurrentHp() / unit.getMaxHp();
 
         shapeRenderer.setColor(Color.RED);
@@ -142,7 +142,7 @@ public class UnitView {
     public void renderHpText(SpriteBatch batch) {
         font.setColor(Color.WHITE);
         font.draw(batch, unit.getCurrentHp() + "/" + unit.getMaxHp(),
-            animX + 18f, animY + 22f);
+            animX - 8f, animY + 38f);
     }
 
     public void applyPlayerColor(Player player) {
