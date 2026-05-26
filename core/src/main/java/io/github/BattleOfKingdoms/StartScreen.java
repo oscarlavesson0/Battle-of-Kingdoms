@@ -4,16 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+
 
 public class StartScreen implements Screen {
 
     private final Main game;
     private SpriteBatch batch;
     private BitmapFont font;
+    private Texture backgrund;
 
     // Knapp‑koordinater
     private float startX, startY, startW, startH;
@@ -29,9 +31,10 @@ public class StartScreen implements Screen {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 32;
         parameter.color = Color.BLACK;
-
         font = generator.generateFont(parameter);
         generator.dispose();
+
+        backgrund = new Texture("lwjgl3/assets/ui/backgrounds/Startmeny.png");
 
         startW = instrW = exitW = 300;
         startH = instrH = exitH = 60;
@@ -45,10 +48,12 @@ public class StartScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        Gdx.gl.glClearColor(1f, 1f, 1f, 1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
+
+        batch.draw(backgrund, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         font.setColor(Color.BLACK);
         font.getData().setScale(2);
 
@@ -93,5 +98,9 @@ public class StartScreen implements Screen {
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
-    @Override public void dispose() {}
+    @Override public void dispose() {
+        batch.dispose();
+        font.dispose();
+        backgrund.dispose();
+    }
 }
