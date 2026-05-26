@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 public class StartScreen implements Screen {
 
@@ -21,7 +23,15 @@ public class StartScreen implements Screen {
     public StartScreen(Main game) {
         this.game = game;
         batch = new SpriteBatch();
-        font = new BitmapFont();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(
+            Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf")
+        );
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 32;
+        parameter.color = Color.BLACK;
+
+        font = generator.generateFont(parameter);
+        generator.dispose();
 
         startW = instrW = exitW = 300;
         startH = instrH = exitH = 60;
@@ -44,9 +54,9 @@ public class StartScreen implements Screen {
 
         font.draw(batch, "Battle of Kingdoms", 200, 550);
 
-        font.draw(batch, "[ Start Game ]", startX, startY);
-        font.draw(batch, "[ Instructions ]", instrX, instrY);
-        font.draw(batch, "[ Exit ]", exitX, exitY);
+        font.draw(batch, "Start Game", startX, startY);
+        font.draw(batch, "Instructions", instrX, instrY);
+        font.draw(batch, "Exit", exitX, exitY);
 
         batch.end();
 
