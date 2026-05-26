@@ -48,6 +48,8 @@ public class WorldMap {
     public void placeBaseStructure(StructureRenderer structure, BaseStats baseStats, int startRow, int startCol) {
         int[][] layout = structure.getLayout();
 
+        baseStats.setPosition(tileGrid[startRow][startCol]);
+
         for (int r = 0; r < layout.length; r++) {
             for (int c = 0; c < layout[0].length; c++) {
 
