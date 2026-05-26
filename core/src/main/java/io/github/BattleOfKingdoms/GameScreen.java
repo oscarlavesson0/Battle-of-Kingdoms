@@ -92,15 +92,14 @@ public class GameScreen implements Screen {
         tileController = new TileController();
         world         = new WorldMap(tileController);
         grass         = sheet.getTile(0, 5);
-
-        base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][2]);
-        base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[20][30]);
-
         baseGraphic = new Base(sheet, base1);
         lakeGraphic = new Lake(sheet);
 
-        world.placeBaseStructure(baseGraphic, base1, 2,  2);
-        world.placeBaseStructure(baseGraphic, base2, 20, 30);
+        base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][28]);
+        base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[55][28]);
+
+        world.placeBaseStructure(baseGraphic, base1, 28,  2);
+        world.placeBaseStructure(baseGraphic, base2, 28, 55);
 
         unitController  = new UnitController(tileController.getTileGrid());
         highlightSystem = new HighlightSystem(unitController);
@@ -277,18 +276,39 @@ public class GameScreen implements Screen {
     private void renderBaseHpBars() {
         for (BaseStats b : new BaseStats[]{ base1, base2 }) {
             if (b.isDestroyed()) continue;
-            float bx = b.getPosition().getX() * WorldMap.TILE_SIZE;
-            float by = b.getPosition().getY() * WorldMap.TILE_SIZE + 4 * WorldMap.TILE_SIZE + 4;
-            float barW = 4 * WorldMap.TILE_SIZE;
+            // Basens tile-position (övre vänstra hörnet)
+            float baseTileX = b.getPosition().getY();
+            float baseTileY = b.getPosition().getX();
+
+            // Din bas är 4x4 tiles
+            int baseWidthTiles = 4;
+            int baseHeightTiles = 4;
+
+            // Pixelposition för basens övre vänstra hörn
+            float px = baseTileX * WorldMap.TILE_SIZE;
+            float py = baseTileY * WorldMap.TILE_SIZE;
+
+            // Healthbar bredd = hela basens bredd
+            float barW = baseWidthTiles * WorldMap.TILE_SIZE;
             float barH = 4f;
-            float pct  = (float) b.getCurrentHp() / b.getMaxHp();
-            hudShape.setColor(com.badlogic.gdx.graphics.Color.DARK_GRAY);
-            hudShape.rect(bx, by, barW, barH);
-            hudShape.setColor(pct > 0.5f ? com.badlogic.gdx.graphics.Color.GREEN
-                : com.badlogic.gdx.graphics.Color.ORANGE);
-            hudShape.rect(bx, by, barW * pct, barH);
+
+            // Healthbar ska ligga ovanför basens högsta punkt
+            float barX = px;
+            float barY = py + (baseHeightTiles * WorldMap.TILE_SIZE) + 6;
+
+            float pct = (float) b.getCurrentHp() / b.getMaxHp();
+
+            // Bakgrund
+            hudShape.setColor(Color.DARK_GRAY);
+            hudShape.rect(barX, barY, barW, barH);
+
+            // Fyllnad
+            hudShape.setColor(pct > 0.5f ? Color.GREEN : Color.ORANGE);
+            hudShape.rect(barX, barY, barW * pct, barH);
         }
     }
+
+
 
     private void renderHud() {
         float screenW = Gdx.graphics.getWidth();
