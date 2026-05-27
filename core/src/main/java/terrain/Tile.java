@@ -1,6 +1,7 @@
 package terrain;
 
 import base.BaseStats;
+import building.Building;
 import unit.Unit;
 
 public class Tile {
@@ -10,6 +11,7 @@ public class Tile {
     private Terrain terrain;
     private BaseStats base;
     private Unit unit;
+    private Building building;
 
     public Tile(int x, int y, Terrain terrain) {
         this.x = x;
@@ -39,6 +41,14 @@ public class Tile {
 
     public void setUnit(Unit unit) {
         this.unit = unit;
+    }
+
+    public Building getBuilding() {
+        return building;
+    }
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
 
     public int getX() {
