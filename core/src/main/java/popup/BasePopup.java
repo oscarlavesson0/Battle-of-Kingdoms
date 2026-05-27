@@ -6,6 +6,10 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 
 /**
@@ -33,6 +37,16 @@ public class BasePopup {
     // Create Buildings button area
     private float buildingButtonX, buildingButtonY, buildingButtonWidth, buildingButtonHeight;
 
+    private final Color GOLD = new Color(1f, 0.84f, 0.0f, 1f);
+
+    private Texture woodBackground;
+    private Texture frameTexture;
+    private Texture heartIcon;
+    private Texture shieldIcon;
+    private Texture letterXIcon;
+    private Texture hpBarSheet;
+    private TextureRegion[] hpBarFrames;
+
     /**
      * Creates a popup window for a specific Base.
      * @param base The base whose information will be displayed.
@@ -49,7 +63,12 @@ public class BasePopup {
         this.height = height;
         this.camera = camera;
 
-        font = new BitmapFont();
+        //font = new BitmapFont();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 16;
+        this.font = generator.generateFont(parameter);
+        generator.dispose();
         shapeRenderer = new ShapeRenderer();
 
         // Button size and position
@@ -62,6 +81,19 @@ public class BasePopup {
         buildingButtonHeight = 40;
         buildingButtonX = x + 150;
         buildingButtonY = y + 20;
+
+        this.woodBackground = new Texture (Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
+        this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
+        this.heartIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        this.shieldIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/shield.png"));
+        this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
+        this.hpBarSheet = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/hpbar.png"));
+
+// Klipp upp spritesheet:en i 12 frames (32x32 vardera)
+        this.hpBarFrames = new TextureRegion[12];
+        for (int i = 0; i < 12; i++) {
+            hpBarFrames[i] = new TextureRegion(hpBarSheet, i * 32 + 2, 4, 28, 24);
+        }
     }
 
     /**
@@ -95,51 +127,64 @@ public class BasePopup {
         if (batch.isDrawing()) {
             batch.end();
         }
-        shapeRenderer.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(woodBackground, x, y, width, height);
+        batch.draw(frameTexture, x - 13, y - 15, width + 30, height + 30);
+        batch.end();
+        /*shapeRenderer.setProjectionMatrix(camera.combined);
         // Draw background and HP bar with ShapeRenderer
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
 
         // White background
-        shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
-        shapeRenderer.rect(x, y, width, height);
+        //shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
+        //shapeRenderer.rect(x, y, width, height);
 
         // HP bar background
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x + 20, y + height - 120, width - 40, 20);
+        shapeRenderer.setColor(0.2f, 0.1f, 0.05f, 1f);
+        shapeRenderer.rect(x + 60, y + height - 120, width - 80, 20);
 
         // HP bar fill
         float hpPercent = (float) base.getCurrentHp() / base.getMaxHp();
-        shapeRenderer.setColor(Color.GREEN);
-        shapeRenderer.rect(x + 20, y + height - 120, (width - 40) * hpPercent, 20);
+        shapeRenderer.setColor(0.2f, 0.7f, 0.2f, 1f);
+        shapeRenderer.rect(x + 60, y + height - 120, (width - 80) * hpPercent, 20);
 
-        shapeRenderer.end();
+        shapeRenderer.end();*/
 
         // Draw text with SpriteBatch
         batch.begin();
+        font.setColor(GOLD);
 
         // Owner text
-        font.setColor(Color.BLACK);
+        //font.setColor(Color.BLACK);
         font.draw(batch, "Owner: " + base.getOwner().getDisplayName(), x + 20, y + height - 20);
 
-        // HP text
-        font.setColor(Color.GREEN);
-        font.draw(batch, "HP: " + base.getCurrentHp() + " / " + base.getMaxHp(),
-            x + 20, y + height - 70);
+        // HP-bar
 
-        // Defense text
-        font.setColor(Color.BLUE);
-        font.draw(batch, "Defense: " + base.getDefense(), x + 20, y + height - 140);
+        float hpPercent = (float) base.getCurrentHp() / base.getMaxHp();
+        int frameIndex = (int) ((1f - hpPercent) * 11);
+        frameIndex = Math.max(0, Math.min(11, frameIndex));
+        batch.draw(hpBarFrames[frameIndex], x + 60, y + height - 130, width - 80, 80);
 
-        // Close button
-        font.setColor(Color.RED);
-        font.draw(batch, "[ Close ]", x + width - 80, y + height - 20);
+        // HP ikon
+        //font.setColor(Color.GREEN);
+        batch.draw(heartIcon, x + 20, y + height - 105, 30, 30);
+        font.draw(batch, base.getCurrentHp() + " / " + base.getMaxHp(),
+            x + 135, y + height - 80);
+
+        // Defence ikon
+        //font.setColor(Color.BLUE);
+        batch.draw(shieldIcon, x + 20, y + height - 150, 30, 30);
+        font.draw(batch, "" + base.getDefense(), x + 65, y + height - 125);
 
         // Train Units button
-        font.setColor(Color.DARK_GRAY);
-        font.draw(batch, "[ Train Units ]", buttonX + 0, buttonY + 10);
+        font.draw(batch, "[ Train Units ]", buttonX, buttonY + 20);
 
-        // Create buildings button
-        font.draw(batch, "[ Create Buildings ]", buttonX + 100, buttonY + 10);
+        // Create Buildings button
+        font.draw(batch, "[ Create Buildings ]", buttonX + 110, buttonY + 20);
+
+        // Stäng-kryss
+        batch.draw(letterXIcon, x + width - 35, y + height - 35, 25, 25);
+
 
         batch.end();
     }
