@@ -29,10 +29,12 @@ public abstract class Building {
         this.tileController = tileController;
         this.constructionTime = constructionTime;
         this.isBuilt = false;
+        this.health = 100;
         turnCounter = 0;
     }
 
     public void updateBuilding(){
+        System.out.println(turnCounter + " -----------");
         if (turnCounter >= constructionTime){
             isBuilt = true;
         }
@@ -40,12 +42,12 @@ public abstract class Building {
             isBuilt = false;
         }
         if (isBuilt){
-            ActivateBuildingAbility(tileController.getTileGrid());
+            ActivateBuildingAbility();
         }
         turnCounter++;
     }
 
-    public abstract void ActivateBuildingAbility(Tile[][] tileGrid);
+    public abstract void ActivateBuildingAbility();
 
     public Player getOwner(){
         return owner;
