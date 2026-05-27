@@ -217,7 +217,7 @@ public class BuildingPopup {
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
             && screenY <= button.getHeight() + button.getY() && screenY >= button.getY()){
-                System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
+                //System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
                 if (listener != null){
                     listener.OnBuildingChosen(button.getBuildingType(), baseStats);
                 }

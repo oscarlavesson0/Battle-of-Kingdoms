@@ -1,8 +1,10 @@
 package building;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import io.github.BattleOfKingdoms.GameScreen;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,8 +31,8 @@ public class BuildingRenderer {
         if (buildings != null) {
             for (Building building : buildings) {
                 Texture texture = textures.get(building.getName());
-                int x = building.getX();
-                int y = building.getY();
+                float y = building.getX() * (940f / 60f);
+                float x = (building.getY() * (940f / 60f));
                 batch.draw(texture, x, y, 30, 30);
             }
         }

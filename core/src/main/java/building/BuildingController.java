@@ -2,6 +2,7 @@ package building;
 
 import base.BaseStats;
 import base.Player;
+import terrain.Tile;
 import terrain.TileController;
 
 import java.util.ArrayList;
@@ -14,6 +15,8 @@ public class BuildingController {
     private List<BuildingType> buildingTypes;
     private List<Building> buildings;
 
+    private Tile[][] tileGrid;
+
     private BuildingRenderer buildingRenderer;
 
     private int buildSpawnRange;
@@ -22,6 +25,7 @@ public class BuildingController {
     public BuildingController(TileController tileController) {
         buildingRenderer = new BuildingRenderer(this);
         this.tileController = tileController;
+        tileGrid = tileController.getTileGrid();
         buildings = new ArrayList<>();
         buildingTypes = new ArrayList<>();
         buildingTypes.add(BuildingType.Hospital);
@@ -54,19 +58,29 @@ public class BuildingController {
 
         int baseX = baseStats.getPosition().getX();
         int baseY = baseStats.getPosition().getY();
+        System.out.println("Base: x: " + baseX + " ------- Y: " + baseY);
 
-        int buildingX = random.nextInt(buildSpawnRange * 2 + 1) + baseX;
-        int buildingY = random.nextInt(buildSpawnRange * 2 + 1) + baseY;
+        int buildingY = 0;
+        int buildingX = 0;
 
-        for (int i = 0; i < buildSpawnRange; i++){
+        boolean canSpawn = false;
+        while (!canSpawn) {
+            buildingX = random.nextInt(-buildSpawnRange, buildSpawnRange) + baseX;
+            buildingY = random.nextInt(-buildSpawnRange, buildSpawnRange) + baseY;
 
+            if (buildingX > 0 && buildingX < tileGrid.length && buildingY > 0 && buildingY < tileGrid[0].length) {
+                if (tileGrid[buildingX][buildingY].getBase() == null) {
+                    canSpawn = true;
+                }
+            }
         }
 
         Building building = null;
 
         switch (buildingType){
-            case Hospital:
-                building = new Hospital(120, 100, baseStats.getOwner(), tileController);
+            case Hospital: // 120, 100
+                building = new Hospital(buildingX, buildingY, owner, tileController);
+                System.out.println(buildingX + " y: " + buildingY + "------------");
                 break;
             case Barracks:
                 building = new Barracks(120, 40, baseStats.getOwner(), tileController);
