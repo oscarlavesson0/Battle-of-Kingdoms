@@ -182,6 +182,7 @@ public class GameScreen implements Screen {
             @Override public void onTurnComplete(int newTurnNumber) {
                 incomeHelper.applyIncome(Player.PLAYER_ONE);
                 incomeHelper.applyIncome(Player.PLAYER_TWO);
+                buildingController.updateBuildings();
                 System.out.println("--- Turn " + newTurnNumber + " ---");
                 System.out.println("P1 gold: " + Player.PLAYER_ONE.getGold());
                 System.out.println("P2 gold: " + Player.PLAYER_TWO.getGold());
