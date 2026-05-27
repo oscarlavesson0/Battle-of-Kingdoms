@@ -1,7 +1,7 @@
 package building;
 
 public enum BuildingType {
-    Hospital("Hospital", 200, 3, "Heals units"),
+    Hospital("Hospital", 10, 3, "Heals units"),
     Barracks("Barracks", 400, 3, "Trains units"),
     Blacksmith("Blacksmith", 300, 3, "Powers units"),;
 

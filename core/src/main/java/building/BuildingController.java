@@ -6,6 +6,7 @@ import terrain.TileController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class BuildingController {
 
@@ -15,6 +16,9 @@ public class BuildingController {
 
     private BuildingRenderer buildingRenderer;
 
+    private int buildSpawnRange;
+    private Random random;
+
     public BuildingController(TileController tileController) {
         buildingRenderer = new BuildingRenderer(this);
         this.tileController = tileController;
@@ -23,6 +27,9 @@ public class BuildingController {
         buildingTypes.add(BuildingType.Hospital);
         buildingTypes.add(BuildingType.Barracks);
         buildingTypes.add(BuildingType.Blacksmith);
+
+        buildSpawnRange = 5;
+        random = new Random();
     }
 
     public List<BuildingType> getBuildingTypes() {
@@ -45,8 +52,15 @@ public class BuildingController {
 
         owner.subtractGold(buildingType.getCost());
 
-        int x = baseStats.getPosition().getX();
-        int y = baseStats.getPosition().getY();
+        int baseX = baseStats.getPosition().getX();
+        int baseY = baseStats.getPosition().getY();
+
+        int buildingX = random.nextInt(buildSpawnRange * 2 + 1) + baseX;
+        int buildingY = random.nextInt(buildSpawnRange * 2 + 1) + baseY;
+
+        for (int i = 0; i < buildSpawnRange; i++){
+
+        }
 
         Building building = null;
 
