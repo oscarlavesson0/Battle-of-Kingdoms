@@ -240,7 +240,7 @@ public class GameInput extends InputAdapter {
             viewport.getScreenX(), viewport.getScreenY(),
             viewport.getScreenWidth(), viewport.getScreenHeight());
         int tileX = (int)(worldCoords.x / WorldMap.TILE_SIZE);
-        int tileY = (int)(worldCoords.y / WorldMap.TILE_SIZE);
+        int tileY = 59 - (int)(worldCoords.y / WorldMap.TILE_SIZE);
 
         if (highlightSystem.isInteractionTile(tileX, tileY)) {
             // Försök attackera unit
