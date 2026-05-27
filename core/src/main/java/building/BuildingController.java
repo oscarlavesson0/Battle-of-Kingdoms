@@ -58,7 +58,6 @@ public class BuildingController {
 
         int baseX = baseStats.getPosition().getX();
         int baseY = baseStats.getPosition().getY();
-        System.out.println("Base: x: " + baseX + " ------- Y: " + baseY);
 
         int buildingY = 0;
         int buildingX = 0;
@@ -70,7 +69,9 @@ public class BuildingController {
 
             if (buildingX > 0 && buildingX < tileGrid.length && buildingY > 0 && buildingY < tileGrid[0].length) {
                 if (tileGrid[buildingX][buildingY].getBase() == null) {
-                    canSpawn = true;
+                    if (tileGrid[buildingX][buildingY].getBuilding() == null) {
+                        canSpawn = true;
+                    }
                 }
             }
         }
@@ -78,18 +79,18 @@ public class BuildingController {
         Building building = null;
 
         switch (buildingType){
-            case Hospital: // 120, 100
+            case Hospital:
                 building = new Hospital(buildingX, buildingY, owner, tileController);
-                System.out.println(buildingX + " y: " + buildingY + "------------");
                 break;
             case Barracks:
-                building = new Barracks(120, 40, baseStats.getOwner(), tileController);
+                building = new Barracks(buildingX, buildingY, owner, tileController);
                 break;
             case Blacksmith:
-                building = new Blacksmith(50, 120, baseStats.getOwner(), tileController);
+                building = new Blacksmith(buildingX, buildingY, owner, tileController);
                 break;
         }
         addBuilding(building);
+        tileGrid[buildingX][buildingY].setBuilding(building);
 
         return building;
     }
