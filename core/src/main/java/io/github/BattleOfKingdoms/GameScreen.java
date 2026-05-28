@@ -27,6 +27,9 @@ import popup.*;
 import terrain.TileController;
 import unit.CustomUnit;
 import unit.UnitController;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 
 import java.util.ArrayList;
 import java.util.Arrays;  // NY IMPORT
@@ -56,6 +59,8 @@ public class GameScreen implements Screen {
     private IncomeHelper incomeHelper;
     private BitmapFont hudFont;
     private ShapeRenderer hudShape;
+    private Texture coinIcon;
+    private Texture hpIcon;
 
     public static final float endTurnBtnW = 120f;
     public static final float endTurnBtnH = 40f;
@@ -189,9 +194,19 @@ public class GameScreen implements Screen {
             }
         });
 
-        hudFont  = new BitmapFont();
-        hudFont.getData().setScale(1.4f);
+        //hudFont  = new BitmapFont();
+        //hudFont.getData().setScale(1.4f);
+        //hudShape = new ShapeRenderer();
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
+        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+        parameter.size = 20;
+        hudFont = generator.generateFont(parameter);
+        generator.dispose();
+
         hudShape = new ShapeRenderer();
+
+        coinIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/coin.png"));
+        hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
 
         endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
         endTurnBtnY = 20;
@@ -333,23 +348,27 @@ public class GameScreen implements Screen {
         hudShape.end();
 
         batch.begin();
-        hudFont.setColor(Color.WHITE);
+        hudFont.setColor(Color.BLACK);
         String topLine = "Turn " + turnManager.getTurnNumber()
             + "  " + Math.round(turnManager.getTimeRemaining()) + "s"
             + "  " + turnManager.getCurrentPlayer().getDisplayName();
         hudFont.draw(batch, topLine, screenW/2f - 150, screenH - 20);
 
-        hudFont.setColor(Color.YELLOW);
-        hudFont.draw(batch, "P1: " + Player.PLAYER_ONE.getGold() + "g", 20, screenH - 20);
-        hudFont.draw(batch, "P2: " + Player.PLAYER_TWO.getGold() + "g", 20, screenH - 50);
+        hudFont.setColor(Color.BLACK);
+        batch.draw(coinIcon, 92, screenH - 38, 22, 22);
+        hudFont.draw(batch, "P1: " + Player.PLAYER_ONE.getGold(), 20, screenH - 20);
+        batch.draw(coinIcon, 92, screenH - 68, 22, 22);
+        hudFont.draw(batch, "P2: " + Player.PLAYER_TWO.getGold(), 20, screenH - 50);
 
-        hudFont.setColor(Color.WHITE);
+        hudFont.setColor(Color.BLACK);
+        batch.draw(hpIcon, 170, screenH - 102, 22, 22);
         hudFont.draw(batch, "Bas P1: " + base1.getCurrentHp() + "/" + base1.getMaxHp(),
             20, screenH - 80);
+        batch.draw(hpIcon, 170, screenH - 132, 22, 22);
         hudFont.draw(batch, "Bas P2: " + base2.getCurrentHp() + "/" + base2.getMaxHp(),
             20, screenH - 110);
 
-        hudFont.setColor(Color.WHITE);
+        hudFont.setColor(Color.GOLD);
         hudFont.draw(batch, "End Turn", bx + 10, by + 20);
         batch.end();
 
@@ -372,5 +391,7 @@ public class GameScreen implements Screen {
         batch.dispose();
         hudFont.dispose();
         hudShape.dispose();
+        coinIcon.dispose();
+        hpIcon.dispose();
     }
 }
