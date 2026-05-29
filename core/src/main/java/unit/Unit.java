@@ -58,8 +58,13 @@ public class Unit {
         }
     }
 
-    public void addToCurrentHP(int currentHP) {
-        this.currentHP = this.currentHP + currentHP;
+    public void addToCurrentHP(int healthPoints) {
+        if (currentHP + healthPoints > maxHP) {
+            currentHP = maxHP;
+        }
+        else{
+            currentHP += healthPoints;
+        }
     }
 
     public void moveTo(int newX, int newY) {

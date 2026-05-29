@@ -5,6 +5,9 @@ import terrain.Tile;
 import terrain.TileController;
 import unit.Unit;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Hospital extends Building{
 
     int healingRange;
@@ -29,18 +32,20 @@ public class Hospital extends Building{
     @Override
     public void ActivateBuildingAbility() {
         System.out.println("Activation!! ---------");
-        for (int i = -healingRange; i < healingRange; i++){
-            for (int j = -healingRange; j < healingRange; j++){
+        System.out.println("building pos: x: " + super.getX() + ", y: " + super.getY());
+        for (int i = -healingRange; i <= healingRange; i++){
+            for (int j = -healingRange; j <= healingRange; j++){
                 int a = super.getX() + i;
                 int b = super.getY() + j;
-                //System.out.println("building pos: x: " + super.getX() + ", y: " + super.getY());
-                if (a > 0 && a < mapRange && b > 0 && b < mapRange){
-                    System.out.println(b + " - " + a);
-                    Unit unit = tileController.getTileGrid()[b][a].getUnit();
+
+                if (a >= 0 && a < mapRange && b >= 0 && b < mapRange){
+                    System.out.println(a + ":a - b:" + b);
+                    Unit unit = tileController.getTileGrid()[a][b].getUnit();
                     if (unit != null){
                         System.out.println("heeealll!!1 --------");
                         if (unit.getPlayer() == super.getOwner()){
                             unit.addToCurrentHP(healingPoints);
+                            System.out.println("This unit is healed: x: " + unit.getX() + " y: " + unit.getY() + " a: " + a + " b: " + b);
                         }
                     }
                 }

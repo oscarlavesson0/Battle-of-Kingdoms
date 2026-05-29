@@ -53,6 +53,7 @@ public class UnitController {
             new int[]{selectedUnit.getX(), selectedUnit.getY()});
 
         tileGrid[selectedUnit.getY()][selectedUnit.getX()].setUnit(null);
+        tileGrid[targetY][targetX].setUnit(selectedUnit);
         if (unitView != null) unitView.setMovementPath(queue);
         selectedUnit = null;
         return true;
