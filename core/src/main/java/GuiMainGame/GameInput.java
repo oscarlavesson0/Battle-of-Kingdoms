@@ -157,7 +157,7 @@ public class GameInput extends InputAdapter {
         if (selected != null) {
             // Klick på annan unit → stäng
             List<Unit> currentUnits = unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
-            System.out.println("Current player: " + turnManager.getCurrentPlayer()); // NY
+            System.out.println("Current player: " + turnManager.getCurrentPlayer());
             currentUnits = unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
             System.out.println("Units for current player: " + currentUnits.size());
             for (Unit u : currentUnits) {
@@ -184,19 +184,37 @@ public class GameInput extends InputAdapter {
             return true;
         }
 
-        // Välj unit
-        List<Unit> currentUnits = unitController.getUnitsForPlayer(turnManager.getCurrentPlayer());
-        for (Unit u : currentUnits) {
+// Välj unit eller visa info
+
+// 1. Kolla först om vi klickade på någon unit alls
+        Unit clickedUnit = null;
+        for (Unit u : unitController.getAllUnits()) {
             if (u.getX() == worldX && u.getY() == worldY) {
-                selectUnit(u);
-                return true;
+                clickedUnit = u;
+                break;
             }
         }
+
+        if (clickedUnit != null) {
+            // Om det är motståndarens unit → bara info-popup
+            if (clickedUnit.getPlayer() != turnManager.getCurrentPlayer()) {
+                actionMenu.hide();
+                statsPopup.showUnitInfo(clickedUnit);
+                return true;
+            }
+
+            // Om det är din egen unit → vanlig meny / selektion
+            selectUnit(clickedUnit);
+            return true;
+        }
+
+// Ingen unit, men kanske en bas
         if (clickedTile.getBase() != null) {
             basePopup.show(clickedTile.getBase());
             return true;
         }
         return false;
+
     }
 
     private void handleMenuAction(ActionMenu.Action action) {
@@ -215,6 +233,9 @@ public class GameInput extends InputAdapter {
                 attackingUnit = selected;
             }
             case CANCEL -> cancelMoveForSelected(selected);
+            case INFO -> {
+                statsPopup.showUnitInfo(selected);
+            }
             case CLOSE  -> cancelAll();
         }
     }

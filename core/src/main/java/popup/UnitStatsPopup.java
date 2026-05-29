@@ -18,10 +18,16 @@ public class UnitStatsPopup {
 
     private float x, y, width, height;
 
+
     private int hp = 10;
     private int attack = 1;
     private int speed = 1;
     private int defence = 1;
+
+    private unit.Unit unit;
+
+    private boolean infoMode = false;
+    private unit.Unit infoUnit = null;
 
     private final int MAX_HP = UnitSkapare.getMaxHP();
     private final int MAX_ATTACK = UnitSkapare.getMaxAttack();
@@ -104,6 +110,29 @@ public class UnitStatsPopup {
         visible = true;
     }
 
+    public void showUnitInfo(unit.Unit unit) {
+        if (unit == null) return;
+
+        this.infoMode = true;
+        this.infoUnit = unit;
+        this.visible = true;
+
+        // Gör popupen mindre i info-läge
+        this.width = 120;
+        this.height = 240;
+
+        //Fyll stats
+        this.hp      = unit.getCurrentHp();
+        this.attack  = unit.getAttack();
+        this.speed   = unit.getSpeed();
+        this.defence = unit.getDefence();
+
+        // Inga skill points i info-läge
+        this.pointsLeft = 0;
+    }
+
+
+
     public void hide(){
         visible = false;
     }
@@ -145,34 +174,36 @@ public class UnitStatsPopup {
         //font.draw(batch, "Create Unit", x + 20, y + height - 20);
 
         // Points left
-        batch.draw(pointsIcon, x + 20, y + height - 48, 20, 20);
-        font.draw(batch, "      Points left: " + pointsLeft, x + 20, y + height - 26);
+        if (!infoMode) batch.draw(pointsIcon, x + 20, y + height - 48, 20, 20);
+        if (!infoMode) font.draw(batch, "      Points left: " + pointsLeft, x + 20, y + height - 26);
 
         // Stats with plus and minus button
         batch.draw(hpIcon, x + 20, y + height - 80, 20, 20);
         font.draw(batch, "      " + hp, x + 20, y + height - 60);
-        font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 60);
-        font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 60);
+        if (!infoMode) font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 60);
+        if (!infoMode) font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 60);
 
         batch.draw(swordIcon, x + 20, y + height - 116, 20, 20);
         font.draw(batch, "      " + attack, x + 20, y + height - 100);
-        font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 100);
-        font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 100);
+        if (!infoMode) font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 100);
+        if (!infoMode) font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 100);
 
         batch.draw(speedIcon, x + 20, y + height - 160, 20, 20);
         font.draw(batch, "      " + speed, x + 20, y + height - 140);
-        font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 140);
-        font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 140);
+        if (!infoMode) font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 140);
+        if (!infoMode) font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 140);
 
         batch.draw(shieldIcon, x + 20, y + height - 200, 20, 20);
         font.draw(batch, "      " + defence, x + 20, y + height - 180);
-        font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 180);
-        font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 180);
+        if (!infoMode)  font.draw(batch, "[-]", x + BUTTON_MINUS_OFFSET, y + height - 180);
+        if (!infoMode) font.draw(batch, "[+]", x + BUTTON_PLUS_OFFSET, y + height - 180);
 
         // Create unit button
-        font.draw(batch, "    [ Create Unit ]", x + 20, y + 40);
-        batch.draw(coinIcon, x + 150, y + 7 + 20, 20, 15);
-        font.draw(batch, "100", x + 175, y + 40);
+        if (!infoMode) {
+            font.draw(batch, "    [ Create Unit ]", x + 20, y + 40);
+            batch.draw(coinIcon, x + 150, y + 7 + 20, 20, 15);
+            font.draw(batch, "100", x + 175, y + 40);
+        }
 
         // Close-button
         //font.setColor(Color.RED);
