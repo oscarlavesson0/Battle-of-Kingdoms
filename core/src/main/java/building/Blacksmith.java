@@ -10,7 +10,7 @@ public class Blacksmith extends Building {
     }
 
     @Override
-    public void ActivateBuildingAbility() {
+    public void activateBuildingAbility() {
 
     }
 }

@@ -42,12 +42,12 @@ public abstract class Building {
             isBuilt = false;
         }
         if (isBuilt){
-            ActivateBuildingAbility();
+            activateBuildingAbility();
         }
         turnCounter++;
     }
 
-    public abstract void ActivateBuildingAbility();
+    public abstract void activateBuildingAbility();
 
     public Player getOwner(){
         return owner;
