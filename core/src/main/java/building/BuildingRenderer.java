@@ -31,7 +31,7 @@ public class BuildingRenderer {
         buildings = buildingController.getBuildings();
         if (buildings != null) {
             for (Building building : buildings) {
-                Texture texture = textures.get(building.getName());
+                Texture texture = textures.get(building.getBuildingType().getName());
                 float y = building.getX() * (940f / 60f);
                 float x = (building.getY() * (940f / 60f));
                 batch.draw(texture, x, y, 25, 25);
