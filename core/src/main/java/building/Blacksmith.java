@@ -6,7 +6,7 @@ import terrain.TileController;
 
 public class Blacksmith extends Building {
     public Blacksmith(int x, int y, Player owner, BuildingType buildingType, TileController tileController) {
-        super(x, y, owner, buildingType, tileController);
+        super(x, y, owner, buildingType);
     }
 
     @Override

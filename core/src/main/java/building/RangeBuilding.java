@@ -11,8 +11,8 @@ public abstract class RangeBuilding extends Building{
     int mapRange;
     TileController tileController;
 
-    public RangeBuilding(int x, int y, Player owner, BuildingType buildingType, TileController tileController, int range, int affectPoints) {
-        super(x, y, owner, buildingType, tileController);
+    public RangeBuilding(int x, int y, Player owner, BuildingType buildingType, TileController tileController) {
+        super(x, y, owner, buildingType);
         this.tileController = tileController;
         this.range = range;
         this.affectPoints = affectPoints;
@@ -31,7 +31,7 @@ public abstract class RangeBuilding extends Building{
                     Unit unit = tileController.getTileGrid()[a][b].getUnit();
                     if (unit != null){
                         affectUnit(unit);
-                        System.out.println("This unit is affected by: " + getName() + ", x: " + unit.getX() + " y: " + unit.getY() + " a: " + a + " b: " + b);
+                        System.out.println("This unit is affected by: " + getBuildingType().getName() + ", x: " + unit.getX() + " y: " + unit.getY() + " a: " + a + " b: " + b);
                     }
                 }
             }

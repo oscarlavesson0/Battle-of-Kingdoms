@@ -7,13 +7,8 @@ import terrain.TileController;
 public abstract class Building {
 
     private TileController tileController;
-
-    private int id;
-    private String name;
-    private int maxHealth;
-    private int constructionTime;
-    private int cost;
     private int turnCounter;
+
     private boolean isBuilt;
     private int health;
     private int x;
@@ -22,21 +17,20 @@ public abstract class Building {
     private Player owner;
     private BuildingType buildingType;
 
-    public Building(int x, int y, Player owner, BuildingType buildingType, TileController tileController){
+    public Building(int x, int y, Player owner, BuildingType buildingType){
         this.x = x;
         this.y = y;
         this.owner = owner;
-        this.name = buildingType.getName();
-        this.tileController = tileController;
-        this.constructionTime = buildingType.getConstructionTime();
+        this.buildingType = buildingType;
+        this.health = buildingType.getMaxHealth();
         this.isBuilt = false;
-        this.health = 100;
+
         turnCounter = 0;
     }
 
     public void updateBuilding(){
         System.out.println(turnCounter + " -----------");
-        if (turnCounter >= constructionTime){
+        if (turnCounter >= buildingType.getConstructionTime()){
             isBuilt = true;
         }
         if (health <= 0){
@@ -53,12 +47,6 @@ public abstract class Building {
     public Player getOwner(){
         return owner;
     }
-    public String getName(){
-        return name;
-    }
-    public int getId(){
-        return id;
-    }
     public int getX() {
         return x;
     }
@@ -71,16 +59,13 @@ public abstract class Building {
     public void setHealth(int health) {
         this.health = health;
     }
-    public int getCost(){
-        return cost;
-    }
-    public int getConstructionTime(){
-        return constructionTime;
-    }
     public void setBuilt(boolean built){
         isBuilt = built;
     }
     public boolean isBuilt(){
         return isBuilt;
+    }
+    public BuildingType getBuildingType() {
+        return buildingType;
     }
 }
