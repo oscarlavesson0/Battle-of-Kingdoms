@@ -47,7 +47,7 @@ public class GameInput extends InputAdapter {
         this.tileController  = tileController;
         this.basePopup       = basePopup;
         this.statsPopup      = statsPopup;
-        this.buildingPopup   = buildingPopup;
+        this.buildingMenuPopup   = buildingMenuPopup;
         this.unitController  = unitController;
         this.units           = units;
         this.unitViews       = unitViews;
@@ -120,8 +120,8 @@ public class GameInput extends InputAdapter {
         }
 
         // Popups
-        if (buildingPopup != null && buildingPopup.isVisible()) {
-            buildingPopup.handleClick(pixelX, pixelY);
+        if (buildingMenuPopup != null && buildingMenuPopup.isVisible()) {
+            buildingMenuPopup.handleClick(pixelX, pixelY);
             return true;
         }
         if (statsPopup != null && statsPopup.isVisible()) {
