@@ -18,6 +18,7 @@ public abstract class Popup {
     private float height;
 
     private Texture woodBackground;
+    private Texture frameTexture;
     private Texture letterXIcon;
 
     private BitmapFont font;
@@ -32,6 +33,7 @@ public abstract class Popup {
         this.height = height;
 
         woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
+        frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
 
         generateFont(font, generator, parameter);
     }
@@ -48,7 +50,36 @@ public abstract class Popup {
     public void hide(){ visible = false; }
     public boolean isVisible(){ return visible; }
 
-    public abstract void render(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera);
+    public void render(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera){
+        if (!visible){
+            return;
+        }
+        batch.setProjectionMatrix(camera.combined);
+        shapeRenderer.setProjectionMatrix(camera.combined);
+
+        if (batch.isDrawing()){
+            batch.end();
+        }
+
+        renderWoodBackground(batch);
+        renderXIcon(batch);
+        renderContent(shapeRenderer, batch, camera, font);
+    }
+
+    private void renderWoodBackground(SpriteBatch batch){
+        batch.begin();
+        batch.draw(woodBackground, x, y, width, height);
+        batch.draw(frameTexture, x - 13, y - 15, width + 30, height + 30);
+        batch.end();
+    }
+
+    private void renderXIcon(SpriteBatch batch){
+        batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
+    }
+
+    public abstract void renderContent(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera, BitmapFont font);
     public abstract void handleClick(float x, float y);
 
+    public float getX(){ return x; }
+    public float getY(){ return y; }
 }

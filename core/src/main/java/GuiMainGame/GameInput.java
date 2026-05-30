@@ -213,6 +213,10 @@ public class GameInput extends InputAdapter {
             basePopup.show(clickedTile.getBase());
             return true;
         }
+        // Kanske en building, visa info för den building.
+        if (clickedTile.getBuilding() != null) {
+            
+        }
         return false;
 
     }

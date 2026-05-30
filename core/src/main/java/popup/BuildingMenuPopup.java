@@ -60,7 +60,6 @@ public class BuildingMenuPopup {
 
         this.buildingController = buildingController;
 
-
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
         parameter.size = 16;
