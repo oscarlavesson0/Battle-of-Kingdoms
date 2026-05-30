@@ -149,7 +149,7 @@ public class GameScreen implements Screen {
 
             @Override
             public void onCreateBuilding(BaseStats base) {
-                buildingPopup.open(base, buildingController);
+                buildingMenuPopup.open(base, buildingController);
             }
 
         });
@@ -164,12 +164,12 @@ public class GameScreen implements Screen {
             }
         });
 
-        buildingPopup.setListener(new BuildingChosenListener() {
+        buildingMenuPopup.setListener(new BuildingChosenListener() {
             @Override
             public void OnBuildingChosen(BuildingType buildingType, BaseStats baseStats) {
                 Building building = buildingController.createBuilding(buildingType, baseStats);
                 if (building == null) {
-                    buildingPopup.ShowError("Not enough gold!");
+                    buildingMenuPopup.ShowError("Not enough gold!");
                 }
             }
         });
@@ -180,7 +180,7 @@ public class GameScreen implements Screen {
             @Override public void onPlayerSwitch(Player newPlayer) {
                 basePopup.hide();
                 statsPopup.hide();
-                buildingPopup.hide();
+                buildingMenuPopup.hide();
                 unitController.resetMovement();
                 System.out.println("Currently " + newPlayer.getDisplayName() + "'s turn!");
             }
@@ -254,7 +254,7 @@ public class GameScreen implements Screen {
         // POPUPS
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
-        if (buildingPopup.isVisible()) buildingPopup.render();
+        if (buildingMenuPopup.isVisible()) buildingMenuPopup.render();
 
         if (batch.isDrawing()) batch.end();
         if (hudShape.isDrawing()) hudShape.end();
