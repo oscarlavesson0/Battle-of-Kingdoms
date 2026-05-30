@@ -31,6 +31,7 @@ public class BuildingController {
         buildingTypes.add(BuildingType.Hospital);
         buildingTypes.add(BuildingType.Barracks);
         buildingTypes.add(BuildingType.Blacksmith);
+        buildingTypes.add(BuildingType.Tower);
 
         buildSpawnRange = 5;
         random = new Random();
@@ -87,6 +88,9 @@ public class BuildingController {
                 break;
             case Blacksmith:
                 building = new Blacksmith(buildingX, buildingY, owner, tileController);
+                break;
+            case Tower:
+                building = new Tower(buildingX, buildingY, owner, tileController);
                 break;
         }
         addBuilding(building);

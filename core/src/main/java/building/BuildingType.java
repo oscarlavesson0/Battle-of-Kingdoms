@@ -1,9 +1,10 @@
 package building;
 
 public enum BuildingType {
-    Hospital("Hospital", 10, 3, "Heals units"),
-    Barracks("Barracks", 400, 3, "Trains units"),
-    Blacksmith("Blacksmith", 300, 3, "Powers units"),;
+    Hospital("Hospital", 10, 3, "Heals units 2 HP"),
+    Barracks("Barracks", 400, 3, "Gives +2 speed to all units"),
+    Blacksmith("Blacksmith", 300, 3, "Gives +2 attributes to all units"),
+    Tower("Tower", 10, 3, "Damages units 3 HP"),;
 
     private String name;
     private int cost;

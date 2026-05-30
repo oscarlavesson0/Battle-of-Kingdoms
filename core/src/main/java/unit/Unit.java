@@ -59,8 +59,12 @@ public class Unit {
     }
 
     public void addToCurrentHP(int healthPoints) {
-        if (currentHP + healthPoints > maxHP) {
+        if (currentHP + healthPoints >= maxHP) {
             currentHP = maxHP;
+        }
+        else if (currentHP + healthPoints <= 0) {
+            currentHP = 0;
+            alive = false;
         }
         else{
             currentHP += healthPoints;

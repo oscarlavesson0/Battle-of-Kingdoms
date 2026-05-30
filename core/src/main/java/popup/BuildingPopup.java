@@ -141,6 +141,9 @@ public class BuildingPopup {
             if (building == BuildingType.Blacksmith){
                 buildingIcon = toolSmithIcon;
             }
+            if (building == BuildingType.Tower){
+                buildingIcon = toolSmithIcon;
+            }
             font.setColor(Color.GOLD);
             batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY - 30, 20, 20);
             font.draw(batch, building.getName(), x + buildingIconX + 40, y + buildingIconY - 10);
