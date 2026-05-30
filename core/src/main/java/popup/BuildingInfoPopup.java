@@ -16,7 +16,7 @@ public class BuildingInfoPopup extends Popup {
 
     public void open(Building building) {
         super.open();
-        String name = building.getName();
+
 
     }
 
