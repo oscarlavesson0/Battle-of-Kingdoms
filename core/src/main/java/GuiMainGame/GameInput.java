@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import popup.BasePopup;
-import popup.BuildingPopup;
+import popup.BuildingMenuPopup;
 import popup.UnitStatsPopup;
 import terrain.Tile;
 import terrain.TileController;
@@ -20,7 +20,7 @@ public class GameInput extends InputAdapter {
     private TileController   tileController;
     private BasePopup        basePopup;
     private UnitStatsPopup   statsPopup;
-    private BuildingPopup    buildingPopup;
+    private BuildingMenuPopup buildingMenuPopup;
     private UnitController   unitController;
     private List<Unit>       units;
     private List<UnitView>   unitViews;
@@ -37,7 +37,7 @@ public class GameInput extends InputAdapter {
     private List<BaseStats> bases;
 
     public GameInput(TileController tileController, BasePopup basePopup,
-                     UnitStatsPopup statsPopup, BuildingPopup buildingPopup,
+                     UnitStatsPopup statsPopup, BuildingMenuPopup buildingMenuPopup,
                      UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
                      HighlightSystem highlightSystem,

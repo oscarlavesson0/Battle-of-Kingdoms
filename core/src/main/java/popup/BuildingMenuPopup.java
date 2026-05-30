@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingPopup {
+public class BuildingMenuPopup {
     private boolean visible = false;
 
     private int x;
@@ -51,7 +51,7 @@ public class BuildingPopup {
     private OrthographicCamera camera;
 
 
-    public BuildingPopup(BuildingController buildingController, int x, int y,  int width, int height, OrthographicCamera camera) {
+    public BuildingMenuPopup(BuildingController buildingController, int x, int y,  int width, int height, OrthographicCamera camera) {
         this.x = x;
         this.y = y;
         this.width = width;

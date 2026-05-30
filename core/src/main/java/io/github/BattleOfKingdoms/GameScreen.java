@@ -49,7 +49,7 @@ public class GameScreen implements Screen {
     private Lake lakeGraphic;
     private BasePopup basePopup;
     private UnitStatsPopup statsPopup;
-    private BuildingPopup buildingPopup;
+    private BuildingMenuPopup buildingMenuPopup;
     private List<UnitView> unitViews = new ArrayList<>();
     private BaseController baseController;
     private UnitController unitController;
@@ -142,7 +142,7 @@ public class GameScreen implements Screen {
 
         basePopup = new BasePopup(null, 200, 150, 300, 200, camera);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250, camera);
-        buildingPopup = new BuildingPopup(buildingController, 300, 200, 300, 250, camera);
+        buildingMenuPopup = new BuildingMenuPopup(buildingController, 300, 200, 300, 250, camera);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base);}
