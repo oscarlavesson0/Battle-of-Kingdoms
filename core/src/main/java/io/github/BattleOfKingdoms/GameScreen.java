@@ -213,7 +213,7 @@ public class GameScreen implements Screen {
 
         List<BaseStats> allBases = Arrays.asList(base1, base2);
         gameInput = new GameInput(
-            tileController, basePopup, statsPopup, buildingPopup,
+            tileController, basePopup, statsPopup, buildingMenuPopup,
             unitController, unitController.getUnits(), unitViews,
             highlightSystem, turnManager,
             endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH,
