@@ -20,14 +20,15 @@ public abstract class Building {
     private int y;
 
     private Player owner;
+    private BuildingType buildingType;
 
-    public Building(int x, int y, Player owner, String name, int constructionTime, TileController tileController){
+    public Building(int x, int y, Player owner, BuildingType buildingType, TileController tileController){
         this.x = x;
         this.y = y;
         this.owner = owner;
-        this.name = name;
+        this.name = buildingType.getName();
         this.tileController = tileController;
-        this.constructionTime = constructionTime;
+        this.constructionTime = buildingType.getConstructionTime();
         this.isBuilt = false;
         this.health = 100;
         turnCounter = 0;

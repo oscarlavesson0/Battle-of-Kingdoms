@@ -11,8 +11,8 @@ public abstract class RangeBuilding extends Building{
     int mapRange;
     TileController tileController;
 
-    public RangeBuilding(int x, int y, Player owner, String name, int constructionTime, TileController tileController, int range, int affectPoints) {
-        super(x, y, owner, name, constructionTime, tileController);
+    public RangeBuilding(int x, int y, Player owner, BuildingType buildingType, TileController tileController, int range, int affectPoints) {
+        super(x, y, owner, buildingType, tileController);
         this.tileController = tileController;
         this.range = range;
         this.affectPoints = affectPoints;

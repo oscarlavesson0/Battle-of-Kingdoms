@@ -81,16 +81,16 @@ public class BuildingController {
 
         switch (buildingType){
             case Hospital:
-                building = new Hospital(buildingX, buildingY, owner, tileController);
+                building = new Hospital(buildingX, buildingY, owner, buildingType, tileController);
                 break;
             case Barracks:
-                building = new Barracks(buildingX, buildingY, owner, tileController);
+                building = new Barracks(buildingX, buildingY, owner, buildingType, tileController);
                 break;
             case Blacksmith:
-                building = new Blacksmith(buildingX, buildingY, owner, tileController);
+                building = new Blacksmith(buildingX, buildingY, owner, buildingType, tileController);
                 break;
             case Tower:
-                building = new Tower(buildingX, buildingY, owner, tileController);
+                building = new Tower(buildingX, buildingY, owner, buildingType, tileController);
                 break;
         }
         addBuilding(building);

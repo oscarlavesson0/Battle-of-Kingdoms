@@ -5,8 +5,8 @@ import terrain.TileController;
 import unit.Unit;
 
 public class Tower extends RangeBuilding{
-    public Tower(int x, int y, Player owner, TileController tileController){
-        super(x, y, owner, "Tower", 3, tileController, 3, -3);
+    public Tower(int x, int y, Player owner, BuildingType buildingType, TileController tileController){
+        super(x, y, owner, buildingType, tileController, 3, -3);
     }
     public void affectUnit(Unit unit){
         if (unit.getPlayer() != getOwner()){

@@ -20,27 +20,20 @@ public abstract class Popup {
     private Texture woodBackground;
     private Texture letterXIcon;
 
-    private ShapeRenderer shapeRenderer;
-    private SpriteBatch spriteBatch;
     private BitmapFont font;
     private FreeTypeFontGenerator generator;
     private FreeTypeFontParameter parameter;
 
-    private OrthographicCamera camera;
 
-    public Popup(float x, float y, float width, float height, ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera) {
+    public Popup(float x, float y, float width, float height) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
-        this.camera = camera;
 
         woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
 
         generateFont(font, generator, parameter);
-
-        this.shapeRenderer = shapeRenderer;
-        this.spriteBatch = batch;
     }
 
     private void generateFont(BitmapFont font, FreeTypeFontGenerator generator, FreeTypeFontParameter parameter) {
@@ -50,4 +43,12 @@ public abstract class Popup {
         this.font = generator.generateFont(parameter);
         this.generator.dispose();
     }
+
+    public void open(){visible = true;}
+    public void hide(){ visible = false; }
+    public boolean isVisible(){ return visible; }
+
+    public abstract void render(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera);
+    public abstract void handleClick(float x, float y);
+
 }
