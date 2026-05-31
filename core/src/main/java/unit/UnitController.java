@@ -3,6 +3,7 @@ package unit;
 import GuiMainGame.UnitView;
 import base.BaseDestroyedListener;
 import base.BaseStats;
+import building.Building;
 import terrain.Tile;
 import terrain.Water;
 
@@ -179,6 +180,18 @@ public class UnitController {
         if (base.isDestroyed() && baseDestroyedListener != null) {
             baseDestroyedListener.onBaseDestroyed(base, attacker.getPlayer());
         }
+        return true;
+    }
+
+    public boolean attackBuilding(Unit attacker, Building building) {
+        if (attackedThisTurn.contains(attacker)) return false;
+        if (!building.isBuilt()) return false;
+
+        building.setHealth(attacker.getAttack());
+        attackedThisTurn.add(attacker);
+        commitMove(attacker);
+        selectedUnit = null;
+
         return true;
     }
 

@@ -57,7 +57,15 @@ public abstract class Building {
         return health;
     }
     public void setHealth(int health) {
-        this.health = health;
+        this.health += health;
+        if (this.health >= buildingType.getMaxHealth()){
+            this.health = buildingType.getMaxHealth();
+        }
+        if (this.health <= 0){
+            this.health = 0;
+            isBuilt = false;
+        }
+
     }
     public void setBuilt(boolean built){
         isBuilt = built;
