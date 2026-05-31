@@ -225,7 +225,9 @@ public class GameInput extends InputAdapter {
         }
         // Om det är en building, visa info för den building.
         if (clickedTile.getBuilding() != null) {
-
+            System.out.println("Building clicked!!! ---------------> ");
+            buildingInfoPopup.open(clickedTile.getBuilding());
+            return true;
         }
         return false;
 

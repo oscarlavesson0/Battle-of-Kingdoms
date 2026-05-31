@@ -29,9 +29,4 @@ public class BuildingInfoPopup extends Popup {
         font.draw(batch, buildingType.getName(), getX() + 10, getY() - 30);
 
     }
-
-    @Override
-    public void handleClick(float screenX, float screenY) {
-
-    }
 }

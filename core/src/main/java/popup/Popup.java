@@ -34,6 +34,7 @@ public abstract class Popup {
 
         woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
+        letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
 
         generateFont();
     }
@@ -74,11 +75,34 @@ public abstract class Popup {
     }
 
     private void renderXIcon(SpriteBatch batch){
+        batch.begin();
         batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
+        batch.end();
     }
 
     public abstract void renderContent(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera, BitmapFont font);
-    public abstract void handleClick(float x, float y);
+
+    public void handleClick(float screenX, float screenY){
+        if (!isVisible()) {
+            return;
+        }
+        boolean insidePopup = screenX >= getX() && screenX <= getX() + width &&
+            screenY >= getY() && screenY <= getY() + height;
+
+        if(!insidePopup){
+            hide();
+            return;
+        }
+        float closeX1 = getX() + width - 90;
+        float closeX2 = getX() + width - 20;
+        float closeY1 = getY() + height - 35;
+        float closeY2 = getY() + height - 5;
+
+        if (screenX >= closeX1 && screenX <= closeX2
+            && screenY >= closeY1 && screenY <= closeY2){
+            hide();
+        }
+    }
 
     public float getX(){ return x; }
     public float getY(){ return y; }
