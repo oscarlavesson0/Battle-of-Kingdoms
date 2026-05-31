@@ -258,6 +258,7 @@ public class GameScreen implements Screen {
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
         if (buildingMenuPopup.isVisible()) buildingMenuPopup.render();
+        if (buildingInfoPopup.isVisible()) buildingInfoPopup.render(hudShape, batch, camera);
 
         if (batch.isDrawing()) batch.end();
         if (hudShape.isDrawing()) hudShape.end();
