@@ -128,7 +128,9 @@ public class BuildingMenuPopup extends Popup {
 
     public void handleClick(float screenX, float screenY){
         super.handleClick(screenX, screenY);
-        System.out.println(getX() + ", " + getY() + ", " + getHeight() + ", " + getWidth());
+        if (!isVisible()){
+            return;
+        }
         //error
         if (showError){
             if (screenX >= x + 20 && screenX <= x + width + 120 &&
