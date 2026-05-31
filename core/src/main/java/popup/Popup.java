@@ -35,10 +35,10 @@ public abstract class Popup {
         woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
         frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
 
-        generateFont(font, generator, parameter);
+        generateFont();
     }
 
-    private void generateFont(BitmapFont font, FreeTypeFontGenerator generator, FreeTypeFontParameter parameter) {
+    private void generateFont() {
         this.generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
         this.parameter = new FreeTypeFontParameter();
         this.parameter.size = 16;
