@@ -56,9 +56,12 @@ public class BuildingMenuPopup extends Popup {
         this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Barracks.png"));
 
         buildings = buildingController.getBuildingTypes();
+        int i = 0;
         for (BuildingType building : buildings) {
-            buildingButtons.add(new BuildingButton(x + buildingIconX, y + buildingIconY - 30, 20, 200, building));
+            buildingButtons.add(new BuildingButton(buildingIconX, buildingIconY - 30, 200, 200, building));
+            System.out.println(buildingButtons.get(i).getX() + ", " +  buildingButtons.get(i).getY());
             buildingIconY -= 30;
+            i++;
         }
     }
 
@@ -108,15 +111,16 @@ public class BuildingMenuPopup extends Popup {
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(new Color(1f, 1f, 1f, 0.95f));
-            shapeRenderer.rect(x + 10, y + height - 330, 260, 90);
+            shapeRenderer.rect(x + 60, y + height + 330, 260, 90);
+
             shapeRenderer.end();
 
             batch.begin();
             font.setColor(Color.RED);
-            font.draw(batch, errorMessage, x + 20, y + height - 260);
+            font.draw(batch, errorMessage, x + 70, y + height + 390);
 
             font.setColor(Color.BLACK);
-            font.draw(batch, "[ OK ]", x + 20, y + height - 300);
+            font.draw(batch, "[ OK ]", x + 70, y + height + 360);
         }
         batch.end();
     }
@@ -128,6 +132,7 @@ public class BuildingMenuPopup extends Popup {
 
     public void handleClick(float screenX, float screenY){
         super.handleClick(screenX, screenY);
+        System.out.println(screenX + ", " + screenY);
         if (!isVisible()){
             return;
         }
@@ -151,13 +156,14 @@ public class BuildingMenuPopup extends Popup {
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
             && screenY <= button.getHeight() + button.getY() && screenY >= button.getY()){
-                //System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
+                System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
                 if (listener != null){
                     listener.OnBuildingChosen(button.getBuildingType(), baseStats);
                 }
                 if (!showError){
                     hide();
                 }
+                break;
             }
             i++;
         }
