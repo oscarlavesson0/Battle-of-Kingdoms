@@ -26,7 +26,10 @@ public class BuildingInfoPopup extends Popup {
     public void renderContent(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera, BitmapFont font) {
         batch.begin();
         font.setColor(Color.GOLD);
-        font.draw(batch, buildingType.getName(), getX() + 10, getY() - 30);
-
+        font.draw(batch, buildingType.getName(), getX() + 20, getY() + 200);
+        font.draw(batch, building.getOwner().getDisplayName(), getX() + 20, getY() + 180);
+        font.draw(batch, buildingType.getDescription(),  getX() + 20, getY() + 160);
+        font.draw(batch, "Health: " + Integer.toString(building.getHealth()), getX() + 20, getY() + 140);
+        batch.end();
     }
 }
