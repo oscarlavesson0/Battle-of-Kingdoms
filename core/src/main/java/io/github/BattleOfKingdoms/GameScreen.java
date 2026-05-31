@@ -143,7 +143,7 @@ public class GameScreen implements Screen {
 
         basePopup = new BasePopup(null, 200, 150, 300, 200, camera);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250, camera);
-        buildingMenuPopup = new BuildingMenuPopup(buildingController, 300, 200, 300, 250, camera);
+        buildingMenuPopup = new BuildingMenuPopup(buildingController, 300, 200, 300, 250);
         buildingInfoPopup = new BuildingInfoPopup(300, 200, 300, 250);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
@@ -151,7 +151,7 @@ public class GameScreen implements Screen {
 
             @Override
             public void onCreateBuilding(BaseStats base) {
-                buildingMenuPopup.open(base, buildingController);
+                buildingMenuPopup.open(base);
             }
 
         });
@@ -257,7 +257,7 @@ public class GameScreen implements Screen {
         // POPUPS
         basePopup.render(batch);
         if (statsPopup.isVisible()) statsPopup.render();
-        if (buildingMenuPopup.isVisible()) buildingMenuPopup.render();
+        if (buildingMenuPopup.isVisible()) buildingMenuPopup.render(hudShape, batch, camera);
         if (buildingInfoPopup.isVisible()) buildingInfoPopup.render(hudShape, batch, camera);
 
         if (batch.isDrawing()) batch.end();

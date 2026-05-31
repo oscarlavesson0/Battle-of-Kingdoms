@@ -16,9 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BuildingMenuPopup {
-    private boolean visible = false;
-
+public class BuildingMenuPopup extends Popup {
     private int x;
     private int y;
     private int width;
@@ -36,50 +34,26 @@ public class BuildingMenuPopup {
     private String errorMessage;
     private boolean showError = false;
 
-    private BitmapFont font;
-    private SpriteBatch batch;
-
-    private ShapeRenderer shapeRenderer;
     private BuildingChosenListener listener;
 
-    private Texture woodBackground;
-    private Texture frameTexture;
     private Texture hospitalIcon;
     private Texture barracksIcon;
     private Texture toolSmithIcon;
-    private Texture letterXIcon;
-    private OrthographicCamera camera;
 
-
-    public BuildingMenuPopup(BuildingController buildingController, int x, int y,  int width, int height, OrthographicCamera camera) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.camera = camera;
+    public BuildingMenuPopup(BuildingController buildingController, int x, int y,  int width, int height) {
+        super(x, y, width, height);
 
         this.buildingController = buildingController;
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
-        FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 16;
-        this.font = generator.generateFont(parameter);
-        generator.dispose();
-        this.shapeRenderer = new ShapeRenderer();
-        this.batch = new SpriteBatch();
 
         buildings = new ArrayList<BuildingType>();
         buildingButtons = new ArrayList<BuildingButton>();
 
-        buildingIconX = 30;
-        buildingIconY = 230;
+        buildingIconX = 330;
+        buildingIconY = 400;
 
-        this.woodBackground = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/woodtexture.png"));
-        this.frameTexture = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
         this.hospitalIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
         this.toolSmithIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Blacksmith.png"));
         this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Barracks.png"));
-        this.letterXIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/letter-x.png"));
 
         buildings = buildingController.getBuildingTypes();
         for (BuildingType building : buildings) {
@@ -92,42 +66,17 @@ public class BuildingMenuPopup {
         this.listener = listener;
     }
 
-    public void open(BaseStats base, BuildingController buildingController) {
-        visible = true;
+    public void open(BaseStats base) {
+        super.open();
         baseStats = base;
     }
-    public void hide(){
-        visible = false;
-    }
-    public boolean isVisible(){
-        return visible;
-    }
 
-    public void ShowError(String errorMessage){
-        this.errorMessage = errorMessage;
-        this.showError = true;
-    }
-
-    public void render(){
-        if (!visible){
-            return;
-        }
-        batch.setProjectionMatrix(camera.combined);
-        shapeRenderer.setProjectionMatrix(camera.combined);
-
-        if (batch.isDrawing()){
-            batch.end();
-        }
-
-        batch.begin();
-        batch.draw(woodBackground, x, y, width, height);
-        batch.draw(frameTexture, x - 13, y - 15, width + 30, height + 30);
-        batch.end();
-
+    @Override
+    public void renderContent(ShapeRenderer shapeRenderer, SpriteBatch batch, OrthographicCamera camera, BitmapFont font) {
         batch.begin();
         font.setColor(Color.GOLD);
 
-        buildingIconY = 230;
+        buildingIconY = 400;
         // Loopa genom alla buildingtyper för att visa alternativ i fönstret.
         for (BuildingType building : buildings) {
             Texture buildingIcon = hospitalIcon;
@@ -152,9 +101,6 @@ public class BuildingMenuPopup {
 
             buildingIconY -= 30;
         }
-
-        batch.draw(letterXIcon, x + width - 50, y + height - 50, 25, 25);
-
         if (showError){
             if (batch.isDrawing()){
                 batch.end();
@@ -175,11 +121,14 @@ public class BuildingMenuPopup {
         batch.end();
     }
 
-    public void handleClick(float screenX, float screenY){
-        if (!isVisible()){
-            return;
-        }
+    public void ShowError(String errorMessage){
+        this.errorMessage = errorMessage;
+        this.showError = true;
+    }
 
+    public void handleClick(float screenX, float screenY){
+        super.handleClick(screenX, screenY);
+        System.out.println(getX() + ", " + getY() + ", " + getHeight() + ", " + getWidth());
         //error
         if (showError){
             if (screenX >= x + 20 && screenX <= x + width + 120 &&
@@ -196,25 +145,6 @@ public class BuildingMenuPopup {
             return;
         }
 
-        boolean insidePopup = screenX >= x && screenX <= x + width &&
-            screenY >= y && screenY <= y + height;
-
-
-        if(!insidePopup){
-            hide();
-            return;
-        }
-
-        float closeX1 = x + width - 90;
-        float closeX2 = x + width - 20;
-        float closeY1 = y + height - 35;
-        float closeY2 = y + height - 5;
-
-        if (screenX >= closeX1 && screenX <= closeX2
-            && screenY >= closeY1 && screenY <= closeY2){
-            hide();
-            return;
-        }
         int i = 0;
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
