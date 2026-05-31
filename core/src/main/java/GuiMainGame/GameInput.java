@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import popup.BasePopup;
+import popup.BuildingInfoPopup;
 import popup.BuildingMenuPopup;
 import popup.UnitStatsPopup;
 import terrain.Tile;
@@ -21,6 +22,7 @@ public class GameInput extends InputAdapter {
     private BasePopup        basePopup;
     private UnitStatsPopup   statsPopup;
     private BuildingMenuPopup buildingMenuPopup;
+    private BuildingInfoPopup buildingInfoPopup;
     private UnitController   unitController;
     private List<Unit>       units;
     private List<UnitView>   unitViews;
@@ -37,7 +39,9 @@ public class GameInput extends InputAdapter {
     private List<BaseStats> bases;
 
     public GameInput(TileController tileController, BasePopup basePopup,
-                     UnitStatsPopup statsPopup, BuildingMenuPopup buildingMenuPopup,
+                     UnitStatsPopup statsPopup,
+                     BuildingMenuPopup buildingMenuPopup,
+                     BuildingInfoPopup buildingInfoPopup,
                      UnitController unitController,
                      List<Unit> units, List<UnitView> unitViews,
                      HighlightSystem highlightSystem,
@@ -47,7 +51,8 @@ public class GameInput extends InputAdapter {
         this.tileController  = tileController;
         this.basePopup       = basePopup;
         this.statsPopup      = statsPopup;
-        this.buildingMenuPopup   = buildingMenuPopup;
+        this.buildingMenuPopup = buildingMenuPopup;
+        this.buildingInfoPopup = buildingInfoPopup;
         this.unitController  = unitController;
         this.units           = units;
         this.unitViews       = unitViews;
@@ -132,6 +137,7 @@ public class GameInput extends InputAdapter {
             basePopup.handleClick(pixelX, pixelY);
             return true;
         }
+
 
         // Action menu
         if (actionMenu.isVisible()) {

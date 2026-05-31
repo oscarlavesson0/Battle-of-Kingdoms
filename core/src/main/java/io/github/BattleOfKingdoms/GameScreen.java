@@ -50,6 +50,7 @@ public class GameScreen implements Screen {
     private BasePopup basePopup;
     private UnitStatsPopup statsPopup;
     private BuildingMenuPopup buildingMenuPopup;
+    private BuildingInfoPopup buildingInfoPopup;
     private List<UnitView> unitViews = new ArrayList<>();
     private BaseController baseController;
     private UnitController unitController;
@@ -143,6 +144,7 @@ public class GameScreen implements Screen {
         basePopup = new BasePopup(null, 200, 150, 300, 200, camera);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250, camera);
         buildingMenuPopup = new BuildingMenuPopup(buildingController, 300, 200, 300, 250, camera);
+        buildingInfoPopup = new BuildingInfoPopup(300, 200, 300, 250);
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base);}
@@ -181,6 +183,7 @@ public class GameScreen implements Screen {
                 basePopup.hide();
                 statsPopup.hide();
                 buildingMenuPopup.hide();
+                buildingInfoPopup.hide();
                 unitController.resetMovement();
                 System.out.println("Currently " + newPlayer.getDisplayName() + "'s turn!");
             }
@@ -213,7 +216,7 @@ public class GameScreen implements Screen {
 
         List<BaseStats> allBases = Arrays.asList(base1, base2);
         gameInput = new GameInput(
-            tileController, basePopup, statsPopup, buildingMenuPopup,
+            tileController, basePopup, statsPopup, buildingMenuPopup, buildingInfoPopup,
             unitController, unitController.getUnits(), unitViews,
             highlightSystem, turnManager,
             endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH,
