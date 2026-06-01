@@ -62,7 +62,6 @@ public class WorldMap {
 
                     map[mapRow][mapCol] = layout[r][c];
                     tileGrid[mapRow][mapCol].setBase(baseStats);
-                    System.out.println("map olace X: " + mapCol + " Y: " + mapRow);
                 }
             }
         }
