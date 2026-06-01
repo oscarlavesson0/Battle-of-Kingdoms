@@ -36,6 +36,8 @@ import java.util.Arrays;  // NY IMPORT
 import java.util.List;
 import java.util.Random;
 
+import static com.badlogic.gdx.math.MathUtils.random;
+
 public class GameScreen implements Screen {
 
     private final Main game;
@@ -46,7 +48,7 @@ public class GameScreen implements Screen {
     private TileController tileController;
     private WorldMap world;
     private Base baseGraphic;
-    private Lake lakeGraphic;
+    private List<Lake> lakes = new ArrayList<>();
     private BasePopup basePopup;
     private UnitStatsPopup statsPopup;
     private BuildingMenuPopup buildingMenuPopup;
@@ -99,7 +101,6 @@ public class GameScreen implements Screen {
         world         = new WorldMap(tileController);
         grass         = sheet.getTile(0, 5);
         baseGraphic = new Base(sheet, base1);
-        lakeGraphic = new Lake(sheet);
 
         base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][28]);
         base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[55][28]);
@@ -134,12 +135,16 @@ public class GameScreen implements Screen {
         baseController.createUnitFromChoice(base2, 20, 5, 5, 1);
 
         Random random = new Random();
-        world.placeLakeStructure(lakeGraphic,
-            random.nextInt(10, world.getRows()-10),
-            random.nextInt(10, world.getCols()-10));
-        world.placeLakeStructure(lakeGraphic,
-            random.nextInt(10, world.getRows()-10),
-            random.nextInt(10, world.getCols()-10));
+        List<int[]> placedLakePositions = new ArrayList<>();
+        int[] lakeSizes = {5, 7, 8};
+        int lakeCount = random.nextInt(2, 5);
+
+        for (int i = 0; i < lakeCount; i++) {
+            int size = lakeSizes[random.nextInt(lakeSizes.length)];
+            Lake lake = new Lake(sheet, size);
+            lakes.add(lake);
+            placeLakeSafely(random, lake, placedLakePositions);
+        }
 
         basePopup = new BasePopup(null, 200, 150, 300, 200, camera);
         statsPopup = new UnitStatsPopup(300, 200, 300, 250, camera);
@@ -246,8 +251,17 @@ public class GameScreen implements Screen {
                 int x  = col * WorldMap.TILE_SIZE;
                 int y  = row * WorldMap.TILE_SIZE;
                 batch.draw(grass, x, y);
-                TextureRegion lakeTile = lakeGraphic.getTile(id);
-                if (lakeTile != null) { batch.draw(lakeTile, x, y); continue; }
+
+                boolean drawnLake = false;
+                for (Lake lake : lakes) {
+                    TextureRegion lakeTile = lake.getTile(id);
+                    if (lakeTile != null) {
+                        batch.draw(lakeTile, x, y);
+                        drawnLake = true;
+                        break;
+                    }
+                }
+                if (drawnLake) continue;
                 TextureRegion baseTile = baseGraphic.getTile(id);
                 if (baseTile != null) { batch.draw(baseTile, x, y, 16, 16); continue; }
             }
@@ -397,5 +411,44 @@ public class GameScreen implements Screen {
         hudShape.dispose();
         coinIcon.dispose();
         hpIcon.dispose();
+    }
+    private void placeLakeSafely(Random random, Lake lake, List<int[]> placedLakePositions) {
+        int minDistanceFromBase = 10;
+        int minDistanceFromLake = 8; // minsta avstånd mellan sjöar
+        int maxAttempts = 100;
+
+        for (int attempt = 0; attempt < maxAttempts; attempt++) {
+            int row = random.nextInt(10, world.getRows() - 10);
+            int col = random.nextInt(10, world.getCols() - 10);
+
+            // Kolla avstånd till bas1
+            int base1Row = base1.getPosition().getX();
+            int base1Col = base1.getPosition().getY();
+            int dist1 = Math.abs(row - base1Row) + Math.abs(col - base1Col);
+
+            // Kolla avstånd till bas2
+            int base2Row = base2.getPosition().getX();
+            int base2Col = base2.getPosition().getY();
+            int dist2 = Math.abs(row - base2Row) + Math.abs(col - base2Col);
+
+            if (dist1 < minDistanceFromBase || dist2 < minDistanceFromBase) continue;
+
+            // Kolla avstånd till redan placerade sjöar
+            boolean tooCloseToLake = false;
+            for (int[] pos : placedLakePositions) {
+                int distToLake = Math.abs(row - pos[0]) + Math.abs(col - pos[1]);
+                if (distToLake < minDistanceFromLake) {
+                    tooCloseToLake = true;
+                    break;
+                }
+            }
+            if (tooCloseToLake) continue;
+
+            // Säker plats hittad
+            world.placeLakeStructure(lake, row, col);
+            placedLakePositions.add(new int[]{row, col});
+            return;
+        }
+        System.out.println("Could not place lake safely after " + maxAttempts + " attempts");
     }
 }

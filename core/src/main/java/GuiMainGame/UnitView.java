@@ -21,6 +21,7 @@ public class UnitView {
     private CharacterRenderer renderer;
     private ShapeRenderer shapeRenderer;
     private BitmapFont font;
+    private boolean flipX = false;
 
     private Queue<int[]> movementQueue = new LinkedList<>();
     private float animX;
@@ -122,7 +123,15 @@ public class UnitView {
     public void render(SpriteBatch batch) {
         batch.setColor(tintColor != null ? tintColor : Color.WHITE);
         TextureRegion frame = renderer.getCurrentFrame();
-        batch.draw(frame, animX - 8f, animY - 8f, 32, 32);
+
+        if (flipX) {
+            batch.draw(frame,
+                animX - 8f + 32f, animY - 8f,
+                -32f, 32f);
+        } else {
+            batch.draw(frame, animX - 8f, animY - 8f, 32, 32);
+        }
+
         batch.setColor(Color.WHITE);
     }
 
@@ -147,9 +156,18 @@ public class UnitView {
 
     public void applyPlayerColor(Player player) {
         switch (player) {
-            case PLAYER_ONE -> tintColor = new Color(1f, 0.3f, 0.3f, 1f);
-            case PLAYER_TWO -> tintColor = new Color(0.3f, 0.3f, 1f, 1f);
+            case PLAYER_ONE -> {
+                tintColor = new Color(1f, 0.3f, 0.3f, 1f);
+                flipX = false;
+            }
+            case PLAYER_TWO -> {
+                tintColor = new Color(0.3f, 0.3f, 1f, 1f);
+                flipX = true;  // spegelvänd
+            }
         }
+    }
+    public void setFlipX(boolean flip) {
+        this.flipX = flip;
     }
 
 }
