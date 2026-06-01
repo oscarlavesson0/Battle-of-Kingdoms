@@ -57,9 +57,10 @@ public class BuildingController {
 
         owner.subtractGold(buildingType.getCost());
 
-        int baseX = baseStats.getPosition().getX();
-        int baseY = baseStats.getPosition().getY();
+        int baseX = baseStats.getPosition().getY();
+        int baseY = baseStats.getPosition().getX();
 
+        System.out.println(baseX + " buildingcontrollers: " + baseY);
         int buildingY = 0;
         int buildingX = 0;
 
@@ -69,8 +70,8 @@ public class BuildingController {
             buildingY = random.nextInt(-buildSpawnRange, buildSpawnRange) + baseY;
 
             if (buildingX > 0 && buildingX < tileGrid.length && buildingY > 0 && buildingY < tileGrid[0].length) {
-                if (tileGrid[buildingX][buildingY].getBase() == null) {
-                    if (tileGrid[buildingX][buildingY].getBuilding() == null) {
+                if (tileGrid[buildingY][buildingX].getBase() == null) {
+                    if (tileGrid[buildingY][buildingX].getBuilding() == null) {
                         canSpawn = true;
                     }
                 }
@@ -94,7 +95,8 @@ public class BuildingController {
                 break;
         }
         addBuilding(building);
-        tileGrid[buildingX][buildingY].setBuilding(building);
+        tileGrid[buildingY][buildingX].setBuilding(building);
+        System.out.println("bX: " +  buildingX + " bY: " + buildingY);
         return building;
     }
 

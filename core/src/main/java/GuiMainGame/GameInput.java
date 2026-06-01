@@ -104,7 +104,7 @@ public class GameInput extends InputAdapter {
 
         int worldX = (int)(worldCoords.x / WorldMap.TILE_SIZE);
         int worldY = (int)(worldCoords.y / WorldMap.TILE_SIZE);
-
+        System.out.println("touchd " + worldX + " , " + worldY);
         float pixelX = worldCoords.x;
         float pixelY = worldCoords.y;
         float realY  = Gdx.graphics.getHeight() - screenY;

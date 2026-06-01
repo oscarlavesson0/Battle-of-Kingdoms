@@ -49,6 +49,7 @@ public class WorldMap {
         int[][] layout = structure.getLayout();
 
         baseStats.setPosition(tileGrid[startRow][startCol]);
+        System.out.println("olace X: " + startCol + " Y: " + startRow);
 
         for (int r = 0; r < layout.length; r++) {
             for (int c = 0; c < layout[0].length; c++) {
@@ -61,6 +62,7 @@ public class WorldMap {
 
                     map[mapRow][mapCol] = layout[r][c];
                     tileGrid[mapRow][mapCol].setBase(baseStats);
+                    System.out.println("map olace X: " + mapCol + " Y: " + mapRow);
                 }
             }
         }

@@ -13,6 +13,7 @@ public class BaseStats {
     public BaseStats(Player owner, Tile position){
         this.owner = owner;
         this.position = position;
+        System.out.println(position.getX() + " bbbb " + position.getY());
     }
 
     public Player getOwner() { return owner; }
@@ -34,5 +35,6 @@ public class BaseStats {
 
     public void setPosition(Tile position) {
         this.position = position;
+        System.out.println(position.getX() + " setposition " + position.getY());
     }
 }
