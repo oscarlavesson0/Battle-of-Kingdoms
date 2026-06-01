@@ -2,6 +2,7 @@ package GuiMainGame;
 
 import base.BaseStats;
 import base.TurnManager;
+import building.Building;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -85,6 +86,7 @@ public class GameInput extends InputAdapter {
         for (int[] tile : highlightSystem.getInteractionTiles()) {
             if (hasEnemyAt(tile[0], tile[1], unit))     { canAttack = true; break; }
             if (hasEnemyBaseAt(tile[0], tile[1], unit)) { canAttack = true; break; }
+            if (hasEnemyBuildingAt(tile[0], tile[1], unit)) { canAttack = true; break; }
         }
         float wx = unit.getX() * WorldMap.TILE_SIZE;
         float wy = unit.getY() * WorldMap.TILE_SIZE;
@@ -268,6 +270,7 @@ public class GameInput extends InputAdapter {
         int tileY = 59 - (int)(worldCoords.y / WorldMap.TILE_SIZE);
 
         if (highlightSystem.isInteractionTile(tileX, tileY)) {
+            System.out.println("target unit time ----------");
             Unit target = getEnemyAt(tileX, tileY, attackingUnit);
             if (target != null) {
                 unitController.attackUnit(attackingUnit, target);
@@ -278,6 +281,13 @@ public class GameInput extends InputAdapter {
             if (targetBase != null) {
                 unitController.attackBase(attackingUnit, targetBase);
                 cancelAll();
+                return;
+            }
+            System.out.println("targetBuidling time -----------------");
+            Building targetBuilding = getEnemyBuildingAt(tileX, tileY, attackingUnit);
+            if (targetBuilding != null) {
+                unitController.attackBuilding(attackingUnit, targetBuilding);
+                cancelAll();;
                 return;
             }
         }
@@ -376,6 +386,27 @@ public class GameInput extends InputAdapter {
         int x = unit.getX(), y = unit.getY();
         return hasEnemyBaseAt(x+1,y,unit) || hasEnemyBaseAt(x-1,y,unit)
             || hasEnemyBaseAt(x,y+1,unit) || hasEnemyBaseAt(x,y-1,unit);
+    }
+
+    private Building getEnemyBuildingAt(int tileX, int tileY, Unit friendly){
+        Building enemyBuilding = tileController.getTileGrid()[tileX][tileY].getBuilding();
+        System.out.println("X: " + tileX + " Y: " + tileY + " b: " + enemyBuilding);
+        if (enemyBuilding != null) {
+            if (enemyBuilding.getOwner() != friendly.getPlayer()){
+                return enemyBuilding;
+            }
+        }
+        return null;
+    }
+
+    private boolean hasEnemyBuildingAt(int tileX, int tileY, Unit friendly){
+        return getEnemyBuildingAt(tileX, tileY, friendly) != null;
+    }
+
+    private boolean hasEnemyBuildingAdjacent(Unit unit){
+        int x = unit.getX(), y = unit.getY();
+        return hasEnemyBuildingAt(x+1,y,unit) || hasEnemyBuildingAt(x-1,y,unit)
+            || hasEnemyBuildingAt(x, y+1,unit) || hasEnemyBuildingAt(x, y-1,unit);
     }
 
     private UnitView findViewFor(Unit unit) {

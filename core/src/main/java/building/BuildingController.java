@@ -95,7 +95,6 @@ public class BuildingController {
         }
         addBuilding(building);
         tileGrid[buildingX][buildingY].setBuilding(building);
-
         return building;
     }
 
