@@ -311,8 +311,8 @@ public class GameScreen implements Screen {
         for (BaseStats b : new BaseStats[]{ base1, base2 }) {
             if (b.isDestroyed()) continue;
             // Basens tile-position (övre vänstra hörnet)
-            float baseTileX = b.getPosition().getY();
-            float baseTileY = b.getPosition().getX();
+            float baseTileX = b.getPosition().getX();
+            float baseTileY = b.getPosition().getY();
 
             // Din bas är 4x4 tiles
             int baseWidthTiles = 4;

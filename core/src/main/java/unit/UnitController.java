@@ -229,8 +229,8 @@ public class UnitController {
 
     // Spawn
     public void spawnUnitNearBase(BaseStats base, Unit unit) {
-        int baseRow = base.getPosition().getX();
-        int baseCol = base.getPosition().getY();
+        int baseRow = base.getPosition().getY();
+        int baseCol = base.getPosition().getX();
 
         System.out.println("Spawning near base at row=" + baseRow + " col=" + baseCol);
         int spawnRow = baseRow - 1;

@@ -48,7 +48,7 @@ public class WorldMap {
     public void placeBaseStructure(StructureRenderer structure, BaseStats baseStats, int startRow, int startCol) {
         int[][] layout = structure.getLayout();
 
-        baseStats.setPosition(tileGrid[startRow][startCol]);
+        baseStats.setPosition(tileGrid[startCol][startRow]);
         System.out.println("olace X: " + startCol + " Y: " + startRow);
 
         for (int r = 0; r < layout.length; r++) {
