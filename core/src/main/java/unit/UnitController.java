@@ -192,9 +192,6 @@ public class UnitController {
         commitMove(attacker);
         selectedUnit = null;
         System.out.println("building attacked!!! -----------------");
-        if (!building.isBuilt()){
-            tileGrid[building.getY()][building.getX()].setBuilding(null);
-        }
 
         return true;
     }
