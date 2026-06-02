@@ -58,9 +58,16 @@ public class GameScreen implements Screen {
     private TurnManager turnManager;
     private IncomeHelper incomeHelper;
     private BitmapFont hudFont;
+    private BitmapFont titleFont;
     private ShapeRenderer hudShape;
     private Texture coinIcon;
     private Texture hpIcon;
+    private Texture gearIcon;
+    private SettingsPopup settingsPopup;
+    private ConfirmPopup confirmPopup;
+
+    public static final float gearBtnSize = 40f;
+    private float gearBtnX, gearBtnY;
 
     public static final float endTurnBtnW = 120f;
     public static final float endTurnBtnH = 40f;
@@ -199,7 +206,7 @@ public class GameScreen implements Screen {
         //hudShape = new ShapeRenderer();
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
         FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-        parameter.size = 20;
+        parameter.size = 30;
         hudFont = generator.generateFont(parameter);
         generator.dispose();
 
@@ -207,9 +214,33 @@ public class GameScreen implements Screen {
 
         coinIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/coin.png"));
         hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        gearIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/gear.png"));
+
+        settingsPopup = new SettingsPopup(330, 350, 300, 250, camera);
+        confirmPopup  = new ConfirmPopup(330, 380, 300, 160, camera);
+
+        settingsPopup.open(new popup.SettingsActionListener() {
+            @Override public void onResume() { }
+            @Override public void onMainMenu() {
+                confirmPopup.open("Return to main menu?", confirmed -> {
+                    if (confirmed) {
+                        bgMusic.stop();
+                        game.showStartMenu();
+                    }
+                });
+            }
+            @Override public void onQuit() {
+                confirmPopup.open("Quit the game?", confirmed -> {
+                    if (confirmed) Gdx.app.exit();
+                });
+            }
+        });
+        settingsPopup.hide();
 
         endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
         endTurnBtnY = 20;
+        gearBtnX = VIRTUAL_WIDTH - gearBtnSize - 20;
+        gearBtnY = VIRTUAL_HEIGHT - gearBtnSize - 20;
 
         List<BaseStats> allBases = Arrays.asList(base1, base2);
         gameInput = new GameInput(
@@ -217,7 +248,9 @@ public class GameScreen implements Screen {
             unitController, unitController.getUnits(), unitViews,
             highlightSystem, turnManager,
             endTurnBtnX, endTurnBtnY, endTurnBtnW, endTurnBtnH,
-            allBases, viewport);
+            allBases, viewport,
+            settingsPopup, confirmPopup,
+            gearBtnX, gearBtnY, gearBtnSize);
 
         Gdx.input.setInputProcessor(gameInput);
     }
@@ -281,6 +314,16 @@ public class GameScreen implements Screen {
         // HUD
         renderHud();
         gameInput.getActionMenu().render(batch, hudShape);
+
+        // Kugghjul-knapp
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(gearIcon, gearBtnX, gearBtnY, gearBtnSize, gearBtnSize);
+        batch.end();
+
+        // Settings + Confirm popups
+        settingsPopup.render();
+        confirmPopup.render();
 
         // BYGGNADER
         batch.begin();
@@ -352,21 +395,21 @@ public class GameScreen implements Screen {
         String topLine = "Turn " + turnManager.getTurnNumber()
             + "  " + Math.round(turnManager.getTimeRemaining()) + "s"
             + "  " + turnManager.getCurrentPlayer().getDisplayName();
-        hudFont.draw(batch, topLine, screenW/2f - 150, screenH - 20);
+        hudFont.draw(batch, topLine, screenW/2f - 180, screenH - 20);
 
         hudFont.setColor(Color.BLACK);
-        batch.draw(coinIcon, 92, screenH - 38, 22, 22);
+        batch.draw(coinIcon, 124, screenH - 44, 25, 25);
         hudFont.draw(batch, "P1: " + Player.PLAYER_ONE.getGold(), 20, screenH - 20);
-        batch.draw(coinIcon, 92, screenH - 68, 22, 22);
+        batch.draw(coinIcon, 124, screenH - 78, 25, 25);
         hudFont.draw(batch, "P2: " + Player.PLAYER_TWO.getGold(), 20, screenH - 50);
 
         hudFont.setColor(Color.BLACK);
-        batch.draw(hpIcon, 170, screenH - 102, 22, 22);
+        batch.draw(hpIcon, 240, screenH - 115, 25, 25);
         hudFont.draw(batch, "Bas P1: " + base1.getCurrentHp() + "/" + base1.getMaxHp(),
-            20, screenH - 80);
-        batch.draw(hpIcon, 170, screenH - 132, 22, 22);
+            20, screenH - 85);
+        batch.draw(hpIcon, 240, screenH - 150, 25, 25);
         hudFont.draw(batch, "Bas P2: " + base2.getCurrentHp() + "/" + base2.getMaxHp(),
-            20, screenH - 110);
+            20, screenH - 120);
 
         hudFont.setColor(Color.GOLD);
         hudFont.draw(batch, "End Turn", bx + 10, by + 20);
@@ -393,5 +436,8 @@ public class GameScreen implements Screen {
         hudShape.dispose();
         coinIcon.dispose();
         hpIcon.dispose();
+        gearIcon.dispose();
+        settingsPopup.dispose();
+        confirmPopup.dispose();
     }
 }

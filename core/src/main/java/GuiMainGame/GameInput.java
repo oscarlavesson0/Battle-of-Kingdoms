@@ -12,6 +12,8 @@ import terrain.Tile;
 import terrain.TileController;
 import unit.Unit;
 import unit.UnitController;
+import popup.SettingsPopup;
+import popup.ConfirmPopup;
 
 import java.util.List;
 
@@ -35,6 +37,9 @@ public class GameInput extends InputAdapter {
     private Viewport viewport;
 
     private List<BaseStats> bases;
+    private SettingsPopup settingsPopup;
+    private ConfirmPopup  confirmPopup;
+    private float gearX, gearY, gearSize;
 
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup, BuildingPopup buildingPopup,
@@ -43,7 +48,9 @@ public class GameInput extends InputAdapter {
                      HighlightSystem highlightSystem,
                      TurnManager turnManager,
                      float btnX, float btnY, float btnW, float btnH,
-                     List<BaseStats> bases, Viewport viewport) {
+                     List<BaseStats> bases, Viewport viewport,
+                     SettingsPopup settingsPopup, ConfirmPopup confirmPopup,
+                     float gearX, float gearY, float gearSize) {
         this.tileController  = tileController;
         this.basePopup       = basePopup;
         this.statsPopup      = statsPopup;
@@ -58,7 +65,13 @@ public class GameInput extends InputAdapter {
         this.actionMenu      = new ActionMenu();
         this.bases = bases;
         this.viewport = viewport;
+        this.settingsPopup = settingsPopup;
+        this.confirmPopup = confirmPopup;
+        this.gearX = gearX;
+        this.gearY = gearY;
+        this.gearSize = gearSize;
     }
+
 
     public ActionMenu getActionMenu() { return actionMenu; }
 
@@ -108,6 +121,25 @@ public class GameInput extends InputAdapter {
         float pixelX = worldCoords.x;
         float pixelY = worldCoords.y;
         float realY = Gdx.graphics.getHeight() - screenY;
+
+        // ConfirmPopup har högsta prioritet (ligger överst)
+        if (confirmPopup != null && confirmPopup.isVisible()) {
+            confirmPopup.handleClick(pixelX, pixelY);
+            return true;
+        }
+
+        // SettingsPopup
+        if (settingsPopup != null && settingsPopup.isVisible()) {
+            settingsPopup.handleClick(pixelX, pixelY);
+            return true;
+        }
+
+        // Kugghjul-knapp (öppnar settings) — world-koordinater
+        if (pixelX >= gearX && pixelX <= gearX + gearSize &&
+            pixelY >= gearY && pixelY <= gearY + gearSize) {
+            settingsPopup.show();
+            return true;
+        }
 
         // End turn
         float bx = Gdx.graphics.getWidth() - btnW - 20;
