@@ -25,13 +25,13 @@ public abstract class RangeBuilding extends Building{
     public void activateBuildingAbility(){
         for (int i = -range; i <= range; i++){
             for(int j = -range; j <= range; j++){
-                int a = super.getX() + i;
-                int b = super.getY() + j;
-                if (a >= 0 && a < mapRange && b >= 0 && b < mapRange){
-                    Unit unit = tileController.getTileGrid()[a][b].getUnit();
+                int x = super.getX() + i;
+                int y = super.getY() + j;
+                if (x >= 0 && x < mapRange && y >= 0 && y < mapRange){
+                    Unit unit = tileController.getTileGrid()[y][x].getUnit();
                     if (unit != null){
                         affectUnit(unit);
-                        System.out.println("This unit is affected by: " + getBuildingType().getName() + ", x: " + unit.getX() + " y: " + unit.getY() + " a: " + a + " b: " + b);
+                        System.out.println("This unit is affected by: " + getBuildingType().getName() + ", x: " + unit.getX() + " y: " + unit.getY() + " x: " + x + " y: " + y);
                     }
                 }
             }

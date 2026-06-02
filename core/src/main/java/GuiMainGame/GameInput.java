@@ -338,7 +338,7 @@ public class GameInput extends InputAdapter {
     }
 
     private void showPreMoveMenu(Unit unit) {
-        boolean canAttack = hasEnemyAdjacent(unit) || hasEnemyBaseAdjacent(unit);
+        boolean canAttack = hasEnemyAdjacent(unit) || hasEnemyBaseAdjacent(unit) || hasEnemyBuildingAdjacent(unit);
         float wx = unit.getX() * WorldMap.TILE_SIZE;
         float wy = unit.getY() * WorldMap.TILE_SIZE;
         actionMenu.showPreMove(wx + WorldMap.TILE_SIZE, wy, canAttack);
@@ -420,7 +420,7 @@ public class GameInput extends InputAdapter {
     }
 
     private Building getEnemyBuildingAt(int tileX, int tileY, Unit friendly){
-        Building enemyBuilding = tileController.getTileGrid()[tileX][tileY].getBuilding();
+        Building enemyBuilding = tileController.getTileGrid()[tileY][tileX].getBuilding();
         System.out.println("X: " + tileX + " Y: " + tileY + " b: " + enemyBuilding);
         if (enemyBuilding != null) {
             if (enemyBuilding.getOwner() != friendly.getPlayer()){
