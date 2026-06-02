@@ -29,8 +29,6 @@ public class BuildingController {
         buildings = new ArrayList<>();
         buildingTypes = new ArrayList<>();
         buildingTypes.add(BuildingType.Hospital);
-        buildingTypes.add(BuildingType.Barracks);
-        buildingTypes.add(BuildingType.Blacksmith);
         buildingTypes.add(BuildingType.Tower);
 
         buildSpawnRange = 5;
@@ -57,8 +55,8 @@ public class BuildingController {
 
         owner.subtractGold(buildingType.getCost());
 
-        int baseX = baseStats.getPosition().getY();
-        int baseY = baseStats.getPosition().getX();
+        int baseX = baseStats.getPosition().getX();
+        int baseY = baseStats.getPosition().getY();
 
         System.out.println(baseX + " buildingcontrollers: " + baseY);
         int buildingY = 0;
@@ -83,12 +81,6 @@ public class BuildingController {
         switch (buildingType){
             case Hospital:
                 building = new Hospital(buildingX, buildingY, owner, buildingType, tileController);
-                break;
-            case Barracks:
-                building = new Barracks(buildingX, buildingY, owner, buildingType, tileController);
-                break;
-            case Blacksmith:
-                building = new Blacksmith(buildingX, buildingY, owner, buildingType, tileController);
                 break;
             case Tower:
                 building = new Tower(buildingX, buildingY, owner, buildingType, tileController);

@@ -37,8 +37,7 @@ public class BuildingMenuPopup extends Popup {
     private BuildingChosenListener listener;
 
     private Texture hospitalIcon;
-    private Texture barracksIcon;
-    private Texture toolSmithIcon;
+    private Texture towerIcon;
 
     public BuildingMenuPopup(BuildingController buildingController, int x, int y,  int width, int height) {
         super(x, y, width, height);
@@ -52,8 +51,7 @@ public class BuildingMenuPopup extends Popup {
         buildingIconY = 400;
 
         this.hospitalIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
-        this.toolSmithIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Blacksmith.png"));
-        this.barracksIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Barracks.png"));
+        this.towerIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/tower.png"));
 
         buildings = buildingController.getBuildingTypes();
         int i = 0;
@@ -86,14 +84,8 @@ public class BuildingMenuPopup extends Popup {
             if (building == BuildingType.Hospital){
                 buildingIcon = hospitalIcon;
             }
-            if (building == BuildingType.Barracks){
-                buildingIcon = barracksIcon;
-            }
-            if (building == BuildingType.Blacksmith){
-                buildingIcon = toolSmithIcon;
-            }
             if (building == BuildingType.Tower){
-                buildingIcon = toolSmithIcon;
+                buildingIcon = towerIcon;
             }
             font.setColor(Color.GOLD);
             batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY - 30, 20, 20);

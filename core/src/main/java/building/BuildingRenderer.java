@@ -22,9 +22,7 @@ public class BuildingRenderer {
         this.buildingController = buildingController;
         textures = new HashMap<>();
         textures.put("Hospital", new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Hospital.png")));
-        textures.put("Barracks", new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Barracks.png")));
-        textures.put("Blacksmith", new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Blacksmith.png")));
-        textures.put("Tower", new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Blacksmith.png")));
+        textures.put("Tower", new Texture(Gdx.files.internal("lwjgl3/assets/ui/BuildingIcons/Tower.png")));
     }
 
     public void render(SpriteBatch batch) {
@@ -34,7 +32,7 @@ public class BuildingRenderer {
                 Texture texture = textures.get(building.getBuildingType().getName());
                 float x = building.getX() * (960f / 60f);
                 float y = (building.getY() * (960f / 60f));
-                batch.draw(texture, x, y, 25, 25);
+                batch.draw(texture, x, y, 25, 35);
             }
         }
     }
