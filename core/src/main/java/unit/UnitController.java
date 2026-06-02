@@ -187,7 +187,7 @@ public class UnitController {
         if (attackedThisTurn.contains(attacker)) return false;
         if (!building.isBuilt()) return false;
 
-        building.setHealth(attacker.getAttack());
+        building.setHealth(-attacker.getAttack());
         attackedThisTurn.add(attacker);
         commitMove(attacker);
         selectedUnit = null;
