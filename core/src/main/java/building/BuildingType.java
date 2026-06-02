@@ -2,7 +2,7 @@ package building;
 
 public enum BuildingType {
     Hospital("Hospital", 120, 10, 3, 2, 3, "Heals units 2 HP"),
-    Tower("Tower", 150, 10, 3, -3, 3, "Damages units 3 HP"),;
+    Tower("Tower", 150, 10, 3, -2, 3, "Damages units 3 HP"),;
 
     private String name;
     private int cost;
