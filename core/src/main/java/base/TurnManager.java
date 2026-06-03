@@ -2,7 +2,7 @@ package base;
 
 public class TurnManager {
 
-    public static final float turnDuration = 30;
+    public static final float turnDuration = 210;
     private float timeRemaining = turnDuration;
     private int turnNumber = 1;
     private Player currentPlayer = Player.PLAYER_ONE;
