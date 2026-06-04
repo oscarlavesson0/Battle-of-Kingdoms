@@ -107,11 +107,11 @@ public class GameScreen implements Screen {
         baseGraphic    = new Base(sheet, base1);
         lakeGraphic    = new Lake(sheet, 3);
 
-        base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[2][28]);
-        base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[55][28]);
+        base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[17][28]);
+        base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[40][28]);
 
-        world.placeBaseStructure(baseGraphic, base1, 28,  2);
-        world.placeBaseStructure(baseGraphic, base2, 28, 55);
+        world.placeBaseStructure(baseGraphic, base1, 28,  17);
+        world.placeBaseStructure(baseGraphic, base2, 28, 40);
 
         unitController     = new UnitController(tileController.getTileGrid());
         highlightSystem    = new HighlightSystem(unitController);

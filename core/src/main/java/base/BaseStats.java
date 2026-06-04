@@ -5,8 +5,8 @@ import terrain.Tile;
 public class BaseStats {
     private Player owner;
     private Tile position;
-    private int maxHp = 20;
-    private int currentHp = 20;
+    private int maxHp = 5;
+    private int currentHp = 5;
     private int defense = 10;
     private int goldPerTurn = 50;
 
