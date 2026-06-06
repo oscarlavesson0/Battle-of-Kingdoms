@@ -58,7 +58,6 @@ public class BuildingController {
         int baseX = baseStats.getPosition().getX();
         int baseY = baseStats.getPosition().getY();
 
-        System.out.println(baseX + " buildingcontrollers: " + baseY);
         int buildingY = 0;
         int buildingX = 0;
 
@@ -88,7 +87,6 @@ public class BuildingController {
         }
         addBuilding(building);
         tileGrid[buildingY][buildingX].setBuilding(building);
-        System.out.println("bX: " +  buildingX + " bY: " + buildingY);
         return building;
     }
 

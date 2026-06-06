@@ -6,9 +6,6 @@ import terrain.TileController;
 
 public abstract class Building {
 
-    private TileController tileController;
-    private int turnCounter;
-
     private boolean isBuilt;
     private int health;
     private int x;
@@ -23,23 +20,16 @@ public abstract class Building {
         this.owner = owner;
         this.buildingType = buildingType;
         this.health = buildingType.getMaxHealth();
-        this.isBuilt = false;
-
-        turnCounter = 0;
+        this.isBuilt = true;
     }
 
     public void updateBuilding(){
-        System.out.println(turnCounter + " -----------");
-        if (turnCounter >= buildingType.getConstructionTime()){
-            isBuilt = true;
-        }
         if (health <= 0){
             isBuilt = false;
         }
         if (isBuilt){
             activateBuildingAbility();
         }
-        turnCounter++;
     }
 
     public abstract void activateBuildingAbility();
@@ -66,9 +56,6 @@ public abstract class Building {
             isBuilt = false;
         }
 
-    }
-    public void setBuilt(boolean built){
-        isBuilt = built;
     }
     public boolean isBuilt(){
         return isBuilt;
