@@ -31,7 +31,6 @@ public abstract class RangeBuilding extends Building{
                     Unit unit = tileController.getTileGrid()[y][x].getUnit();
                     if (unit != null){
                         affectUnit(unit);
-                        System.out.println("This unit is affected by: " + getBuildingType().getName() + ", x: " + unit.getX() + " y: " + unit.getY() + " x: " + x + " y: " + y);
                     }
                 }
             }

@@ -9,8 +9,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import java.util.ArrayList;
@@ -91,8 +89,6 @@ public class BuildingMenuPopup extends Popup {
             batch.draw(buildingIcon, x + buildingIconX, y + buildingIconY - 30, 20, 20);
             font.draw(batch, building.getName(), x + buildingIconX + 40, y + buildingIconY - 10);
             font.draw(batch, Integer.toString(building.getCost()) + "g", x + buildingIconX + 150, y + buildingIconY - 10);
-            font.setColor(Color.WHITE);
-            font.draw(batch, Integer.toString(building.getConstructionTime()) + "h", x + buildingIconX + 190, y + buildingIconY - 10);
 
             buildingIconY -= 30;
         }
@@ -124,7 +120,6 @@ public class BuildingMenuPopup extends Popup {
 
     public void handleClick(float screenX, float screenY){
         super.handleClick(screenX, screenY);
-        System.out.println(screenX + ", " + screenY);
         if (!isVisible()){
             return;
         }
@@ -144,11 +139,9 @@ public class BuildingMenuPopup extends Popup {
             return;
         }
 
-        int i = 0;
         for (BuildingButton button : buildingButtons) {
             if (screenX <= button.getWidth() + button.getX() && screenX >= button.getX()
             && screenY <= button.getHeight() + button.getY() && screenY >= button.getY()){
-                System.out.println("clicked buildingbutton " + screenX + " y: " + screenY + " b: " + buildings.get(i).getName());
                 if (listener != null){
                     listener.OnBuildingChosen(button.getBuildingType(), baseStats);
                 }
@@ -157,7 +150,6 @@ public class BuildingMenuPopup extends Popup {
                 }
                 break;
             }
-            i++;
         }
     }
 }

@@ -1,8 +1,6 @@
 package building;
 
 import base.Player;
-import terrain.Tile;
-import terrain.TileController;
 
 public abstract class Building {
 
