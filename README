@@ -1,0 +1,83 @@
+
+https://github.com/oscarlavesson0/Battle-of-Kingdoms.git
+
+# Turn‑Based Strategy Game – LibGDX Project
+
+Ett turordningsbaserat strategispel utvecklat i Java med LibGDX som spelmotor.
+Spelet bygger på klassiska grid‑baserade strider där två spelare kontrollerar varsin bas och sina enheter, med målet att förstöra motståndarens bas.
+
+Projektet utvecklades som en del av kursen **DA336A – Programutvecklingsprojekt** vid MAU VT26.
+
+---
+
+## Spelöversikt
+
+Spelet utspelar sig på en 60×60 tile‑baserad karta.
+Varje spelare kontrollerar:
+
+- En **bas** (4×4 struktur)
+- Ett antal **enheter** (Knight, Axeman)
+- Möjlighet att **attackera**, **förflytta**, **vänta**, **avbryta**, eller visa **info**
+
+Spelet är turordningsbaserat:
+**Spelare 1 → Spelare 2 → Spelare 1 → …**
+
+---
+
+## Funktioner
+
+### Enheter & Animationer
+- Fullt animerade sprites via `CharacterRenderer`
+- Stöd för:
+  - Idle
+  - Run
+  - Attack
+  - Damage
+- Spegelvändning beroende på spelare (Player One / Player Two)
+
+### Rörelse & Highlighting
+- `HighlightSystem` visar:
+  - Blå rutor = möjliga förflyttningar
+  - Orange rutor = attack/interaktion
+- Mjuka rörelseanimationer via `UnitView`
+
+### ActionMenu
+Dynamisk meny som visas vid enhetsinteraktion:
+
+- **Move**
+- **Wait**
+- **Attack**
+- **Cancel**
+- **Info**
+- **Close**
+
+Menyn anpassar sig efter:
+- Om enheten redan rört sig
+- Om fiender finns i närheten
+- Om det är en fiendeenhet (visar endast *Info*)
+
+### Strukturer & Terräng
+- `StructureRenderer` hanterar multi‑tile strukturer
+- `Lake` genererar sjöar i valfri storlek
+- `Base` renderar baser med 4×4 tiles
+- `WorldMap` placerar strukturer och uppdaterar terräng (t.ex. Water)
+
+### Popups & UI
+- BasePopup
+- UnitStatsPopup
+- BuildingMenuPopup
+- BuildingInfoPopup
+- SettingsPopup
+- ConfirmPopup
+
+### Turhantering
+- `TurnManager` styr vilken spelare som är aktiv
+- End Turn‑knapp avslutar rundan
+- Pending moves commitas automatiskt
+
+---
+
+## Teknisk Arkitektur
+
+Projektet är uppdelat i tydliga moduler:
+
