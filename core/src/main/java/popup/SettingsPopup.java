@@ -11,7 +11,10 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
- * Settings-popup med tre knappar: Resume, Main Menu, Quit.
+ * In-game settings popup with three buttons: Resume, Main Menu and Quit.
+ * Reports the chosen action to a {@link SettingsActionListener}.
+ *
+ * @author Emil Hadzic
  */
 public class SettingsPopup {
 
@@ -35,6 +38,15 @@ public class SettingsPopup {
     private float quitX, quitY;
     private float btnW, btnH;
 
+    /**
+     * Creates a settings popup at the given position and size.
+     *
+     * @param x      the popup's x position
+     * @param y      the popup's y position
+     * @param width  the popup's width
+     * @param height the popup's height
+     * @param camera the camera whose projection is used for rendering
+     */
     public SettingsPopup(float x, float y, float width, float height, OrthographicCamera camera) {
         this.x = x;
         this.y = y;
@@ -65,23 +77,32 @@ public class SettingsPopup {
         quitX   = centerX; quitY   = y + height - 190;
     }
 
+    /**
+     * Sets the action listener and makes the popup visible.
+     *
+     * @param listener the listener notified of the chosen action
+     */
     public void open(SettingsActionListener listener) {
         this.listener = listener;
         this.visible = true;
     }
 
+    /** Hides the popup. */
     public void hide() {
         visible = false;
     }
 
+    /** @return true if the popup is currently visible */
     public boolean isVisible() {
         return visible;
     }
 
+    /** Makes the popup visible without changing the listener. */
     public void show() {
         this.visible = true;
     }
 
+    /** Renders the popup background, buttons, labels and close icon. */
     public void render() {
         if (!visible) return;
 
@@ -116,6 +137,13 @@ public class SettingsPopup {
         batch.end();
     }
 
+    /**
+     * Handles a click at the given world coordinates, triggering the matching
+     * action (Resume, Main Menu or Quit). The close icon acts as Resume.
+     *
+     * @param screenX the click's x coordinate in world space
+     * @param realY   the click's y coordinate in world space
+     */
     public void handleClick(float screenX, float realY) {
         if (!visible) return;
 
@@ -151,6 +179,7 @@ public class SettingsPopup {
         }
     }
 
+    /** Disposes all graphics resources held by the popup. */
     public void dispose() {
         font.dispose();
         batch.dispose();
