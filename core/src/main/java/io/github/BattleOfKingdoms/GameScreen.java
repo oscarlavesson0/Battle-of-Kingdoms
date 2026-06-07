@@ -36,6 +36,26 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * The main gameplay screen for Battle of Kingdoms.
+ * Handles rendering of the world map, units, bases, buildings, HUD,
+ * popups, turn system, income, and all in-game interactions.
+ *
+ * Responsibilities:
+ * - Rendering the tile map and environment
+ * - Managing units, bases, buildings, and their controllers
+ * - Handling turn order, income, and base destruction
+ * - Displaying HUD elements such as gold, HP, and turn timer
+ * - Managing popups (unit stats, base menu, building menu, settings, confirm)
+ * - Processing player input through GameInput
+ *
+ * Authors:
+ * Stefan Rajkovic
+ * Emil Hadzic
+ * Enid Becarevic
+ * JoelAxel Olsson
+ * Oscar Lavesson
+ */
 public class GameScreen implements Screen {
 
     private final Main game;
@@ -82,11 +102,22 @@ public class GameScreen implements Screen {
     private static final float VIRTUAL_WIDTH  = 960f;
     private static final float VIRTUAL_HEIGHT = 960f;
 
+    /**
+     * Creates a GameScreen instance.
+     *
+     * @param game the main game instance
+     */
     public GameScreen(Main game) { this.game = game; }
 
+    /**
+     * Initializes all gameplay systems, controllers, popups, units,
+     * world map, HUD, and input handling.
+     * Also starts background music.
+     */
     @Override
     public void show() {
         System.out.println("show() started");
+
         bgMusic = Gdx.audio.newMusic(Gdx.files.internal(
             "lwjgl3/assets/Audio/Medieval Fantasy Tavern D&D Fantasy Music and Ambience - Daydreaming of Persephone (128k).mp3"));
         bgMusic.setLooping(true);
@@ -110,7 +141,7 @@ public class GameScreen implements Screen {
         base1 = new BaseStats(Player.PLAYER_ONE, tileController.getTileGrid()[17][28]);
         base2 = new BaseStats(Player.PLAYER_TWO, tileController.getTileGrid()[40][28]);
 
-        world.placeBaseStructure(baseGraphic, base1, 28,  17);
+        world.placeBaseStructure(baseGraphic, base1, 28, 17);
         world.placeBaseStructure(baseGraphic, base2, 28, 40);
 
         unitController     = new UnitController(tileController.getTileGrid());
@@ -149,11 +180,13 @@ public class GameScreen implements Screen {
         statsPopup        = new UnitStatsPopup(300, 200, 300, 250, camera);
         buildingMenuPopup = new BuildingMenuPopup(buildingController, 300, 200, 300, 250);
         buildingInfoPopup = new BuildingInfoPopup(300f, 200f, 300f, 250f);
+
         float spW = 300, spH = 250;
         settingsPopup = new SettingsPopup((VIRTUAL_WIDTH - spW)/2f, (VIRTUAL_HEIGHT - spH)/2f, spW, spH, camera);
 
         float cpW = 300, cpH = 250;
         confirmPopup  = new ConfirmPopup((VIRTUAL_WIDTH - cpW)/2f, (VIRTUAL_HEIGHT - cpH)/2f, cpW, cpH, camera);
+
         settingsPopup.open(new SettingsActionListener() {
             @Override public void onResume() { }
             @Override public void onMainMenu() {
@@ -224,7 +257,7 @@ public class GameScreen implements Screen {
 
         hudShape = new ShapeRenderer();
         coinIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/coin.png"));
-        hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        hpIcon   = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
         gearIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/gear.png"));
 
         endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
@@ -246,6 +279,12 @@ public class GameScreen implements Screen {
         Gdx.input.setInputProcessor(gameInput);
     }
 
+    /**
+     * Renders the world map, units, HUD, popups, highlights,
+     * and updates game logic each frame.
+     *
+     * @param delta time since last frame
+     */
     @Override
     public void render(float delta) {
         ScreenUtils.clear(0.15f, 0.15f, 0.2f, 1f);
@@ -258,7 +297,6 @@ public class GameScreen implements Screen {
         gameInput.update();
         turnManager.update(delta);
 
-        // KARTA
         batch.begin();
         for (int row = 0; row < world.getRows(); row++) {
             for (int col = 0; col < world.getCols(); col++) {
@@ -274,58 +312,55 @@ public class GameScreen implements Screen {
         }
         batch.end();
 
-        // POPUPS
         basePopup.render(batch);
         if (statsPopup.isVisible())         statsPopup.render();
         if (buildingMenuPopup.isVisible())  buildingMenuPopup.render(hudShape, batch, camera);
         if (buildingInfoPopup != null && buildingInfoPopup.isVisible()) buildingInfoPopup.render(hudShape, batch, camera);
+
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         batch.draw(gearIcon, gearX, gearY, GEAR_SIZE, GEAR_SIZE);
         batch.end();
-        if (settingsPopup != null && settingsPopup.isVisible())         settingsPopup.render();
-        if (confirmPopup  != null && confirmPopup.isVisible())          confirmPopup.render();
+
+        if (settingsPopup != null && settingsPopup.isVisible()) settingsPopup.render();
+        if (confirmPopup  != null && confirmPopup.isVisible())  confirmPopup.render();
 
         if (batch.isDrawing())    batch.end();
         if (hudShape.isDrawing()) hudShape.end();
 
-        // HIGHLIGHT
         highlightSystem.render(camera);
 
-        // UNITS
         batch.begin();
         for (UnitView uv : unitViews) { uv.update(delta); uv.render(batch); }
         batch.end();
 
-        // HP-BARS (world-koordinater)
         hudShape.setProjectionMatrix(camera.combined);
         hudShape.begin(ShapeRenderer.ShapeType.Filled);
         for (UnitView uv : unitViews) uv.renderHpBar(hudShape);
         renderBaseHpBars();
         hudShape.end();
 
-        // HP-TEXT
         batch.begin();
         for (UnitView uv : unitViews) uv.renderHpText(batch);
         batch.end();
 
-        // HUD
         renderHud();
         gameInput.getActionMenu().render(batch, hudShape);
 
-        // BYGGNADER
         batch.begin();
         buildingController.getBuildingRenderer().render(batch);
         batch.end();
     }
 
+    /**
+     * Renders HP bars for both bases.
+     */
     private void renderBaseHpBars() {
         for (BaseStats b : new BaseStats[]{ base1, base2 }) {
             if (b.isDestroyed()) continue;
 
-            // getX() = rad, getY() = kolumn — matchar placeBaseStructure(28, 2) och (28, 55)
-            float baseTileCol = b.getPosition().getX(); // kolumn → pixel-X
-            float baseTileRow = b.getPosition().getY(); // rad    → pixel-Y
+            float baseTileCol = b.getPosition().getX();
+            float baseTileRow = b.getPosition().getY();
 
             int baseWidthTiles  = 4;
             int baseHeightTiles = 4;
@@ -345,6 +380,10 @@ public class GameScreen implements Screen {
         }
     }
 
+    /**
+     * Renders the HUD including gold, HP, turn number, timer,
+     * and the End Turn button.
+     */
     private void renderHud() {
         float screenW = Gdx.graphics.getWidth();
         float screenH = Gdx.graphics.getHeight();
@@ -386,13 +425,38 @@ public class GameScreen implements Screen {
         hudShape.setProjectionMatrix(camera.combined);
     }
 
+    /**
+     * Updates the viewport when the window is resized.
+     */
     @Override
     public void resize(int width, int height) { viewport.update(width, height, true); }
 
-    @Override public void pause()  {}
-    @Override public void resume() {}
-    @Override public void hide()   {}
+    /**
+     * Called when the game is paused.
+     * Not used in this implementation.
+     */
+    @Override
+    public void pause() {}
 
+    /**
+     * Called when the game is resumed after being paused.
+     * Not used in this implementation.
+     */
+    @Override
+    public void resume() {}
+
+    /**
+     * Called when the screen is no longer the active screen.
+     * Not used in this implementation.
+     */
+    @Override
+    public void hide() {}
+
+    /**
+     * Disposes all resources allocated by the GameScreen,
+     * including music, rendering objects, fonts, shapes,
+     * and HUD icons.
+     */
     @Override
     public void dispose() {
         bgMusic.dispose();
@@ -403,4 +467,5 @@ public class GameScreen implements Screen {
         hpIcon.dispose();
         gearIcon.dispose();
     }
+
 }

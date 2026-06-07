@@ -18,16 +18,38 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+/**
+ * Displays the game's instruction pages, allowing the player to navigate
+ * through multiple screens of gameplay information. The screen uses the
+ * same background and font as the Start Menu and adapts its layout to
+ * different window sizes.
+ *
+ * Handles:
+ * - Page navigation (Back, Next, Close)
+ * - Dynamic text wrapping
+ * - Background rendering
+ * - Responsive UI layout
+ *
+ * Author: Stefan Rajkovic
+ */
 public class InstructionScreen implements Screen {
 
+    /** Reference to the main game for switching screens. */
     private final Main game;
+
+    /** Stage used for UI elements and input handling. */
     private Stage stage;
+
+    /** Camera controlling the viewport. */
     private OrthographicCamera camera;
 
+    /** Background image shared with the Start Menu. */
     private Texture background;
 
+    /** Current instruction page index. */
     private int page = 0;
 
+    /** All instruction pages shown to the player. */
     private final String[] pages = {
         "Player 1 controls the base on the left.\n" +
             "Player 2 controls the base on the right.\n\n" +
@@ -57,13 +79,27 @@ public class InstructionScreen implements Screen {
             "Crush the enemy and win the battle."
     };
 
+    /** Label displaying the current instruction text. */
     private Label textLabel;
+
+    /** Button for navigating to the previous page. */
     private TextButton backButton;
+
+    /** Button for navigating to the next page. */
     private TextButton nextButton;
+
+    /** Button for closing the instruction screen. */
     private TextButton closeButton;
 
+    /** Root layout table containing all UI elements. */
     private Table rootTable;
 
+    /**
+     * Creates the instruction screen, loads the background and font,
+     * builds the UI layout, and initializes the first page.
+     *
+     * @param game the main game instance
+     */
     public InstructionScreen(Main game) {
         this.game = game;
 
@@ -148,14 +184,21 @@ public class InstructionScreen implements Screen {
         updatePage();
     }
 
+    /**
+     * Updates the displayed page and adjusts button visibility.
+     */
     private void updatePage() {
         textLabel.setText(pages[page]);
-
         backButton.setVisible(page > 0);
         nextButton.setVisible(page < pages.length - 1);
         closeButton.setVisible(true);
     }
 
+    /**
+     * Renders the background and UI elements.
+     *
+     * @param delta time since last frame
+     */
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(1, 1, 1, 1);
@@ -172,12 +215,16 @@ public class InstructionScreen implements Screen {
         stage.draw();
     }
 
+    /**
+     * Adjusts layout and text width when the window is resized.
+     *
+     * @param width new window width
+     * @param height new window height
+     */
     @Override
     public void resize(int width, int height) {
         stage.getViewport().update(width, height, true);
-
-        float textWidth = width * 0.8f;
-        textLabel.setWidth(textWidth);
+        textLabel.setWidth(width * 0.8f);
     }
 
     @Override public void show() {}
@@ -185,6 +232,9 @@ public class InstructionScreen implements Screen {
     @Override public void resume() {}
     @Override public void hide() {}
 
+    /**
+     * Disposes of the stage and background texture.
+     */
     @Override
     public void dispose() {
         stage.dispose();

@@ -1,11 +1,22 @@
 package terrain;
 
+/**
+ * Generates the games tile grid by assigning terrain to each tile.
+ *
+ * @author Stefan Rajkovic
+ * @author JoelAxel Olsson
+ */
 public class TileGenerator {
 
-    TerrainGenerator terrainGenerator;
-    Tile[][] tileGrid;
-    Terrain[][] terrainGrid;
+    private final TerrainGenerator terrainGenerator;
+    private final Tile[][] tileGrid;
+    private final Terrain[][] terrainGrid;
 
+    /**
+     * Creates a tile generator for the given tile grid.
+     *
+     * @param tileGrid the grid to populate with tiles
+     */
     public TileGenerator(Tile[][] tileGrid) {
         this.tileGrid = tileGrid;
 
@@ -15,6 +26,11 @@ public class TileGenerator {
         terrainGrid = terrainGenerator.getTerrainGrid();
     }
 
+    /**
+     * Generates tiles for the entire grid using the terrain layout.
+     *
+     * @return the populated tile grid
+     */
     public Tile[][] generateTiles() {
 
         // Create tiles with terrain
