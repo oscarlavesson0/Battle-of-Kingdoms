@@ -11,7 +11,12 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFont
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 
-//Reusable yes and no-confirm popup.
+/**
+ * Reusable yes/no confirmation popup. Shows a message with Yes and No buttons
+ * and reports the choice to a {@link ConfirmListener}.
+ *
+ * @author Emil Hadzic
+ */
 public class ConfirmPopup {
 
     private OrthographicCamera camera;
@@ -32,6 +37,15 @@ public class ConfirmPopup {
 
     private float yesX, yesY, noX, noY, btnW, btnH;
 
+    /**
+     * Creates a confirmation popup at the given position and size.
+     *
+     * @param x      the popup's x position
+     * @param y      the popup's y position
+     * @param width  the popup's width
+     * @param height the popup's height
+     * @param camera the camera whose projection is used for rendering
+     */
     public ConfirmPopup(float x, float y, float width, float height, OrthographicCamera camera){
         this.x = x;
         this.y = y;
@@ -60,6 +74,12 @@ public class ConfirmPopup {
         noY = y + 30;
     }
 
+    /**
+     * Shows the popup with the given message and result listener.
+     *
+     * @param message  the question shown to the user
+     * @param listener the listener notified of the result
+     */
     public void open(String message, ConfirmListener listener){
         this.message = message;
         this.listener = listener;
@@ -67,14 +87,17 @@ public class ConfirmPopup {
 
     }
 
+    /** Hides the popup. */
     public void hide(){
         visible = false;
     }
 
+    /** @return true if the popup is currently visible */
     public boolean isVisible(){
         return visible;
     }
 
+    /** Renders the popup background, buttons, message and close icon. */
     public void render(){
         if (!visible) return;
 
@@ -105,6 +128,13 @@ public class ConfirmPopup {
         batch.end();
     }
 
+    /**
+     * Handles a click at the given world coordinates. Yes confirms, No and the
+     * close icon both cancel.
+     *
+     * @param screenX the click's x coordinate in world space
+     * @param realY   the click's y coordinate in world space
+     */
     public void handleClick(float screenX, float realY) {
         if (!visible) return;
 
@@ -128,6 +158,7 @@ public class ConfirmPopup {
         }
     }
 
+    /** Disposes all graphics resources held by the popup. */
     public void dispose() {
         font.dispose();
         batch.dispose();

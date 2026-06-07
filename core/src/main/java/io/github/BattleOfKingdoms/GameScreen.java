@@ -149,8 +149,28 @@ public class GameScreen implements Screen {
         statsPopup        = new UnitStatsPopup(300, 200, 300, 250, camera);
         buildingMenuPopup = new BuildingMenuPopup(buildingController, 300, 200, 300, 250);
         buildingInfoPopup = new BuildingInfoPopup(300f, 200f, 300f, 250f);
-        settingsPopup     = new SettingsPopup(300, 200, 300, 250, camera);
-        confirmPopup      = new ConfirmPopup(300, 200, 300, 250, camera);
+        float spW = 300, spH = 250;
+        settingsPopup = new SettingsPopup((VIRTUAL_WIDTH - spW)/2f, (VIRTUAL_HEIGHT - spH)/2f, spW, spH, camera);
+
+        float cpW = 300, cpH = 250;
+        confirmPopup  = new ConfirmPopup((VIRTUAL_WIDTH - cpW)/2f, (VIRTUAL_HEIGHT - cpH)/2f, cpW, cpH, camera);
+        settingsPopup.open(new SettingsActionListener() {
+            @Override public void onResume() { }
+            @Override public void onMainMenu() {
+                confirmPopup.open("Return to main menu?", confirmed -> {
+                    if (confirmed) {
+                        bgMusic.stop();
+                        game.showStartMenu();
+                    }
+                });
+            }
+            @Override public void onQuit() {
+                confirmPopup.open("Quit the game?", confirmed -> {
+                    if (confirmed) Gdx.app.exit();
+                });
+            }
+        });
+        settingsPopup.hide();
 
         basePopup.setTrainUnitListener(new TrainUnitListener() {
             @Override public void onTrainUnit(BaseStats base) { statsPopup.open(base); }
@@ -202,15 +222,16 @@ public class GameScreen implements Screen {
         hudFont = generator.generateFont(parameter);
         generator.dispose();
 
-        hudShape  = new ShapeRenderer();
-        coinIcon  = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/coin.png"));
-        hpIcon    = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        hudShape = new ShapeRenderer();
+        coinIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/coin.png"));
+        hpIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/heart.png"));
+        gearIcon = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/gear.png"));
 
         endTurnBtnX = Gdx.graphics.getWidth() - endTurnBtnW - 20;
         endTurnBtnY = 20;
 
-        gearX = 10f;
-        gearY = 10f;
+        gearX = VIRTUAL_WIDTH - GEAR_SIZE - 20;
+        gearY = VIRTUAL_HEIGHT - GEAR_SIZE - 20;
 
         List<BaseStats> allBases = Arrays.asList(base1, base2);
         gameInput = new GameInput(
@@ -258,6 +279,10 @@ public class GameScreen implements Screen {
         if (statsPopup.isVisible())         statsPopup.render();
         if (buildingMenuPopup.isVisible())  buildingMenuPopup.render(hudShape, batch, camera);
         if (buildingInfoPopup != null && buildingInfoPopup.isVisible()) buildingInfoPopup.render(hudShape, batch, camera);
+        batch.setProjectionMatrix(camera.combined);
+        batch.begin();
+        batch.draw(gearIcon, gearX, gearY, GEAR_SIZE, GEAR_SIZE);
+        batch.end();
         if (settingsPopup != null && settingsPopup.isVisible())         settingsPopup.render();
         if (confirmPopup  != null && confirmPopup.isVisible())          confirmPopup.render();
 
@@ -376,5 +401,6 @@ public class GameScreen implements Screen {
         hudShape.dispose();
         coinIcon.dispose();
         hpIcon.dispose();
+        gearIcon.dispose();
     }
 }

@@ -1,8 +1,21 @@
 package base;
 
-//Help class for the turn system to give the players each turn.
+/**
+ * Helper that grants gold to a player at the start of their turn.
+ * <p>
+ * Note: currently applies a fixed income. Gold mine income was planned but
+ * not fully integrated due to time constraints; the related logic is left
+ * commented out below.
+ *
+ * @author Emil Hadzic
+ */
 public class IncomeHelper {
 
+    /**
+     * Grants the player their per-turn income.
+     *
+     * @param player the player receiving income; ignored if null
+     */
     public void applyIncome(Player player){
         if (player == null){
             return;
@@ -10,7 +23,7 @@ public class IncomeHelper {
         player.addGold(50);
 
         //if(base != null && base.getOwner() == player){
-            //player.addGold(base.getGoldPerTurn());
+        //player.addGold(base.getGoldPerTurn());
         //}
 
         /*int ownedMines = 0;
