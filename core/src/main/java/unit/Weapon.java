@@ -1,8 +1,13 @@
 package unit;
 
+/**
+ * Types of weapons a unit can use.
+ *
+ * @author Enid Becarevic
+ */
 public enum Weapon {
-    None,
+    NONE,
     SWORD,
     AXE,
-    SPEAR;
+    SPEAR
 }
