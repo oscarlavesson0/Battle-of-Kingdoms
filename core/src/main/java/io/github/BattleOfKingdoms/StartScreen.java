@@ -12,27 +12,57 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
+/**
+ * Displays the game's main start menu, including the title and three
+ * selectable options: Start Game, Instructions, and Exit.
+ *
+ * Handles:
+ * - Rendering of background, title, and menu text
+ * - Button hitbox calculations
+ * - Input handling for menu navigation
+ * - Responsive positioning on window resize
+ *
+ * Author: Stefan Rajkovic
+ */
 public class StartScreen implements Screen {
 
+    /** Reference to the main game for switching screens. */
     private final Main game;
+
+    /** SpriteBatch used for drawing text and background. */
     private SpriteBatch batch;
+
+    /** Font used for all menu text. */
     private BitmapFont font;
+
+    /** Background image for the start menu. */
     private Texture backgrund;
+
+    /** Camera controlling the viewport. */
     private OrthographicCamera camera;
 
-    // Knapp‑koordinater
+    /** Button positions and sizes for Start, Instructions, and Exit. */
     private float startX, startY, startW, startH;
     private float instrX, instrY, instrW, instrH;
     private float exitX, exitY, exitW, exitH;
 
+    /** Layout objects used to measure text width and height. */
     private GlyphLayout startLayout, instrLayout, exitLayout;
 
+    /** Title text and its position. */
     private String title = "Battle of Kingdoms";
     private float titleX, titleY;
     private GlyphLayout titleLayout;
 
+    /** Cooldown to prevent input leaking from previous screens. */
     private float inputCooldown = 0.2f;
 
+    /**
+     * Creates the StartScreen, loads the background and font,
+     * calculates button sizes, and positions all menu elements.
+     *
+     * @param game the main game instance
+     */
     public StartScreen(Main game) {
         this.game = game;
         batch = new SpriteBatch();
@@ -80,6 +110,12 @@ public class StartScreen implements Screen {
         titleY = Gdx.graphics.getHeight() * 0.85f;
     }
 
+    /**
+     * Renders the background, title, and menu text,
+     * and handles input once the cooldown has expired.
+     *
+     * @param delta time since last frame
+     */
     @Override
     public void render(float delta) {
 
@@ -87,6 +123,7 @@ public class StartScreen implements Screen {
             inputCooldown -= delta;
             return;
         }
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -100,7 +137,6 @@ public class StartScreen implements Screen {
         font.setColor(Color.BLACK);
 
         font.draw(batch, title, titleX, titleY);
-
         font.draw(batch, "  Start Game", startX, startY);
         font.draw(batch, "  Instructions", instrX, instrY);
         font.draw(batch, "  Exit", exitX, exitY);
@@ -110,6 +146,12 @@ public class StartScreen implements Screen {
         handleInput();
     }
 
+    /**
+     * Recalculates button and title positions when the window is resized.
+     *
+     * @param width new window width
+     * @param height new window height
+     */
     @Override
     public void resize(int width, int height){
         camera.setToOrtho(false, width, height);
@@ -128,6 +170,10 @@ public class StartScreen implements Screen {
         titleY = camera.viewportHeight * 0.80f;
     }
 
+    /**
+     * Handles touch input and checks whether the user clicked
+     * Start Game, Instructions, or Exit.
+     */
     private void handleInput() {
         if (!Gdx.input.justTouched()) return;
 
@@ -163,7 +209,12 @@ public class StartScreen implements Screen {
     @Override public void pause() {}
     @Override public void resume() {}
     @Override public void hide() {}
-    @Override public void dispose() {
+
+    /**
+     * Disposes of all allocated resources.
+     */
+    @Override
+    public void dispose() {
         batch.dispose();
         font.dispose();
         backgrund.dispose();
