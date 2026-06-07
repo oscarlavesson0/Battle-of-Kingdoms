@@ -9,14 +9,30 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class ActionMenu {
+/**
+ * ActionMenu represents the contextual action menu that appears when a unit is selected.
+ * It supports multiple modes depending on the unit's state (before moving, after moving,
+ * waiting, or when inspecting an enemy). The menu displays different buttons and colors
+ * depending on the mode and whether the unit can attack.
+ *
+ * <p>The menu is rendered using LibGDX SpriteBatch and ShapeRenderer, and supports
+ * click detection to determine which action the player selected.</p>
+ *
+ * <p>Supported actions include MOVE, WAIT, ATTACK, CANCEL, CLOSE, and INFO.</p>
+ */
 
+public class ActionMenu {
+    /**
+     * Represents the possible actions the player can select from the menu.
+     */
     public enum Action { MOVE, WAIT, ATTACK, CANCEL, CLOSE, INFO }
 
     private boolean visible = false;
     private float menuX, menuY;
     private boolean canAttack;
-
+    /**
+     * Internal menu mode determining which buttons are shown.
+     */
     private enum Mode { PRE_MOVE, PRE_WAIT, AFTER_WAIT, ENEMY_INFO }
     private Mode mode = Mode.PRE_MOVE;
 
@@ -36,6 +52,10 @@ public class ActionMenu {
     private static final Color DARK   = new Color(0.30f, 0.30f, 0.30f, 1f);
     private static final Color YELLOW = new Color(0.55f, 0.55f, 0.18f, 1f);
 
+    /**
+     * Creates a new ActionMenu and loads required fonts and textures.
+     * @Author Enid Becarevic
+     */
     public ActionMenu() {
         FreeTypeFontGenerator gen = new FreeTypeFontGenerator(
             Gdx.files.internal("lwjgl3/assets/ui/font/PixelWarden.ttf"));
@@ -48,6 +68,14 @@ public class ActionMenu {
         frameTexture   = new Texture(Gdx.files.internal("lwjgl3/assets/ui/StatIcons/frame.png"));
     }
 
+    /**
+     * Shows the menu before the unit has moved.
+     *
+     * @param x menu X position
+     * @param y menu Y position
+     * @param canAttack whether the unit can attack this turn
+     * @Author Enid Becarevic
+     */
     public void showPreMove(float x, float y, boolean canAttack) {
         this.menuX = x; this.menuY = y;
         this.canAttack = canAttack;
@@ -55,13 +83,27 @@ public class ActionMenu {
         this.visible = true;
     }
 
+    /**
+     * Shows the menu before the unit waits.
+     *
+     * @param x menu X position
+     * @param y menu Y position
+     * @param canAttack whether the unit can attack this turn
+     * @Author Enid Becarevic
+     */
     public void showPreWait(float x, float y, boolean canAttack) {
         this.menuX = x; this.menuY = y;
         this.canAttack = canAttack;
         this.mode = Mode.PRE_WAIT;
         this.visible = true;
     }
-
+    /**
+     * Shows the menu after the unit has waited.
+     *
+     * @param x menu X position
+     * @param y menu Y position
+     * @Author Enid Becarevic
+     */
     public void showAfterWait(float x, float y) {
         this.menuX = x; this.menuY = y;
         this.canAttack = false;
@@ -69,6 +111,13 @@ public class ActionMenu {
         this.visible = true;
     }
 
+    /**
+     * Shows the enemy info menu.
+     *
+     * @param x menu X position
+     * @param y menu Y position
+     * @Author Enid Becarevic
+     */
     public void showEnemyInfoMenu(float x, float y) {
         this.menuX = x; this.menuY = y;
         this.canAttack = false;
@@ -76,9 +125,24 @@ public class ActionMenu {
         this.visible = true;
     }
 
+    /** Hides the menu.
+     * @Author Enid Becarevic
+     */
+
     public void hide()          { visible = false; }
+
+    /**
+     * @return true if the menu is currently visible
+     * @Author Enid Becarevic
+     */
     public boolean isVisible()  { return visible; }
 
+    /**
+     * Calculates how many buttons should be displayed depending on the mode.
+     *
+     * @return number of buttons
+     * @Author Enid Becarevic
+     */
     private int buttonCount() {
         return switch (mode) {
             case PRE_MOVE   -> 3 + (canAttack ? 1 : 0) + 1; // Close,Wait,Move,[Attack],Info
@@ -88,11 +152,28 @@ public class ActionMenu {
         };
     }
 
+    /**
+     * Checks if a click is inside a button.
+     *
+     * @param cx click X
+     * @param cy click Y
+     * @param by button Y position
+     * @return true if the click hits the button
+     * @Author Enid Becarevic
+     */
     private boolean hit(float cx, float cy, float by) {
         return cx >= menuX && cx <= menuX + BTN_W &&
             cy >= by    && cy <= by + BTN_H;
     }
 
+    /**
+     * Handles a click on the menu and returns the selected action.
+     *
+     * @param cx click X coordinate
+     * @param cy click Y coordinate
+     * @return the selected Action, or null if no button was clicked
+     * @Author Enid Becarevic
+     */
     public Action handleClick(float cx, float cy) {
         if (!visible) return null;
         hide();
@@ -133,6 +214,13 @@ public class ActionMenu {
         return null;
     }
 
+    /**
+     * Renders the menu background, buttons, and text.
+     *
+     * @param batch SpriteBatch used for drawing textures and text
+     * @param sr ShapeRenderer used for drawing button rectangles
+     * @Author Enid Becarevic
+     */
     public void render(SpriteBatch batch, ShapeRenderer sr) {
         if (!visible) return;
 
@@ -197,6 +285,14 @@ public class ActionMenu {
         batch.end();
     }
 
+    /**
+     * Draws a single button rectangle.
+     *
+     * @param sr ShapeRenderer instance
+     * @param y button Y position
+     * @param col button color
+     * @Author Enid Becarevic
+     */
     private void drawBtn(ShapeRenderer sr, float y, Color col) {
         sr.setColor(col);
         sr.rect(menuX, y, BTN_W, BTN_H);

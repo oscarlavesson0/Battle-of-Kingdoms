@@ -11,8 +11,23 @@ import unit.Unit;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * UnitView handles the visual representation and animation of a {@link Unit}.
+ * It is responsible for:
+ * <ul>
+ *     <li>Rendering the unit sprite using {@link CharacterRenderer}</li>
+ *     <li>Smooth movement animation between tiles</li>
+ *     <li>Flipping the sprite depending on player ownership</li>
+ *     <li>Displaying HP bars and HP text</li>
+ *     <li>Notifying listeners when movement is complete</li>
+ * </ul>
+ */
 public class UnitView {
 
+    /**
+     * Listener interface for receiving a callback when a movement animation finishes.
+     * @author Enid Becarevic
+     */
     public interface OnMoveCompleteListener {
         void onMoveComplete(UnitView view);
     }
@@ -36,6 +51,13 @@ public class UnitView {
 
     private int[] cancelDestination = null;
 
+    /**
+     * Creates a new UnitView for the given unit and renderer.
+     *
+     * @param unit     the logical unit this view represents
+     * @param renderer the animation renderer for the unit
+     *                      * @author Enid Becarevic
+     */
     public UnitView(Unit unit, CharacterRenderer renderer) {
         this.unit = unit;
         this.renderer = renderer;
@@ -46,19 +68,38 @@ public class UnitView {
         this.animY = unit.getY() * WorldMap.TILE_SIZE;
     }
 
-    //  Publika metoder
-    public void setOnMoveCompleteListener(OnMoveCompleteListener l) {
+    /**
+     * Sets a listener that will be notified when the unit finishes moving.
+     *
+     * @param l the listener to register
+     *               * @author Enid Becarevic
+     */    public void setOnMoveCompleteListener(OnMoveCompleteListener l) {
         this.moveCompleteListener = l;
     }
 
+    /** @return true if the unit is currently animating movement
+     *      * @author Enid Becarevic*/
     public boolean isMoving() { return isMoving; }
+    /** @return the underlying logical unit
+     *      * @author Enid Becarevic*/
     public Unit    getUnit()  { return unit; }
 
+    /**
+     * Instantly synchronizes the view's position with the unit's tile position.
+     * Useful after teleportation or turn resets.
+     *      * @author Enid Becarevic
+     */
     public void syncPosition() {
         this.animX = unit.getX() * WorldMap.TILE_SIZE;
         this.animY = unit.getY() * WorldMap.TILE_SIZE;
     }
 
+    /**
+     * Sets a movement path for the unit and begins animating the first step.
+     *
+     * @param path a queue of tile coordinates the unit should move through
+     *                  * @author Enid Becarevic
+     */
     public void setMovementPath(Queue<int[]> path) {
         this.cancelDestination = null;
         this.movementQueue     = path;
@@ -66,6 +107,13 @@ public class UnitView {
     }
 
 
+    /**
+     * Sets a cancel movement path, returning the unit to its original tile.
+     *
+     * @param originX original X tile
+     * @param originY original Y tile
+     *                     * @author Enid Becarevic
+     */
     public void setCancelPath(int originX, int originY) {
         this.cancelDestination = new int[]{ originX, originY };
         Queue<int[]> q = new LinkedList<>();
@@ -74,8 +122,11 @@ public class UnitView {
         startNextStep();
     }
 
-    //  Intern rörelselogik
-    private void startNextStep() {
+    /**
+     * Starts animating the next step in the movement queue.
+     * If no steps remain, the unit stops and notifies listeners.
+     *      * @author Enid Becarevic
+     */    private void startNextStep() {
         if (movementQueue.isEmpty()) {
             isMoving = false;
             renderer.setState(State.IDLE);
@@ -91,8 +142,13 @@ public class UnitView {
         renderer.setState(State.RUN);
     }
 
-    //  Update & Render
-    public void update(float delta) {
+    /**
+     * Updates animation state and movement interpolation.
+     *
+     * @param delta time since last frame
+     * @author Enid Becarevic
+     * @author Oscar Lavesson
+     */    public void update(float delta) {
         renderer.update(delta);
         if (!isMoving) return;
 
@@ -120,6 +176,12 @@ public class UnitView {
         }
     }
 
+    /**
+     * Renders the unit sprite at its current animated position.
+     *
+     * @param batch the SpriteBatch used for drawing
+     * @author Enid Becarevic
+     */
     public void render(SpriteBatch batch) {
         batch.setColor(tintColor != null ? tintColor : Color.WHITE);
         TextureRegion frame = renderer.getCurrentFrame();
@@ -135,6 +197,12 @@ public class UnitView {
         batch.setColor(Color.WHITE);
     }
 
+    /**
+     * Renders the unit's HP bar above the sprite.
+     *
+     * @param shapeRenderer the ShapeRenderer used for drawing rectangles
+     *                           * @author Enid Becarevic
+     */
     public void renderHpBar(ShapeRenderer shapeRenderer) {
         float barWidth   = 16f;
         float barHeight  = 3f;
@@ -148,12 +216,23 @@ public class UnitView {
         shapeRenderer.rect(barX, barY, barWidth * hpPercent, barHeight);
     }
 
+    /**
+     * Renders the unit's HP text above the sprite.
+     *
+     * @param batch the SpriteBatch used for drawing text
+     *                   * @author Enid Becarevic
+     */
     public void renderHpText(SpriteBatch batch) {
         font.setColor(Color.WHITE);
         font.draw(batch, unit.getCurrentHp() + "/" + unit.getMaxHp(),
             animX - 8f, animY + 38f);
     }
-
+    /**
+     * Applies a color tint and sprite flip depending on the owning player.
+     *
+     * @param player the player owning the unit
+     *                    * @author Enid Becarevic
+     */
     public void applyPlayerColor(Player player) {
         switch (player) {
             case PLAYER_ONE -> {
@@ -165,9 +244,6 @@ public class UnitView {
                 flipX = true;  // spegelvänd
             }
         }
-    }
-    public void setFlipX(boolean flip) {
-        this.flipX = flip;
     }
 
 }

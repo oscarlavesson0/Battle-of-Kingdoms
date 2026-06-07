@@ -18,6 +18,26 @@ import popup.SettingsPopup;
 import popup.ConfirmPopup;
 
 import java.util.List;
+/**
+ * GameInput handles all player input for the main game screen.
+ * It manages:
+ * <ul>
+ *     <li>Unit selection and movement</li>
+ *     <li>Attack targeting</li>
+ *     <li>Opening and interacting with popups</li>
+ *     <li>Displaying and handling the ActionMenu</li>
+ *     <li>Turn-ending logic</li>
+ *     <li>Interaction with bases and buildings</li>
+ * </ul>
+ *
+ * <p>The class acts as the central input router for the tactical game,
+ * ensuring that UI layers (popups, menus) take priority over world clicks,
+ * and that unit actions follow the correct state flow.</p>
+ * @Author Oscar Lavesson
+ * @Author Enid Becarevic
+ * @Author Stefan Rajkovic
+ * @Author JoelAxel Olsson
+ */
 
 public class GameInput extends InputAdapter {
 
@@ -43,9 +63,38 @@ public class GameInput extends InputAdapter {
     private ConfirmPopup  confirmPopup;
     private float gearX, gearY, gearSize;
 
-    // Håller koll på fiende-unit som väntar på Info-klick i menyn
+    /** Stores an enemy unit awaiting an INFO click in the action menu. */
     private Unit pendingEnemyInfoUnit = null;
 
+    /**
+     * Creates a new GameInput handler with all required controllers and UI components.
+     *
+     * @param tileController controller for terrain tiles
+     * @param basePopup popup for base information
+     * @param statsPopup popup for unit stats
+     * @param buildingMenuPopup popup for building actions
+     * @param buildingInfoPopup popup for building details
+     * @param unitController controller for unit logic
+     * @param units list of all units
+     * @param unitViews list of unit view objects (rendering)
+     * @param highlightSystem system for movement/attack highlighting
+     * @param turnManager manages turn order and turn transitions
+     * @param btnX X position of end-turn button
+     * @param btnY Y position of end-turn button
+     * @param btnW width of end-turn button
+     * @param btnH height of end-turn button
+     * @param bases list of all bases on the map
+     * @param viewport camera viewport for coordinate conversion
+     * @param settingsPopup popup for game settings
+     * @param confirmPopup popup for confirmations
+     * @param gearX X position of settings gear icon
+     * @param gearY Y position of settings gear icon
+     * @param gearSize size of settings gear icon
+     * @Author Oscar Lavesson
+     * @Author Enid Becarevic
+     * @Author Stefan Rajkovic
+     * @Author JoelAxel Olsson
+     */
     public GameInput(TileController tileController, BasePopup basePopup,
                      UnitStatsPopup statsPopup,
                      BuildingMenuPopup buildingMenuPopup,
@@ -80,8 +129,16 @@ public class GameInput extends InputAdapter {
         this.gearSize           = gearSize;
     }
 
+    /** @return the ActionMenu instance used for unit actions
+     * @author Enid Becarevic
+     * */
     public ActionMenu getActionMenu() { return actionMenu; }
 
+    /**
+     * Updates internal state, such as waiting for a unit to finish moving
+     * before showing the post-move action menu.
+     * @author Enid Becarevic
+     */
     public void update() {
         if (pendingPostMoveUnit != null) {
             UnitView view = findViewFor(pendingPostMoveUnit);
@@ -92,6 +149,13 @@ public class GameInput extends InputAdapter {
         }
     }
 
+    /**
+     * Shows the PRE_WAIT action menu after a unit finishes moving.
+     *
+     * @param unit the unit that just moved
+     * @author Enid Becarevic
+     * @author JoelAxel Olsson
+     */
     private void showPreWaitMenu(Unit unit) {
         boolean canAttack = false;
         highlightSystem.updateAttackOnlyHighlight(unit);
@@ -106,6 +170,20 @@ public class GameInput extends InputAdapter {
         unitController.selectUnit(unit);
     }
 
+    /**
+     * Handles all click input in the game world, including:
+     * <ul>
+     *     <li>UI popups</li>
+     *     <li>Action menu</li>
+     *     <li>Unit selection</li>
+     *     <li>Movement and attack targeting</li>
+     *     <li>Base and building interactions</li>
+     *  @Author Oscar Lavesson
+     *  @Author Enid Becarevic
+     *  @Author Stefan Rajkovic
+     *  @Author JoelAxel Olsson
+     * </ul>
+     */
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         com.badlogic.gdx.math.Vector3 worldCoords =
@@ -250,6 +328,12 @@ public class GameInput extends InputAdapter {
         return false;
     }
 
+    /**
+     * Handles actions selected from the ActionMenu.
+     *
+     * @param action the selected action
+     * @Author Enid Becarevic
+     */
     private void handleMenuAction(ActionMenu.Action action) {
         // Om vi är i fiende-info-läget, hantera det separat
         if (action == ActionMenu.Action.INFO && pendingEnemyInfoUnit != null) {
@@ -276,6 +360,12 @@ public class GameInput extends InputAdapter {
         }
     }
 
+    /**
+     * Cancels a unit's movement and returns it to its original tile.
+     * @Author Enid Becarevic
+     * @param unit the unit whose move is being cancelled
+     * @
+     */
     private void cancelMoveForSelected(Unit unit) {
         int[] origin = unitController.cancelMove(unit);
         if (origin == null) { cancelAll(); return; }
@@ -291,6 +381,10 @@ public class GameInput extends InputAdapter {
         unitController.selectUnit(unit);
     }
 
+    /**
+     * Handles selecting a tile as an attack target.
+     * @Author Enid Becarevic
+     */
     private void handleAttackTargetClick(float screenX, float screenY) {
         com.badlogic.gdx.math.Vector3 worldCoords =
             new com.badlogic.gdx.math.Vector3(screenX, screenY, 0);
@@ -325,6 +419,11 @@ public class GameInput extends InputAdapter {
         cancelAll();
     }
 
+    /**
+     * Selects a unit and shows the appropriate action menu depending on whether
+     * the unit has already moved this turn.
+     * @Author Enid Becarevic
+     */
     private void selectUnit(Unit u) {
         if (u == null) return;
         unitController.selectUnit(u);
@@ -337,6 +436,10 @@ public class GameInput extends InputAdapter {
         showPreMoveMenu(u);
     }
 
+    /**
+     * Shows the PRE_MOVE action menu for a unit.
+     * @Author Enid Becarevic
+     */
     private void showPreMoveMenu(Unit unit) {
         boolean canAttack = hasEnemyAdjacent(unit) || hasEnemyBaseAdjacent(unit) || hasEnemyBuildingAdjacent(unit);
         float wx = unit.getX() * WorldMap.TILE_SIZE;
@@ -344,6 +447,8 @@ public class GameInput extends InputAdapter {
         actionMenu.showPreMove(wx + WorldMap.TILE_SIZE, wy, canAttack);
     }
 
+    /** Clears all selection and resets input state.
+     * @Author Enid Becarevic*/
     private void deselect() {
         unitController.selectUnit(null);
         highlightSystem.clear();
@@ -353,11 +458,15 @@ public class GameInput extends InputAdapter {
         pendingEnemyInfoUnit    = null;
     }
 
+    /** Cancels all active UI and selection states.
+     * @Author Enid Becarevic*/
     private void cancelAll() {
         deselect();
         actionMenu.hide();
     }
 
+    /** Commits any pending movement before ending the turn.
+     * @Author Enid Becarevic*/
     private void commitAnyPending() {
         Unit sel = unitController.getSelectedUnit();
         if (sel != null && unitController.hasPendingMove(sel))
