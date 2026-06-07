@@ -6,6 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * Represents a Base structure on the game map. A Base is rendered using a tile layout
+ * inherited from {@link StructureRenderer}, and contains additional logic for handling
+ * explosions and base statistics.
+ *
+ * <p>The Base loads its tile graphics from a spritesheet and maps tile IDs to specific
+ * TextureRegions. It can also play an explosion animation when destroyed.</p>
+ */
+
 public class Base extends StructureRenderer {
 
     private TextureRegion[][] parts;
@@ -15,6 +24,13 @@ public class Base extends StructureRenderer {
     private BaseStats stats;
     SpriteSheetLoader sheet;
 
+    /**
+     * Creates a new Base instance with the given spritesheet loader and base statistics.
+     *
+     * @param sheet the SpriteSheetLoader used for loading textures
+     * @param stats the BaseStats object containing owner, HP, and other base attributes
+     * @author Oscar Lavesson
+     */
     public Base(SpriteSheetLoader sheet, BaseStats stats) {
         this.sheet = sheet;
         this.stats = stats;
@@ -30,6 +46,15 @@ public class Base extends StructureRenderer {
             {1000, 1001, 1002, 1003}
         };
     }
+
+    /**
+     * Returns the TextureRegion associated with a specific tile ID.
+     * The Base uses a 4x4 tile layout, where each ID maps to a region in the spritesheet.
+     *
+     * @param id the tile ID to retrieve
+     * @return the corresponding TextureRegion, or null if the ID is invalid
+     * @author Oscar Lavesson
+     */
     @Override
     public TextureRegion getTile(int id) {
         return switch (id) {
@@ -56,34 +81,6 @@ public class Base extends StructureRenderer {
             default -> null;
         };
     }
-    private void loadExplosion() {
-
-        Texture explosionSheet = new Texture("lwjgl3/assets/ui/exp3_0.png");
-
-        int frameWidth = explosionSheet.getWidth() / 4;  // 4 kolumner
-        int frameHeight = explosionSheet.getHeight() / 3; // 3 rader
-
-        TextureRegion[][] tmp = TextureRegion.split(explosionSheet, frameWidth, frameHeight);
-
-        TextureRegion[] frames = new TextureRegion[12];
-        int index = 0;
-
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 4; col++) {
-                frames[index++] = tmp[row][col];
-            }
-        }
-
-        explosionAnim = new Animation<>(0.08f, frames);
-        explosionAnim.setPlayMode(Animation.PlayMode.NORMAL);
-
-    }
-    public void explode() {
-        exploding = true;
-        explosionTime = 0f;
-    }
-    public BaseStats getStats() {
-        return stats;
-    }
 }
+
 

@@ -2,11 +2,36 @@ package GuiMainGame;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * Represents a lake structure on the world map. A Lake is a multi‑tile structure
+ * composed of 3×3 water tiles (or larger, depending on the chosen size).
+ *
+ * <p>The lake uses a tile layout inherited from {@link StructureRenderer}, where
+ * each tile ID corresponds to a specific water texture (corner, edge, or center).
+ * The lake can be generated in any square size, and the layout is automatically
+ * constructed based on the provided size.</p>
+ *
+ * <p>Tile ID mapping:</p>
+ * <ul>
+ *     <li>100–102 → bottom row (left, mid, right)</li>
+ *     <li>110–112 → middle row (left, mid, right)</li>
+ *     <li>120–122 → top row (left, mid, right)</li>
+ * </ul>
+ */
+
 public class Lake extends StructureRenderer {
 
     private TextureRegion topLeft, topMid, topRight;
     private TextureRegion midLeft, midMid, midRight;
     private TextureRegion botLeft, botMid, botRight;
+
+    /**
+     * Creates a new Lake structure using tiles from the provided spritesheet.
+     *
+     * @param sheet the spritesheet loader used to retrieve water tile textures
+     * @param size  the size of the lake (width and height in tiles)
+     * @author Oscar Lavesson
+     */
 
     public Lake(SpriteSheetLoader sheet, int size) {
         topLeft  = sheet.getTile(0, 2);
@@ -22,6 +47,21 @@ public class Lake extends StructureRenderer {
         layout = buildLayout(size);
     }
 
+    /**
+     * Builds the tile ID layout for the lake. The layout determines which tile
+     * texture is used at each position (corner, edge, or center).
+     *
+     * <p>The IDs are arranged as follows:</p>
+     * <ul>
+     *     <li>Top row:    120 (TL), 121 (TM), 122 (TR)</li>
+     *     <li>Middle row: 110 (ML), 111 (MM), 112 (MR)</li>
+     *     <li>Bottom row: 100 (BL), 101 (BM), 102 (BR)</li>
+     * </ul>
+     *
+     * @param size the width/height of the lake in tiles
+     * @return a 2D array representing the tile ID layout
+     * @author Oscar Lavesson
+     */
     private int[][] buildLayout(int size) {
         int[][] grid = new int[size][size];
         for (int row = 0; row < size; row++) {
@@ -40,6 +80,13 @@ public class Lake extends StructureRenderer {
         return grid;
     }
 
+    /**
+     * Returns the correct water tile texture for the given tile ID.
+     *
+     * @param id the tile ID from the lake layout
+     * @return the corresponding TextureRegion, or null if the ID is invalid
+     * @author Oscar Lavesson
+     */
     @Override
     public TextureRegion getTile(int id) {
         return switch (id) {
